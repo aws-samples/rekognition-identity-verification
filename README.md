@@ -25,7 +25,7 @@ A solution to assist with identity verification using Amazon Rekognition.
 # Note: Bucket name cannot contain dots (.)
 REGION_NAME=us-east-1
 BUCKET_NAME=my-unique-bucket-name
-aws s3api create-bucket --region $REGION_NAME --create-bucket-configuration \"{\\\"LocationConstraint\\\": \\\"$REGION_NAME\\\"}\" --bucket $BUCKET_NAME
+aws s3api create-bucket --region $REGION_NAME --create-bucket-configuration "{\"LocationConstraint\": \"$REGION_NAME\"}" --bucket $BUCKET_NAME
 
 # Customers can deploy multiple instances to the same region (Prod vs Dev)
 # If this value is not set then it defaults to 'Simple'
