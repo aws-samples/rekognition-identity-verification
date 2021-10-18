@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "handler.py",
+      "console": "integratedTerminal",
+      "env": {
+        "REGION":"ca-central-1",
+        "ZONE_NAME":"Simple",
+        "FACE_TABLE_NAME":"RIV-Simple-SharedStorageMetadataFaceTable609BE09F"
+      }
+    }
+  ]
+}

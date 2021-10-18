@@ -1,0 +1,9 @@
+__pycache__
+cdk.out
+**/.vscode/launch.json
+cdk.context.json
+**/*.pem
+credentials
+config.json
+bin/**
+packages/**

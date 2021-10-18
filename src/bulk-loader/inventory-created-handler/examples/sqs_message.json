@@ -1,0 +1,38 @@
+{
+  "Records": [
+    {
+      "eventVersion": "2.1",
+      "eventSource": "aws:s3",
+      "awsRegion": "ca-central-1",
+      "eventTime": "2021-08-16T19:16:37.614Z",
+      "eventName": "ObjectCreated:Put",
+      "userIdentity": {
+        "principalId": "AWS:AROAII6QBJF3CVCYZA6A4:i-08d1868d6c9b325c6"
+      },
+      "requestParameters": {
+        "sourceIPAddress": "10.0.139.156"
+      },
+      "responseElements": {
+        "x-amz-request-id": "N8BHVF8Q8JA0SNYS",
+        "x-amz-id-2": "Q+99XHVWAQEuatPgNHPDQ2hkgEPtz4ZTSjjw6MEGY1FwkgIoXhf3DXQ7F6WXdSRVmPwZqaJhYPFxj51VanY+TvpYl/2YvMjY"
+      },
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "ZjJhNWUwNjgtN2FmYi00ZDJjLWEwMGQtY2MxODlmNjU3ZDBh",
+        "bucket": {
+          "name": "riv-simple-sharedstorageimagesinventorybucketab8f-qlx62dgkgypf",
+          "ownerIdentity": {
+            "principalId": "ALH4O32NROZP1"
+          },
+          "arn": "arn:aws:s3:::riv-simple-sharedstorageimagesinventorybucketab8f-qlx62dgkgypf"
+        },
+        "object": {
+          "key": "riv-simple-sharedstorageimagesimagebucket7de5900f-sibzosvqtetl/Full-InventoryReport/2021-08-16T01-00Z/manifest.json",
+          "size": 560,
+          "eTag": "a244b34689a818870290a93826634a4c",
+          "sequencer": "00611AB997C4413255"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+from typing import Mapping
+from infra.default_lambda import RivDefaultFunction
+from infra.interfaces import IVpcLandingZone
+from aws_cdk import (
+  core,
+  aws_iam as iam,
+)
+
+class RivUserPortalFunction(RivDefaultFunction):
+  '''
+  Represents the base template for a UserPortal Lambda function.
+  ''' 
+  @property
+  def component_name(self)->str:
+    return self.__class__.__name__
+
+  @property
+  def function_name(self) -> str:
+    return 'Riv{}-UserPortal-{}'.format(
+        self.landing_zone.zone_name,
+        self.component_name)
+
+  @property
+  def function_timeout(self)->core.Duration:
+    return core.Duration.seconds(30)
+  
+  def __init__(self, scope: core.Construct, id: str, landing_zone:IVpcLandingZone,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
+    super().__init__(scope, id, landing_zone=landing_zone, subnet_group_name=subnet_group_name, env=env, **kwargs)
+
+    '''
+    Attach any shared Amazon IAM policies here.
+    '''
+    self.function.role.add_managed_policy(
+      policy=iam.ManagedPolicy.from_aws_managed_policy_name('AmazonRekognitionFullAccess'))
+
+    # Grant access to shared SSM Parameters here.
+    self.function.role.add_to_policy(statement=iam.PolicyStatement(
+      effect= iam.Effect.ALLOW,
+      actions=['ssm:GetParameter*'],
+      resources=['arn:aws:ssm:{}:{}:parameter/riv/{}/rekognition/*'.format(
+        core.Stack.of(self).region, core.Aws.ACCOUNT_ID, landing_zone.zone_name)]
+    ))
+
+
+class RivUserPortalCompareFaces(RivUserPortalFunction):
+  def __init__(self, scope: core.Construct, id:str, landing_zone:IVpcLandingZone,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
+    super().__init__(scope, id, landing_zone=landing_zone, subnet_group_name=subnet_group_name, env=env)
+
+  @property
+  def source_directory(self)->str:
+    return 'src/rekognition/compare-faces'
+
+  @property
+  def component_name(self)->str:
+    return 'CompareFaces'
+
+class RivUserPortalDetectFaces(RivUserPortalFunction):
+  def __init__(self, scope: core.Construct, id:str, landing_zone:IVpcLandingZone,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
+    super().__init__(scope, id, landing_zone=landing_zone, subnet_group_name=subnet_group_name, env=env)
+
+  @property
+  def source_directory(self)->str:
+    return 'src/rekognition/detect-faces'
+
+  @property
+  def component_name(self)->str:
+    return 'DetectFaces'
+
+class RivUserPortalIndexFaces(RivUserPortalFunction):
+  def __init__(self, scope: core.Construct, id:str, landing_zone:IVpcLandingZone,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
+    super().__init__(scope, id, landing_zone=landing_zone, subnet_group_name=subnet_group_name, env=env)
+
+  @property
+  def source_directory(self)->str:
+    return 'src/rekognition/index-faces'
+
+  @property
+  def component_name(self)->str:
+    return 'IndexFaces'
+
+class RivUserPortalSearchFacesByImage(RivUserPortalFunction):
+  def __init__(self, scope: core.Construct, id:str, landing_zone:IVpcLandingZone,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
+    super().__init__(scope, id, landing_zone=landing_zone, subnet_group_name=subnet_group_name, env=env)
+
+  @property
+  def source_directory(self)->str:
+    return 'src/rekognition/search-faces'
+
+  @property
+  def component_name(self)->str:
+    return 'SearchFaces'
+
+class RivUserPortalExtractIdCard(RivUserPortalFunction):
+  def __init__(self, scope: core.Construct, id:str, landing_zone:IVpcLandingZone,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
+    super().__init__(scope, id, landing_zone=landing_zone, subnet_group_name=subnet_group_name, env=env)
+
+    self.function.role.add_managed_policy(
+      iam.ManagedPolicy.from_aws_managed_policy_name('AmazonTextractFullAccess'))
+
+  @property
+  def source_directory(self)->str:
+    return 'src/textract/extract-idcard'
+
+  @property
+  def component_name(self)->str:
+    return 'Extract-IdCard'

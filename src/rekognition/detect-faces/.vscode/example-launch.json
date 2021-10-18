@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "handler.py",
+            "console": "integratedTerminal",
+            "env": {
+                "REGION":"us-east-1",
+                "TABLE_NAME":"HomeNet-Hybrid-FaceTable"
+            }
+        }
+    ]
+}

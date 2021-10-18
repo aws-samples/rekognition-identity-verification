@@ -1,0 +1,1296 @@
+[
+    {
+      "Type": "PAGE",
+      "Children": [
+        {
+          "Class": "RelationshipCollection",
+          "Type": "CHILD",
+          "Blocks": [
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "UNITED STATES OF AMERICA",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "UNITED",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "STATES",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "OF",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "AMERICA",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "PASSORT CARD*",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "PASSORT",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "CARD*",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "Nationality",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Nationality",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "***",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "***",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "Passport Card no. *",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Passport",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Card",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "no.",
+                      "TextType": "HANDWRITING"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "*",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "USA",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "USA",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "C03005988",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "C03005988",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "Surname",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Surname",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "EXEMPLAR",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "EXEMPLAR",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "TRAVELER",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "TRAVELER",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "Given Names",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Given",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Names",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "HAPPY",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "HAPPY",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "Sex",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Sex",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "Date of Birth",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Date",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "of",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Birth",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "M",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "M",
+                      "TextType": "HANDWRITING"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "1 JAN 1981",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "1",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "JAN",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "1981",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "Place of Birth",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Place",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "of",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Birth",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "NEW YORK. U.S.A.",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "NEW",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "YORK.",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "U.S.A.",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "S",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "S",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "Issued On",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Issued",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "On",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "Expires On",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Expires",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "On",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "BES",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "BES",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "+",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "+",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "30 NOV 2009",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "30",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "NOV",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "2009",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "29 NOV 2019",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "29",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "NOV",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "2019",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "M-6131821-07",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "M-6131821-07",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "1-02781-0",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "1-02781-0",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentLineBlock",
+              "Text": "UNITEO STATES WF STATE",
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "UNITEO",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "STATES",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "WF",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "STATE",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentKeyValueBlock",
+              "EntityTypes": [
+                "KEY"
+              ],
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "VALUE",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentKeyValueBlock",
+                      "EntityTypes": [
+                        "VALUE"
+                      ],
+                      "Children": [
+                        {
+                          "Class": "RelationshipCollection",
+                          "Type": "CHILD",
+                          "Blocks": [
+                            {
+                              "Class": "DocumentWordBlock",
+                              "Text": "USA",
+                              "TextType": "PRINTED"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Nationality",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentKeyValueBlock",
+              "EntityTypes": [
+                "VALUE"
+              ],
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "USA",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentKeyValueBlock",
+              "EntityTypes": [
+                "KEY"
+              ],
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "VALUE",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentKeyValueBlock",
+                      "EntityTypes": [
+                        "VALUE"
+                      ],
+                      "Children": [
+                        {
+                          "Class": "RelationshipCollection",
+                          "Type": "CHILD",
+                          "Blocks": [
+                            {
+                              "Class": "DocumentWordBlock",
+                              "Text": "HAPPY",
+                              "TextType": "PRINTED"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Given",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Names",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentKeyValueBlock",
+              "EntityTypes": [
+                "VALUE"
+              ],
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "HAPPY",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentKeyValueBlock",
+              "EntityTypes": [
+                "KEY"
+              ],
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "VALUE",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentKeyValueBlock",
+                      "EntityTypes": [
+                        "VALUE"
+                      ],
+                      "Children": [
+                        {
+                          "Class": "RelationshipCollection",
+                          "Type": "CHILD",
+                          "Blocks": [
+                            {
+                              "Class": "DocumentWordBlock",
+                              "Text": "29",
+                              "TextType": "PRINTED"
+                            },
+                            {
+                              "Class": "DocumentWordBlock",
+                              "Text": "NOV",
+                              "TextType": "PRINTED"
+                            },
+                            {
+                              "Class": "DocumentWordBlock",
+                              "Text": "2019",
+                              "TextType": "PRINTED"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Expires",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "On",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentKeyValueBlock",
+              "EntityTypes": [
+                "VALUE"
+              ],
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "29",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "NOV",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "2019",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentKeyValueBlock",
+              "EntityTypes": [
+                "KEY"
+              ],
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "VALUE",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentKeyValueBlock",
+                      "EntityTypes": [
+                        "VALUE"
+                      ],
+                      "Children": [
+                        {
+                          "Class": "RelationshipCollection",
+                          "Type": "CHILD",
+                          "Blocks": [
+                            {
+                              "Class": "DocumentWordBlock",
+                              "Text": "C03005988",
+                              "TextType": "PRINTED"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Passport",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Card",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "no.",
+                      "TextType": "HANDWRITING"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentKeyValueBlock",
+              "EntityTypes": [
+                "VALUE"
+              ],
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "C03005988",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentKeyValueBlock",
+              "EntityTypes": [
+                "KEY"
+              ],
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "VALUE",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentKeyValueBlock",
+                      "EntityTypes": [
+                        "VALUE"
+                      ],
+                      "Children": [
+                        {
+                          "Class": "RelationshipCollection",
+                          "Type": "CHILD",
+                          "Blocks": [
+                            {
+                              "Class": "DocumentWordBlock",
+                              "Text": "TRAVELER",
+                              "TextType": "PRINTED"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Surname",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentKeyValueBlock",
+              "EntityTypes": [
+                "VALUE"
+              ],
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "TRAVELER",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentKeyValueBlock",
+              "EntityTypes": [
+                "KEY"
+              ],
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "VALUE",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentKeyValueBlock",
+                      "EntityTypes": [
+                        "VALUE"
+                      ],
+                      "Children": [
+                        {
+                          "Class": "RelationshipCollection",
+                          "Type": "CHILD",
+                          "Blocks": [
+                            {
+                              "Class": "DocumentWordBlock",
+                              "Text": "NEW",
+                              "TextType": "PRINTED"
+                            },
+                            {
+                              "Class": "DocumentWordBlock",
+                              "Text": "YORK.",
+                              "TextType": "PRINTED"
+                            },
+                            {
+                              "Class": "DocumentWordBlock",
+                              "Text": "U.S.A.",
+                              "TextType": "PRINTED"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Place",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "of",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Birth",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentKeyValueBlock",
+              "EntityTypes": [
+                "VALUE"
+              ],
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "NEW",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "YORK.",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "U.S.A.",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentKeyValueBlock",
+              "EntityTypes": [
+                "KEY"
+              ],
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "VALUE",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentKeyValueBlock",
+                      "EntityTypes": [
+                        "VALUE"
+                      ],
+                      "Children": [
+                        {
+                          "Class": "RelationshipCollection",
+                          "Type": "CHILD",
+                          "Blocks": [
+                            {
+                              "Class": "DocumentWordBlock",
+                              "Text": "JAN",
+                              "TextType": "PRINTED"
+                            },
+                            {
+                              "Class": "DocumentWordBlock",
+                              "Text": "1981",
+                              "TextType": "PRINTED"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Date",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "of",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Birth",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentKeyValueBlock",
+              "EntityTypes": [
+                "VALUE"
+              ],
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "JAN",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "1981",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentKeyValueBlock",
+              "EntityTypes": [
+                "KEY"
+              ],
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "VALUE",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentKeyValueBlock",
+                      "EntityTypes": [
+                        "VALUE"
+                      ],
+                      "Children": [
+                        {
+                          "Class": "RelationshipCollection",
+                          "Type": "CHILD",
+                          "Blocks": [
+                            {
+                              "Class": "DocumentWordBlock",
+                              "Text": "M",
+                              "TextType": "HANDWRITING"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Sex",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentKeyValueBlock",
+              "EntityTypes": [
+                "VALUE"
+              ],
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "M",
+                      "TextType": "HANDWRITING"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentKeyValueBlock",
+              "EntityTypes": [
+                "KEY"
+              ],
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "VALUE",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentKeyValueBlock",
+                      "EntityTypes": [
+                        "VALUE"
+                      ],
+                      "Children": [
+                        {
+                          "Class": "RelationshipCollection",
+                          "Type": "CHILD",
+                          "Blocks": [
+                            {
+                              "Class": "DocumentWordBlock",
+                              "Text": "30",
+                              "TextType": "PRINTED"
+                            },
+                            {
+                              "Class": "DocumentWordBlock",
+                              "Text": "NOV",
+                              "TextType": "PRINTED"
+                            },
+                            {
+                              "Class": "DocumentWordBlock",
+                              "Text": "2009",
+                              "TextType": "PRINTED"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "Issued",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "On",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Class": "DocumentKeyValueBlock",
+              "EntityTypes": [
+                "VALUE"
+              ],
+              "Children": [
+                {
+                  "Class": "RelationshipCollection",
+                  "Type": "CHILD",
+                  "Blocks": [
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "30",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "NOV",
+                      "TextType": "PRINTED"
+                    },
+                    {
+                      "Class": "DocumentWordBlock",
+                      "Text": "2009",
+                      "TextType": "PRINTED"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
