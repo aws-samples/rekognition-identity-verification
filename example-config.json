@@ -1,0 +1,33 @@
+{
+    "region": "ca-central-1",
+    "account": "111111111",
+    "use_isolated_subnets": false,
+    "use_custom_asset_bucket": false,
+    "custom_asset_bucket_name": "nbachmei.riv.ca-central-1",
+    "custom_assets": {
+      "BatchHandler": {
+        "key": "latest/bulk-loader/batch-handler.zip"
+      },
+      "LoaderInvCreatedHndlr": {
+        "key": "latest/bulk-loader/inventory-created-handler.zip"
+      },
+      "ThrottledIndexer": {
+        "key": "latest/bulk-loader/throttled-indexer.zip"
+      },
+      "CompareFaces": {
+        "key": "latest/rekognition/compare-faces.zip"
+      },
+      "DetectFaces": {
+        "key": "latest/rekognition/detect-faces.zip"
+      },
+      "IndexFaces": {
+        "key": "latest/rekognition/index-faces.zip"
+      },
+      "SearchFaces": {
+        "key": "latest/rekognition/search-faces.zip"
+      },
+      "Extract-IdCard": {
+        "key": "latest/textract/extract-idcard.zip"
+      }
+    }
+  }

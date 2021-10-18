@@ -1,0 +1,17 @@
+{
+  "configurations": [
+    {
+      "name": "Python: Lambda function",
+      "type": "python",
+      "request": "launch",
+      "program": "handler.py",
+      "console": "integratedTerminal",
+      "env": {
+        "ZONE_NAME": "Simple",
+        "USER_PORTAL_PARAM":"/riv/Simple/userportal/url",
+        "IMPORT_TABLE_NAME":"RIV-Simple-BulkLoaderImportTable",
+        "REGION": "ca-central-1"
+      }
+    }
+  ]
+}

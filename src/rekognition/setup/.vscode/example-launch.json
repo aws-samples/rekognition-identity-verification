@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "app.py",
+            "console": "integratedTerminal",
+            "env": {
+                "ZONE_NAME": "Simple",
+                "REGION": "ca-central-1",
+                "TOTAL_COLLECTIONS": "10"
+            }
+        }
+    ]
+}
