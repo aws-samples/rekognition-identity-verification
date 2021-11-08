@@ -6,7 +6,7 @@ from typing import List
 from infra.bulkloader.topology import RivBulkLoader
 from infra.storage.topology import RivSharedDataStores
 from infra.userportal.topology import RivUserPortal
-from infra.interfaces import IVpcLandingZone, IVpcNetworkingConstruct
+from infra.interfaces import IVpcRivStack, IVpcNetworkingConstruct
 from aws_cdk import (
     core,
     aws_ec2 as ec2,
@@ -14,11 +14,11 @@ from aws_cdk import (
 
 config = ConfigManager()
 
-class VpcLandingZone(IVpcLandingZone):
+class VpcRivStack(IVpcRivStack):
   '''
   Represents an empty deployment enviroment with VPC and default services.
   '''
-  def __init__(self:IVpcLandingZone, scope:core.Construct, id:str, **kwargs)->None:
+  def __init__(self:IVpcRivStack, scope:core.Construct, id:str, **kwargs)->None:
     super().__init__(scope, id, **kwargs)
     core.Tags.of(self).add('landing_zone',self.zone_name)
 
@@ -76,7 +76,7 @@ class VpcLandingZone(IVpcLandingZone):
   @property
   def subnet_configuration(self)->List[ec2.SubnetConfiguration]:
     '''
-    Gets the Vpc LandingZone's subnet configuration.
+    Gets the Vpc RivStack's subnet configuration.
     '''
     default_subnet_type = ec2.SubnetType.PRIVATE
     if config.use_isolated_subnets:
@@ -97,7 +97,7 @@ class VpcLandingZone(IVpcLandingZone):
   def vpc(self)->ec2.IVpc:
     return self.networking.vpc    
 
-class DefaultLandingZone(VpcLandingZone):
+class DefaultRivStack(VpcRivStack):
   '''
   Represents the simple deployment environment for RIV.
   '''

@@ -7,14 +7,14 @@ from infra.userportal.functions.topology import RivUserPortalFunctionSet
 from infra.userportal.states.topology import RivUserPortalStateMachines
 from infra.userportal.gateway.topology import RivUserPortalGateway
 from json import dumps
-from infra.interfaces import IVpcLandingZone
+from infra.interfaces import IVpcRivStack
 from aws_cdk import (
   core,
 )
 
 config = ConfigManager()
 class RivUserPortal(core.Construct):
-  def __init__(self, scope: core.Construct, id: builtins.str, landing_zone:IVpcLandingZone, sharedStorage, subnet_group_name:str='Default') -> None:
+  def __init__(self, scope: core.Construct, id: builtins.str, landing_zone:IVpcRivStack, sharedStorage, subnet_group_name:str='Default') -> None:
     super().__init__(scope, id)
     
     if config.use_isolated_subnets:

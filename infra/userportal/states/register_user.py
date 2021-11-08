@@ -1,7 +1,7 @@
 import builtins
 from infra.userportal.functions.topology import RivUserPortalFunctionSet
 from infra.userportal.states.interfaces import RivStateMachineConstruct
-from infra.interfaces import IVpcLandingZone
+from infra.interfaces import IVpcRivStack
 from aws_cdk import (
   core,
   aws_stepfunctions as sf,
@@ -10,7 +10,7 @@ from aws_cdk import (
 
 class RegisterStateMachine(RivStateMachineConstruct):
 
-  def __init__(self, scope: core.Construct, id: builtins.str, landing_zone: IVpcLandingZone, functions: RivUserPortalFunctionSet, state_machine_type:sf.StateMachineType) -> None:
+  def __init__(self, scope: core.Construct, id: builtins.str, landing_zone: IVpcRivStack, functions: RivUserPortalFunctionSet, state_machine_type:sf.StateMachineType) -> None:
     super().__init__(scope, id, landing_zone, functions, state_machine_type=state_machine_type)
 
     '''

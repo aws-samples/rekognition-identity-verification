@@ -29,7 +29,7 @@ class IVpcEndpointsForAWSServices(core.Construct):
     '''
     return self.__gateways
 
-class ILandingZone(Stack):
+class IRivStack(Stack):
   '''
   Represents an interface into a deployment environment.
   '''
@@ -45,7 +45,7 @@ class ILandingZone(Stack):
 
 class IVpcNetworkingConstruct(core.Construct):
   '''
-  Represent a networking configuration for an ILandingZone.
+  Represent a networking configuration for an IRivStack.
   '''
   def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
     super().__init__(scope, id, **kwargs)
@@ -64,7 +64,7 @@ class IVpcNetworkingConstruct(core.Construct):
     '''
     raise NotImplementedError()
 
-class IVpcLandingZone(ILandingZone):
+class IVpcRivStack(IRivStack):
   '''
   Represents an interface to a deployment environment with Vpc.
   '''
@@ -111,7 +111,7 @@ class IVpcLandingZone(ILandingZone):
     raise NotImplementedError()
 
 
-class LandingZone(ILandingZone):
+class RivStack(IRivStack):
   '''
   Represents a deployable environment (aka CloudFormation Stack).
   '''

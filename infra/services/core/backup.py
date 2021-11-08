@@ -1,4 +1,4 @@
-from infra.interfaces import ILandingZone
+from infra.interfaces import IRivStack
 from aws_cdk import (
     core,
     aws_backup as backup,
@@ -8,7 +8,7 @@ from aws_cdk import (
 )
 
 class BackupStrategyConstruct(core.Construct):
-  def __init__(self, scope:core.Construct, id:str, landing_zone:ILandingZone, **kwargs):
+  def __init__(self, scope:core.Construct, id:str, landing_zone:IRivStack, **kwargs):
     '''
     Landing Zone Backup Policy
     '''

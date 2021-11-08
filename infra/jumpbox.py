@@ -1,6 +1,6 @@
 from typing import List, Mapping
 
-from infra.interfaces import IVpcLandingZone
+from infra.interfaces import IVpcRivStack
 from aws_cdk import (
     core,
     aws_ec2 as ec2,
@@ -9,10 +9,10 @@ from aws_cdk import (
 
 class JumpBoxConstruct(core.Construct):
   @property
-  def landing_zone(self)->IVpcLandingZone:
+  def landing_zone(self)->IVpcRivStack:
     return self.__landing_zone
 
-  def __init__(self, scope:core.Construct, id:str, landing_zone:IVpcLandingZone, **kwargs) -> None:
+  def __init__(self, scope:core.Construct, id:str, landing_zone:IVpcRivStack, **kwargs) -> None:
     '''
     Configure emphemeral jumpbox for testing
     '''

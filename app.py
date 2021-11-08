@@ -3,8 +3,8 @@ from os import environ
 from infra.configsettings import ConfigManager
 from typing import List
 from aws_cdk import core
-from infra.interfaces  import ILandingZone
-from infra.topologies import DefaultLandingZone
+from infra.interfaces  import IRivStack
+from infra.topologies import DefaultRivStack
 
 config_mgr = ConfigManager()
 
@@ -28,10 +28,10 @@ class RIVApp(core.App):
     landing_zone_name = environ.get('ZONE_NAME')
     if landing_zone_name is None:
       landing_zone_name = 'Simple'
-    self.landing_zone = DefaultLandingZone(self,'RIV-%s' % landing_zone_name, zone_name=landing_zone_name, env=env)
+    self.landing_zone = DefaultRivStack(self,'RIV-%s' % landing_zone_name, zone_name=landing_zone_name, env=env)
 
   @property
-  def zones(self)->List[ILandingZone]:
+  def zones(self)->List[IRivStack]:
     return [ self.landing_zone ]
 
 app = RIVApp()

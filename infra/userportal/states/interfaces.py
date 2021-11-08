@@ -1,6 +1,6 @@
 import builtins
 from infra.userportal.functions.topology import RivUserPortalFunctionSet
-from infra.interfaces import  IVpcLandingZone
+from infra.interfaces import  IVpcRivStack
 from aws_cdk import (
   core,
   aws_logs as logs,
@@ -15,7 +15,7 @@ class RivStateMachineConstruct(core.Construct):
   Represents the base class for RivUserPortal StateMachines.
   '''
   @property
-  def landing_zone(self)->IVpcLandingZone:
+  def landing_zone(self)->IVpcRivStack:
     '''
     Gets the destination landing zone.
     '''
@@ -35,7 +35,7 @@ class RivStateMachineConstruct(core.Construct):
     '''
     return self.__state_machine
 
-  def __init__(self, scope: core.Construct, id: builtins.str, landing_zone:IVpcLandingZone,functions:RivUserPortalFunctionSet, state_machine_type:sf.StateMachineType) -> None:
+  def __init__(self, scope: core.Construct, id: builtins.str, landing_zone:IVpcRivStack,functions:RivUserPortalFunctionSet, state_machine_type:sf.StateMachineType) -> None:
     '''
     Initializes a new instance of the RivStateMachineConstruct.
     '''

@@ -1,7 +1,7 @@
 from os import path
 from infra.configsettings import ConfigManager
 from typing import Mapping
-from infra.interfaces import IVpcLandingZone
+from infra.interfaces import IVpcRivStack
 from aws_cdk import (
   core,
   aws_ec2 as ec2,
@@ -29,7 +29,7 @@ class RivDefaultFunction(core.Construct):
     raise NotImplementedError()
 
   @property
-  def landing_zone(self)->IVpcLandingZone:
+  def landing_zone(self)->IVpcRivStack:
     return self.__landing_zone
 
   @property
@@ -44,7 +44,7 @@ class RivDefaultFunction(core.Construct):
   def function(self,value:lambda_.IFunction)->None:
     self.__function = value
   
-  def __init__(self, scope: core.Construct, id: str, landing_zone:IVpcLandingZone,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
+  def __init__(self, scope: core.Construct, id: str, landing_zone:IVpcRivStack,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
     super().__init__(scope, id, **kwargs)
     self.__landing_zone = landing_zone
 

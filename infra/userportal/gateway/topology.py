@@ -2,7 +2,7 @@ import builtins
 from infra.userportal.states.interfaces import IRivUserPortalStateMachines, RivStateMachineConstruct
 from infra.userportal.gateway.models import GatewayModels
 from json import dumps
-from infra.interfaces import IVpcLandingZone
+from infra.interfaces import IVpcRivStack
 from aws_cdk import (
   core,
   aws_iam as iam,
@@ -29,7 +29,7 @@ class RivUserPortalGateway(core.Construct):
   def component_name(self)->str:
     return self.__class__.__name__
 
-  def __init__(self, scope: core.Construct, id: builtins.str, landing_zone:IVpcLandingZone) -> None:
+  def __init__(self, scope: core.Construct, id: builtins.str, landing_zone:IVpcRivStack) -> None:
     super().__init__(scope, id)
     
     # Define the gateway...

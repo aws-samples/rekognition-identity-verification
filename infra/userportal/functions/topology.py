@@ -1,12 +1,12 @@
 from infra.storage.topology import RivSharedDataStores
 from infra.userportal.functions.definitions import RivUserPortalCompareFaces, RivUserPortalDetectFaces, RivUserPortalExtractIdCard, RivUserPortalIndexFaces, RivUserPortalSearchFacesByImage
-from infra.interfaces import IVpcLandingZone
+from infra.interfaces import IVpcRivStack
 from aws_cdk import (
   core,  
 )
 
 class RivUserPortalFunctionSet(core.Construct):
-  def __init__(self, scope: core.Construct, id:str, landing_zone:IVpcLandingZone,sharedStorage:RivSharedDataStores,subnet_group_name:str='Default', **kwargs) -> None:
+  def __init__(self, scope: core.Construct, id:str, landing_zone:IVpcRivStack,sharedStorage:RivSharedDataStores,subnet_group_name:str='Default', **kwargs) -> None:
     super().__init__(scope, id)
 
     '''
