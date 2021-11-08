@@ -46,7 +46,7 @@ class RivStorageImageStore(core.Construct):
   def inventory_created(self,value:sns.ITopic)->None:
     self.__inventory_created = value
 
-  def __init__(self, scope: core.Construct, id: builtins.str, landing_zone:IVpcRivStack) -> None:
+  def __init__(self, scope: core.Construct, id: builtins.str, riv_stack:IVpcRivStack) -> None:
     super().__init__(scope, id)
 
     self.image_bucket = s3.Bucket(self,'ImageBucket',
@@ -69,8 +69,8 @@ class RivStorageImageStore(core.Construct):
 
     # Broadcast inventory creation events...
     self.inventory_created = sns.Topic(self,'InventoryCreated',
-      display_name='Riv-{}-ImageStore-InventoryCreated'.format(landing_zone.zone_name),
-      topic_name='Riv-{}-ImageStore-InventoryCreated'.format(landing_zone.zone_name))
+      display_name='{}-ImageStore-InventoryCreated'.format(riv_stack.riv_stack_name),
+      topic_name='{}-ImageStore-InventoryCreated'.format(riv_stack.riv_stack_name))
 
     self.inventory_bucket.add_event_notification(
       s3.EventType.OBJECT_CREATED,

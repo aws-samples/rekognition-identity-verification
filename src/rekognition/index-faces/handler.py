@@ -12,10 +12,10 @@ from logging import Logger
 Initialize the function runtime
 '''
 logger = Logger(name='LambdaFunction')
-zone_name = environ.get('ZONE_NAME')
+riv_stack_name = environ.get('RIV_STACK_NAME')
 region_name = environ.get('REGION')
 face_table_name = environ.get('FACE_TABLE_NAME')
-assert zone_name is not None, "zone_name is not available"
+assert riv_stack_name is not None, "riv_stack_name is not available"
 assert region_name is not None, "region_name is not available"
 assert face_table_name is not None, "face_table_name is not available"
 
@@ -52,7 +52,7 @@ def get_partition_count()->int:
   
   #xray_recorder.begin_segment('get_partition_count')
   try:
-    parameter_name = '/riv/{}/rekognition/partition-count'.format(zone_name)
+    parameter_name = '/riv/{}/rekognition/partition-count'.format(riv_stack_name)
     response = ssm_client.get_parameter(Name=parameter_name)
     value = response['Parameter']['Value']
     return int(value)
@@ -70,7 +70,7 @@ def get_collection_id(user_id:str)->str:
   Fetch the collection id for input event.
   '''
   collection_id = hash(user_id) % partition_count
-  return '{}-{}'.format(zone_name, collection_id)
+  return '{}-{}'.format(riv_stack_name, collection_id)
 
 def function_main(event:Mapping[str,Any],_=None):
   '''

@@ -12,12 +12,12 @@ from random import randint
 from pygments import highlight, formatters
 from pygments.lexers import JsonLexer
 
-def get_userportal_address(region_name:str, zone_name:str, endpoint:str)->str:
+def get_userportal_address(region_name:str, riv_stack_name:str, endpoint:str)->str:
   '''
   Gets the User Portal public endpoint.
   '''
   ssm_client = boto3.client('ssm', region_name=region_name)
-  response = ssm_client.get_parameter(Name='/riv/{}/userportal/url'.format(zone_name))
+  response = ssm_client.get_parameter(Name='/riv/{}/userportal/url'.format(riv_stack_name))
   userportal_url:str = response['Parameter']['Value']
   
   if not userportal_url.endswith('/'):
@@ -48,17 +48,18 @@ def create_payload(image_path:PathLike=None, user_id:str=None, properties:Mappin
           'Properties': properties
       }
   else:
-    response = requests.get('https://thispersondoesnotexist.com/image', stream=True)
-    buffer = BytesIO()
-    response.raw.decode_content = True
-    for chunk in response:
-      buffer.write(chunk)
+    # response = requests.get('https://thispersondoesnotexist.com/image', stream=True)
+    # buffer = BytesIO()
+    # response.raw.decode_content = True
+    # for chunk in response:
+    #   buffer.write(chunk)
     
-    return {
-        'UserId': user_id,
-        'Image': str(b64encode(buffer.getvalue()),'utf-8'),
-        'Properties': properties
-      }
+    # return {
+    #     'UserId': user_id,
+    #     'Image': str(b64encode(buffer.getvalue()),'utf-8'),
+    #     'Properties': properties
+    #   }
+    raise ValueError("No Image specified.")
 
 def print_response(response:requests.models.Response)->None:
   '''
@@ -75,7 +76,7 @@ def print_response(response:requests.models.Response)->None:
 
 @click.group("cli")
 @click.pass_context
-def cli(ctx):#, region:str, zone:str):
+def cli(ctx):#, region:str, stack:str):
   '''
   Rekognition Identity Validation (RIV) Tester.
   '''
@@ -83,17 +84,17 @@ def cli(ctx):#, region:str, zone:str):
 
 @cli.command("register")
 @click.option("-r", "--region", help="Amazon region hosting RIV", required=True)
-@click.option("-z", "--zone", help="RIV Zone Name", required=True)
+@click.option("-z", "--stack", help="RIV Zone Name", required=True)
 @click.option("-u", "--userid", help="Username to register")
 @click.option("-p", "--picture", help="File location for the user's picture")
 @click.pass_context
-def register_user(ctx:click.Context, region:str, zone:str, userid:str, picture:PathLike):
+def register_user(ctx:click.Context, region:str, stack:str, userid:str, picture:PathLike):
   '''
   Registers a new user with a given user_id and picture (password).
   '''
 
   # Find the registration endpoint...
-  register_url = get_userportal_address(region,zone,'register')
+  register_url = get_userportal_address(region,stack,'register')
   payload = create_payload(image_path=picture, user_id=userid)
   
   try:
@@ -105,15 +106,15 @@ def register_user(ctx:click.Context, region:str, zone:str, userid:str, picture:P
 
 @cli.command("update")
 @click.option("-r", "--region", help="Amazon region hosting RIV", required=True)
-@click.option("-z", "--zone", help="RIV Zone Name", required=True)
+@click.option("-z", "--stack", help="RIV Zone Name", required=True)
 @click.option("-u", "--userid", help="Username to register", required=True)
 @click.option("-p", "--picture", help="File location for the user's picture",required=True)
 @click.pass_context
-def update_user(ctx:click.Context, region:str, zone:str, userid:str, picture:PathLike):
+def update_user(ctx:click.Context, region:str, stack:str, userid:str, picture:PathLike):
   '''
   Updates an existing user_id with a new picture and properties.
   '''
-  update_url = get_userportal_address(region,zone,'update')
+  update_url = get_userportal_address(region,stack,'update')
   payload = create_payload(image_path=picture, user_id=userid)
   
   try:
@@ -125,15 +126,15 @@ def update_user(ctx:click.Context, region:str, zone:str, userid:str, picture:Pat
 
 @cli.command("auth")
 @click.option("-r", "--region", help="Amazon region hosting RIV", required=True)
-@click.option("-z", "--zone", help="RIV Zone Name", required=True)
+@click.option("-z", "--stack", help="RIV Zone Name", required=True)
 @click.option("-u", "--userid", help="Username to register", required=True)
 @click.option("-p", "--picture", help="File location for the user's picture",required=True)
 @click.pass_context
-def auth_user(ctx:click.Context, region:str, zone:str, userid:str, picture:PathLike):
+def auth_user(ctx:click.Context, region:str, stack:str, userid:str, picture:PathLike):
   '''
   Attempt an authentication with for a given user_id and picture (password).
   '''
-  auth_url = get_userportal_address(region,zone,'auth')
+  auth_url = get_userportal_address(region,stack,'auth')
   payload = create_payload(image_path=picture, user_id=userid)
   
   try:

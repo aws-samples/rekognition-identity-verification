@@ -9,15 +9,15 @@ from aws_cdk import (
 
 class JumpBoxConstruct(core.Construct):
   @property
-  def landing_zone(self)->IVpcRivStack:
+  def riv_stack(self)->IVpcRivStack:
     return self.__landing_zone
 
-  def __init__(self, scope:core.Construct, id:str, landing_zone:IVpcRivStack, **kwargs) -> None:
+  def __init__(self, scope:core.Construct, id:str, riv_stack:IVpcRivStack, **kwargs) -> None:
     '''
     Configure emphemeral jumpbox for testing
     '''
     super().__init__(scope,id, **kwargs)
-    self.__landing_zone = landing_zone
+    self.__landing_zone = riv_stack
 
     # Only required for debugging the jumpbox
     #key_pair_name = 'nbachmei.personal.'+core.Stack.of(self).region
@@ -33,14 +33,14 @@ class JumpBoxConstruct(core.Construct):
 
     self.instance = ec2.Instance(self,'Instance',
       role= role,
-      vpc= landing_zone.vpc,
+      vpc= riv_stack.vpc,
       #key_name= key_pair_name,
       instance_type=ec2.InstanceType.of(
         instance_class= ec2.InstanceClass.BURSTABLE3,
         instance_size=ec2.InstanceSize.SMALL),
       allow_all_outbound=True,
       user_data_causes_replacement=True,
-      security_group= landing_zone.security_group,
+      security_group= riv_stack.security_group,
       vpc_subnets= ec2.SubnetSelection(subnet_group_name='Default'),
       machine_image= self.machine_image)
 

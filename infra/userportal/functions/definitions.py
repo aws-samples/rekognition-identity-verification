@@ -16,16 +16,16 @@ class RivUserPortalFunction(RivDefaultFunction):
 
   @property
   def function_name(self) -> str:
-    return 'Riv{}-UserPortal-{}'.format(
-        self.landing_zone.zone_name,
+    return '{}-UserPortal-{}'.format(
+        self.riv_stack.riv_stack_name,
         self.component_name)
 
   @property
   def function_timeout(self)->core.Duration:
     return core.Duration.seconds(30)
   
-  def __init__(self, scope: core.Construct, id: str, landing_zone:IVpcRivStack,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
-    super().__init__(scope, id, landing_zone=landing_zone, subnet_group_name=subnet_group_name, env=env, **kwargs)
+  def __init__(self, scope: core.Construct, id: str, riv_stack:IVpcRivStack,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
+    super().__init__(scope, id, riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=env, **kwargs)
 
     '''
     Attach any shared Amazon IAM policies here.
@@ -38,13 +38,13 @@ class RivUserPortalFunction(RivDefaultFunction):
       effect= iam.Effect.ALLOW,
       actions=['ssm:GetParameter*'],
       resources=['arn:aws:ssm:{}:{}:parameter/riv/{}/rekognition/*'.format(
-        core.Stack.of(self).region, core.Aws.ACCOUNT_ID, landing_zone.zone_name)]
+        core.Stack.of(self).region, core.Aws.ACCOUNT_ID, riv_stack.riv_stack_name)]
     ))
 
 
 class RivUserPortalCompareFaces(RivUserPortalFunction):
-  def __init__(self, scope: core.Construct, id:str, landing_zone:IVpcRivStack,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
-    super().__init__(scope, id, landing_zone=landing_zone, subnet_group_name=subnet_group_name, env=env)
+  def __init__(self, scope: core.Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
+    super().__init__(scope, id, riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=env)
 
   @property
   def source_directory(self)->str:
@@ -55,8 +55,8 @@ class RivUserPortalCompareFaces(RivUserPortalFunction):
     return 'CompareFaces'
 
 class RivUserPortalDetectFaces(RivUserPortalFunction):
-  def __init__(self, scope: core.Construct, id:str, landing_zone:IVpcRivStack,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
-    super().__init__(scope, id, landing_zone=landing_zone, subnet_group_name=subnet_group_name, env=env)
+  def __init__(self, scope: core.Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
+    super().__init__(scope, id, riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=env)
 
   @property
   def source_directory(self)->str:
@@ -67,8 +67,8 @@ class RivUserPortalDetectFaces(RivUserPortalFunction):
     return 'DetectFaces'
 
 class RivUserPortalIndexFaces(RivUserPortalFunction):
-  def __init__(self, scope: core.Construct, id:str, landing_zone:IVpcRivStack,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
-    super().__init__(scope, id, landing_zone=landing_zone, subnet_group_name=subnet_group_name, env=env)
+  def __init__(self, scope: core.Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
+    super().__init__(scope, id, riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=env)
 
   @property
   def source_directory(self)->str:
@@ -79,8 +79,8 @@ class RivUserPortalIndexFaces(RivUserPortalFunction):
     return 'IndexFaces'
 
 class RivUserPortalSearchFacesByImage(RivUserPortalFunction):
-  def __init__(self, scope: core.Construct, id:str, landing_zone:IVpcRivStack,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
-    super().__init__(scope, id, landing_zone=landing_zone, subnet_group_name=subnet_group_name, env=env)
+  def __init__(self, scope: core.Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
+    super().__init__(scope, id, riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=env)
 
   @property
   def source_directory(self)->str:
@@ -91,8 +91,8 @@ class RivUserPortalSearchFacesByImage(RivUserPortalFunction):
     return 'SearchFaces'
 
 class RivUserPortalExtractIdCard(RivUserPortalFunction):
-  def __init__(self, scope: core.Construct, id:str, landing_zone:IVpcRivStack,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
-    super().__init__(scope, id, landing_zone=landing_zone, subnet_group_name=subnet_group_name, env=env)
+  def __init__(self, scope: core.Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
+    super().__init__(scope, id, riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=env)
 
     self.function.role.add_managed_policy(
       iam.ManagedPolicy.from_aws_managed_policy_name('AmazonTextractFullAccess'))

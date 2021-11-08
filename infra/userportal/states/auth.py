@@ -10,8 +10,8 @@ from aws_cdk import (
 )
 
 class AuthStateMachine(RivStateMachineConstruct):
-  def __init__(self, scope: core.Construct, id: builtins.str, landing_zone: IVpcRivStack, functions: RivUserPortalFunctionSet,state_machine_type:sf.StateMachineType) -> None:
-    super().__init__(scope, id, landing_zone, functions, state_machine_type=state_machine_type)
+  def __init__(self, scope: core.Construct, id: builtins.str, riv_stack: IVpcRivStack, functions: RivUserPortalFunctionSet,state_machine_type:sf.StateMachineType) -> None:
+    super().__init__(scope, id, riv_stack, functions, state_machine_type=state_machine_type)
 
     '''
     Check if this is a valid image...
@@ -82,5 +82,5 @@ class AuthStateMachine(RivStateMachineConstruct):
     Definition is complete, route it.
     '''
     self.set_state_machine(
-        state_machine_name='Riv{}-UserPortal-Auth'.format(self.landing_zone.zone_name),
+        state_machine_name='{}-UserPortal-Auth'.format(self.riv_stack.riv_stack_name),
         definition=detect)

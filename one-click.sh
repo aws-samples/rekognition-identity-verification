@@ -19,12 +19,12 @@ then
   echo
 fi
 
-if [ -z "ZONE_NAME" ]
+if [ -z "RIV_STACK_NAME" ]
 then
   echo "###########################################################"
-  echo "Defaulting ZONE_NAME to Simple"
+  echo "Defaulting RIV_STACK_NAME to Riv-Prod"
   echo "###########################################################"
-  export ZONE_NAME=Simple
+  export RIV_STACK_NAME=Riv-Prod
   echo
 fi
 
@@ -127,7 +127,7 @@ then
 fi
 
 export S3_ASSET_PREFIX=`date +%Y/%m/%d/%H`
-export STACK_TEMPLATE_FILE=$BASE_DIR/cdk.out/RIV-${ZONE_NAME}.template.json
+export STACK_TEMPLATE_FILE=$BASE_DIR/cdk.out/RIV-${RIV_STACK_NAME}.template.json
 
 if [ -z "$S3_REGION" ]
 then
@@ -296,15 +296,15 @@ echo "===================================="
 echo "Stack Deployment Command"
 echo "===================================="
 
-aws cloudformation describe-stacks --stack-name Identity-Verification-${ZONE_NAME} --region ${S3_REGION} 2>/dev/null >/dev/null
+aws cloudformation describe-stacks --stack-name ${RIV_STACK_NAME} --region ${S3_REGION} 2>/dev/null >/dev/null
 if [[ "$?" -eq "0" ]]; then
   cfn_command=update-stack
 else
   cfn_command=create-stack
 fi
 
-STACK_NAME=`echo --region ${S3_REGION} --stack-name Identity-Verification-${ZONE_NAME}`
-TEMPLATE_URL=`echo --template-url https://${S3_ASSET_BUCKET}.s3.${S3_REGION}.amazonaws.com/${S3_ASSET_PREFIX}/RIV-${ZONE_NAME}.template.json`
+STACK_NAME=`echo --region ${S3_REGION} --stack-name ${RIV_STACK_NAME}`
+TEMPLATE_URL=`echo --template-url https://${S3_ASSET_BUCKET}.s3.${S3_REGION}.amazonaws.com/${S3_ASSET_PREFIX}/RIV-${RIV_STACK_NAME}.template.json`
 IAM_CAPABILITIES=`echo --capabilities CAPABILITY_NAMED_IAM`
 
 echo "aws cloudformation ${cfn_command} ${STACK_NAME} ${TEMPLATE} ${TEMPLATE_URL} ${IAM_CAPABILITIES}"

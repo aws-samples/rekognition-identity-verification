@@ -25,14 +25,14 @@ class RIVApp(core.App):
 
     env = get_environment()
 
-    landing_zone_name = environ.get('ZONE_NAME')
-    if landing_zone_name is None:
-      landing_zone_name = 'Simple'
-    self.landing_zone = DefaultRivStack(self,'RIV-%s' % landing_zone_name, zone_name=landing_zone_name, env=env)
+    riv_stack_name = environ.get('RIV_STACK_NAME')
+    if riv_stack_name is None:
+      riv_stack_name = 'Riv-Prod'
+    self.riv_stack = DefaultRivStack(self,'RIV-%s' % riv_stack_name, riv_stack_name=riv_stack_name, env=env)
 
   @property
   def zones(self)->List[IRivStack]:
-    return [ self.landing_zone ]
+    return [ self.riv_stack ]
 
 app = RIVApp()
 assembly = app.synth()

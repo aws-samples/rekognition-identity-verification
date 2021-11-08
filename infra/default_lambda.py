@@ -29,7 +29,7 @@ class RivDefaultFunction(core.Construct):
     raise NotImplementedError()
 
   @property
-  def landing_zone(self)->IVpcRivStack:
+  def riv_stack(self)->IVpcRivStack:
     return self.__landing_zone
 
   @property
@@ -44,16 +44,16 @@ class RivDefaultFunction(core.Construct):
   def function(self,value:lambda_.IFunction)->None:
     self.__function = value
   
-  def __init__(self, scope: core.Construct, id: str, landing_zone:IVpcRivStack,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
+  def __init__(self, scope: core.Construct, id: str, riv_stack:IVpcRivStack,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
     super().__init__(scope, id, **kwargs)
-    self.__landing_zone = landing_zone
+    self.__landing_zone = riv_stack
 
     role = iam.Role(self,'Role',
       assumed_by=iam.ServicePrincipal(service='lambda'),
       description='{} for the {} component.'.format(self.__class__.__name__, self.component_name),
       # role_name='{}@riv.{}.{}'.format(
       #   self.component_name,
-      #   landing_zone.zone_name,
+      #   riv_stack.riv_stack_name,
       #   core.Stack.of(self).region),
       managed_policies=[
         iam.ManagedPolicy.from_aws_managed_policy_name(
@@ -80,11 +80,11 @@ class RivDefaultFunction(core.Construct):
       handler='handler.function_main',
       runtime= lambda_.Runtime.PYTHON_3_8,
       tracing= lambda_.Tracing.ACTIVE,
-      vpc= landing_zone.vpc,
+      vpc= riv_stack.vpc,
       memory_size=512,
       allow_all_outbound=True,
       vpc_subnets=ec2.SubnetSelection(subnet_group_name=subnet_group_name),
-      security_groups=[landing_zone.security_group],
+      security_groups=[riv_stack.security_group],
       environment=environment
     )
 

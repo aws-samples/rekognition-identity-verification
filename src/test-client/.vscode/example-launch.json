@@ -7,7 +7,7 @@
             "request": "launch",
             "program": "app.py",
             "console": "integratedTerminal",
-            "args": ["register", "-z", "Simple", "-r", "ca-central-1"]
+            "args": ["register", "-z", "Riv-Prod", "-r", "ca-central-1"]
         },
         {
             "name": "Update Existing User",
@@ -15,7 +15,7 @@
             "request": "launch",
             "program": "app.py",
             "console": "integratedTerminal",
-            "args": ["update", "-z", "Simple", "-r", "ca-central-1", "-u","nbachmei","-p", "./faces/nbachmei.jpg"]
+            "args": ["update", "-z", "Riv-Prod", "-r", "ca-central-1", "-u","nbachmei","-p", "./faces/nbachmei.jpg"]
         },
         {
             "name": "Auth User",
@@ -23,7 +23,7 @@
             "request": "launch",
             "program": "app.py",
             "console": "integratedTerminal",
-            "args": ["auth", "-z", "Simple", "-r", "ca-central-1", "-u","nbachmei","-p", "./faces/nbachmei.jpg"]
+            "args": ["auth", "-z", "Riv-Prod", "-r", "ca-central-1", "-u","nbachmei","-p", "./faces/nbachmei.jpg"]
         },
         {
             "name": "Encode Payload",

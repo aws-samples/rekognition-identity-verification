@@ -20,9 +20,9 @@ class VpcRivStack(IVpcRivStack):
   '''
   def __init__(self:IVpcRivStack, scope:core.Construct, id:str, **kwargs)->None:
     super().__init__(scope, id, **kwargs)
-    core.Tags.of(self).add('landing_zone',self.zone_name)
+    core.Tags.of(self).add('riv_stack',self.riv_stack_name)
 
-    self.networking = VpcNetworkingConstruct(self,self.zone_name,
+    self.networking = VpcNetworkingConstruct(self,self.riv_stack_name,
       cidr=self.cidr_block,
       subnet_configuration=self.subnet_configuration)
 
@@ -40,11 +40,11 @@ class VpcRivStack(IVpcRivStack):
 
     # Create the default backup policy...
     self.backup_policy = BackupStrategyConstruct(self,'Backup',
-      landing_zone=self)
+      riv_stack=self)
 
     # Create default security group...
     self.security_group = ec2.SecurityGroup(self,'SecurityGroup',
-      description='Default-SG for {} landing zone'.format(self.zone_name),
+      description='Default-SG for {} RIV stack'.format(self.riv_stack_name),
       vpc= self.vpc,
       allow_all_outbound=True)
     
@@ -101,20 +101,20 @@ class DefaultRivStack(VpcRivStack):
   '''
   Represents the simple deployment environment for RIV.
   '''
-  def __init__(self, scope:core.Construct, id:str, zone_name:str, **kwargs)->None:
-    self.__zone_name = zone_name
+  def __init__(self, scope:core.Construct, id:str, riv_stack_name:str, **kwargs)->None:
+    self.__zone_name = riv_stack_name
     super().__init__(scope, id, **kwargs)
     
-    assert self.zone_name is not None
+    assert self.riv_stack_name is not None
     
     # Add Shared Services...
-    sharedStorage = RivSharedDataStores(self,'SharedStorage',landing_zone=self)
+    sharedStorage = RivSharedDataStores(self,'SharedStorage',riv_stack=self)
 
     # Create the User Portal
-    userportal = RivUserPortal(self,'UserPortal', landing_zone=self, sharedStorage=sharedStorage)
+    userportal = RivUserPortal(self,'UserPortal', riv_stack=self, sharedStorage=sharedStorage)
     
     # Create the bulk loader
-    bulk_loader = RivBulkLoader(self,'BulkLoader', landing_zone=self, sharedStorage=sharedStorage)
+    bulk_loader = RivBulkLoader(self,'BulkLoader', riv_stack=self, sharedStorage=sharedStorage)
 
     # Declare any explicit dependencies
     bulk_loader.node.add_dependency(userportal)
@@ -124,5 +124,5 @@ class DefaultRivStack(VpcRivStack):
     return '10.25.0.0/16'
 
   @property
-  def zone_name(self)->str:
+  def riv_stack_name(self)->str:
     return self.__zone_name

@@ -8,7 +8,7 @@ from aws_cdk import (
 )
 
 class BackupStrategyConstruct(core.Construct):
-  def __init__(self, scope:core.Construct, id:str, landing_zone:IRivStack, **kwargs):
+  def __init__(self, scope:core.Construct, id:str, riv_stack:IRivStack, **kwargs):
     '''
     Landing Zone Backup Policy
     '''
@@ -28,7 +28,7 @@ class BackupStrategyConstruct(core.Construct):
       encryption_key=self.encryption_key,
       notification_topic= self.topic,
       removal_policy= core.RemovalPolicy.DESTROY,
-      #backup_vault_name='{}-Backup-Vault'.format(landing_zone.zone_name),
+      #backup_vault_name='{}-Backup-Vault'.format(riv_stack.riv_stack_name),
       access_policy= iam.PolicyDocument(
         statements=[
           iam.PolicyStatement(
@@ -42,7 +42,7 @@ class BackupStrategyConstruct(core.Construct):
 
     self.default_plan = backup.BackupPlan(self,'DefaultPlan',
       backup_vault= self.vault,
-      backup_plan_name='Default Plan {} in {}'.format(landing_zone.zone_name, region),
+      backup_plan_name='Default Plan {} in {}'.format(riv_stack.riv_stack_name, region),
       backup_plan_rules=[
         backup.BackupPlanRule.daily(),
         backup.BackupPlanRule.weekly(),
@@ -52,5 +52,5 @@ class BackupStrategyConstruct(core.Construct):
       allow_restores=True,
       role=self.role,
       resources=[
-        backup.BackupResource.from_tag("landing_zone", landing_zone.zone_name),
+        backup.BackupResource.from_tag("riv_stack", riv_stack.riv_stack_name),
       ])

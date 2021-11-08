@@ -2,11 +2,11 @@
 
 This command line interface (CLI) supports testing the User Portal functionality.
 
-Most operations require the caller specifies the **Landing Zone Name** (`zone_name`) and **region** you are testing.
+Most operations require the caller specifies the **CloudFormation Stack Name** (`riv_stack_name`) and **region** you are testing.
 
-The `zone_name` is specifies which instance (Prod, Dev, ...) you want to target, and is specified during the [one-click.sh](../../one-click.sh) invocation.
+The `riv_stack_name` is specifies which instance (Prod, Dev, ...) you want to target, and is specified during the [one-click.sh](../../one-click.sh) invocation.
 
-If you do not specify the value, it defaults to **Simple**.
+If you do not specify the value, it defaults to **Riv-Prod**.
 
 ## How do I use the test-client
 
@@ -17,7 +17,7 @@ If you do not specify the value, it defaults to **Simple**.
 
 ## What permissions does this tool require
 
-The caller must have `ssm:GetParameter*` rights to the resources `/riv/{zone-name}/userportal/url`.
+The caller must have `ssm:GetParameter*` rights to the resources `/riv/{stack-name}/userportal/url`.
 
 This requirement is due to the `get_userportal_address` dynamically fetching the endpoints.
 
@@ -28,11 +28,8 @@ Developers can create new users with any of the following examples.
 It is not supported to register the "same face" multiple times under different **UserId**.  However, due to the current hashing algorithm it "might work", as the uniqueness checks do not span Amazon Rekognition Collections (shards).  
 
 ```sh
-# Generate a random identity 
-python3 ./app.py register -z Simple -r ca-central-1
-
 # Generate the user nbachmei from a local image 
-python3 ./app.py register -z Simple -r ca-central-1 -u nbachmei -p ./faces/nbachmei.jpg
+python3 ./app.py register -z Riv-Prod -r ca-central-1 -u nbachmei -p ./faces/nbachmei.jpg
 ```
 
 ## How do I update an existing user
@@ -43,7 +40,7 @@ It is not supported to update a user before calling register.  The service also 
 
 ```sh
 # Update the user data
-python3 ./app.py update -z Simple -r ca-central-1 -u nbachmei -p ./faces/different.jpg
+python3 ./app.py update -z Riv-Prod -r ca-central-1 -u nbachmei -p ./faces/different.jpg
 ```
 
 ## How do I authenticate a user
@@ -54,7 +51,7 @@ It is not supported to authenticate the user before calling register.
 
 ```sh
 # Update the user data
-python3 ./app.py auth -z Simple -r ca-central-1 -u nbachmei -p ./faces/nbachmei.jpg
+python3 ./app.py auth -z Riv-Prod -r ca-central-1 -u nbachmei -p ./faces/nbachmei.jpg
 ```
 
 ## How do I generate payloads for external tooling

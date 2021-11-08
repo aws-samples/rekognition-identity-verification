@@ -28,9 +28,9 @@ BUCKET_NAME=my-unique-bucket-name
 aws s3api create-bucket --region $REGION_NAME --create-bucket-configuration "{\"LocationConstraint\": \"$REGION_NAME\"}" --bucket $BUCKET_NAME
 
 # Customers can deploy multiple instances to the same region (Prod vs Dev)
-# If this value is not set then it defaults to 'Simple'
+# If this value is not set then it defaults to 'Riv-Prod'
 # You control this functionality by setting the Landing Zone Name value
-export ZONE_NAME=Prod
+export RIV_STACK_NAME=Riv-Prod
 
 # Running this command will install any dependencies (brew, yum, or apt required)
 # After preparing the machine it will synthesize and deploy the environment

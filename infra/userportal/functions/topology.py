@@ -6,7 +6,7 @@ from aws_cdk import (
 )
 
 class RivUserPortalFunctionSet(core.Construct):
-  def __init__(self, scope: core.Construct, id:str, landing_zone:IVpcRivStack,sharedStorage:RivSharedDataStores,subnet_group_name:str='Default', **kwargs) -> None:
+  def __init__(self, scope: core.Construct, id:str, riv_stack:IVpcRivStack,sharedStorage:RivSharedDataStores,subnet_group_name:str='Default', **kwargs) -> None:
     super().__init__(scope, id)
 
     '''
@@ -14,22 +14,22 @@ class RivUserPortalFunctionSet(core.Construct):
     '''
     default_environment_var = {
       'REGION': core.Stack.of(self).region,
-      'ZONE_NAME': landing_zone.zone_name,
+      'RIV_STACK_NAME': riv_stack.riv_stack_name,
       'FACE_TABLE_NAME': sharedStorage.face_metadata.face_table.table_name,
       'IMAGE_BUCKET_NAME': sharedStorage.images.image_bucket.bucket_name,
     }
 
     self.compare_faces = RivUserPortalCompareFaces(self,'CompareFaces',
-      landing_zone=landing_zone, subnet_group_name=subnet_group_name, env=default_environment_var)
+      riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=default_environment_var)
 
     self.detect_faces = RivUserPortalDetectFaces(self,'DetectFaces',
-      landing_zone=landing_zone, subnet_group_name=subnet_group_name, env=default_environment_var)
+      riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=default_environment_var)
 
     self.search_faces_by_image = RivUserPortalSearchFacesByImage(self,'SearchFaces',
-      landing_zone=landing_zone, subnet_group_name=subnet_group_name, env=default_environment_var)
+      riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=default_environment_var)
 
     self.extract_id_card = RivUserPortalExtractIdCard(self,'ExtractIdCard',
-      landing_zone=landing_zone, subnet_group_name=subnet_group_name, env=default_environment_var)
+      riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=default_environment_var)
     
     '''
     Configure the Index Faces
@@ -38,7 +38,7 @@ class RivUserPortalFunctionSet(core.Construct):
     env['ENABLE_IMAGE_BUCKET'] = str(False),
     env['IMAGE_BUCKET_PREFIX'] = 'indexed'
     self.index_faces = RivUserPortalIndexFaces(self,'IndexFaces',
-      landing_zone=landing_zone, subnet_group_name=subnet_group_name, env=default_environment_var)    
+      riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=default_environment_var)    
 
     '''
     Grant additional permissions...

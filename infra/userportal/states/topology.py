@@ -15,7 +15,7 @@ class RivUserPortalStateMachines(IRivUserPortalStateMachines):
   '''
   Represents a Construct containing all UserPortal state machines.
   '''
-  def __init__(self, scope: core.Construct, id: builtins.str, landing_zone:IVpcRivStack,functions:RivUserPortalFunctionSet, state_machine_type:sf.StateMachineType) -> None:
+  def __init__(self, scope: core.Construct, id: builtins.str, riv_stack:IVpcRivStack,functions:RivUserPortalFunctionSet, state_machine_type:sf.StateMachineType) -> None:
     '''
     Initializes a new instance of the RivUserPortalStateMachines Construct.
     '''
@@ -25,21 +25,21 @@ class RivUserPortalStateMachines(IRivUserPortalStateMachines):
     Create the state machines for each flow
     '''
     self.register_new_user = RegisterStateMachine(self,'Register', 
-      landing_zone=landing_zone,
+      riv_stack=riv_stack,
       functions=functions,
       state_machine_type=state_machine_type)
 
     self.register_with_idcard = RegisterIdCardStateMachine(self,'Register-IdCard',
-      landing_zone=landing_zone,
+      riv_stack=riv_stack,
       functions=functions,
       state_machine_type=state_machine_type)
 
     self.update_existing_user = UpdateStateMachine(self,'Update',
-      landing_zone=landing_zone,
+      riv_stack=riv_stack,
       functions=functions,
       state_machine_type=state_machine_type)
 
     self.auth_existing_user = AuthStateMachine(self,'Auth',
-      landing_zone=landing_zone,
+      riv_stack=riv_stack,
       functions=functions,
       state_machine_type=state_machine_type)

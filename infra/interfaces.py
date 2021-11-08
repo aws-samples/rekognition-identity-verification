@@ -37,7 +37,7 @@ class IRivStack(Stack):
     super().__init__(scope, id, **kwargs)
  
   @property
-  def zone_name(self)->str:
+  def riv_stack_name(self)->str:
     '''
     Gets the name of the deployment environment.
     '''
@@ -88,7 +88,7 @@ class IVpcRivStack(IRivStack):
   @property
   def vpc(self)->ec2.IVpc:
     '''
-    Gets the VPC associated with this landing zone.
+    Gets the VPC associated with this RIV stack.
     '''
     raise NotImplementedError()
 
@@ -117,10 +117,10 @@ class RivStack(IRivStack):
   '''
   def __init__(self, scope:Construct, id:str, **kwargs)->None:
     super().__init__(scope, id, **kwargs)
-    Tags.of(self).add('landing_zone',self.zone_name)
+    Tags.of(self).add('riv_stack',self.riv_stack_name)
 
   @property
-  def zone_name(self)->str:
+  def riv_stack_name(self)->str:
     '''
     Gets the name of this environment.
     '''

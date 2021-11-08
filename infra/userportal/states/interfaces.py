@@ -15,9 +15,9 @@ class RivStateMachineConstruct(core.Construct):
   Represents the base class for RivUserPortal StateMachines.
   '''
   @property
-  def landing_zone(self)->IVpcRivStack:
+  def riv_stack(self)->IVpcRivStack:
     '''
-    Gets the destination landing zone.
+    Gets the destination RIV stack.
     '''
     return self.__landing_zone
 
@@ -35,12 +35,12 @@ class RivStateMachineConstruct(core.Construct):
     '''
     return self.__state_machine
 
-  def __init__(self, scope: core.Construct, id: builtins.str, landing_zone:IVpcRivStack,functions:RivUserPortalFunctionSet, state_machine_type:sf.StateMachineType) -> None:
+  def __init__(self, scope: core.Construct, id: builtins.str, riv_stack:IVpcRivStack,functions:RivUserPortalFunctionSet, state_machine_type:sf.StateMachineType) -> None:
     '''
     Initializes a new instance of the RivStateMachineConstruct.
     '''
     super().__init__(scope, id)
-    self.__landing_zone = landing_zone
+    self.__landing_zone = riv_stack
     self.__functions = functions
     self.__state_machine = None
     self.state_machine_type = state_machine_type
