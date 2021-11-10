@@ -66,11 +66,16 @@ def print_response(response:requests.models.Response)->None:
   Write the friendly output for developers
   '''
   print('=' * 20)
-  print('[%d] : %s' % (response.status_code, http.HTTPStatus(response.status_code).name))
+  print('[%d] : %s Response.' % (response.status_code, http.HTTPStatus(response.status_code).name))
   print('=' * 20)
   
-  json = dumps(loads(response.content), indent=2)
-  colorful = highlight(json, lexer=JsonLexer(),formatter=formatters.TerminalFormatter())
+  response_json = loads(response.content)
+  if 'output' in response_json:
+    code = dumps(loads(response_json['output']), indent=2)
+  else:
+    code = dumps(response_json, indent=2)
+
+  colorful = highlight(code, lexer=JsonLexer(),formatter=formatters.TerminalFormatter())
   print(colorful)
 
 
