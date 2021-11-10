@@ -65,17 +65,27 @@ def print_response(response:requests.models.Response)->None:
   '''
   Write the friendly output for developers
   '''
+  response_json = loads(response.content)
+
   print('=' * 20)
-  print('[%d] : %s Response.' % (response.status_code, http.HTTPStatus(response.status_code).name))
+  print('[%d] : Endpoint Response %s.' % (response.status_code, http.HTTPStatus(response.status_code).name))
+  print('[%s] : Operation Result' % response_json['status'] if 'status' in response_json else 'Unknown')
   print('=' * 20)
   
-  response_json = loads(response.content)
-  if 'output' in response_json:
-    code = dumps(loads(response_json['output']), indent=2)
-  else:
-    code = dumps(response_json, indent=2)
-
-  colorful = highlight(code, lexer=JsonLexer(),formatter=formatters.TerminalFormatter())
+  
+  code = {
+    'output': loads(response_json['output']) if 'output' in response_json else None,
+    'runtime':{
+      'execution_arn': response_json['executionArn'] if 'executionArn' in response_json else None,
+      'durationInMilliseconds': response_json['billingDetails']['billedDurationInMilliseconds'] if 'billingDetails' in response_json else None,
+    },
+    'error': {
+      'type': response_json['error'] if 'error' in response_json else 'Succeeded',
+      'cause': response_json['cause'] if 'cause' in response_json else 'Succeeded'
+    } 
+  }
+  
+  colorful = highlight(dumps(code, indent=2), lexer=JsonLexer(),formatter=formatters.TerminalFormatter())
   print(colorful)
 
 
