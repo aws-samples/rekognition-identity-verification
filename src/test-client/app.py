@@ -4,7 +4,6 @@ import boto3
 import requests
 import names
 from json import dumps, loads
-from io import BytesIO
 from typing import Mapping
 from  base64 import b64encode
 from os import PathLike
@@ -17,7 +16,13 @@ def get_userportal_address(region_name:str, riv_stack_name:str, endpoint:str)->s
   Gets the User Portal public endpoint.
   '''
   ssm_client = boto3.client('ssm', region_name=region_name)
-  response = ssm_client.get_parameter(Name='/riv/{}/userportal/url'.format(riv_stack_name))
+  parameter_name='/riv/{}/userportal/url'.format(riv_stack_name)
+  try:
+    response = ssm_client.get_parameter(Name=parameter_name)
+  except Exception as error:
+    print('[ERROR] ssm:GetParameter(name=%s, region=%s) failed. - %s' % (parameter_name,region_name, str(error)))
+    exit(1)
+    
   userportal_url:str = response['Parameter']['Value']
   
   if not userportal_url.endswith('/'):
@@ -47,19 +52,6 @@ def create_payload(image_path:PathLike=None, user_id:str=None, properties:Mappin
           'Image': str(b64encode(photo_contents),'utf-8'),
           'Properties': properties
       }
-  else:
-    # response = requests.get('https://thispersondoesnotexist.com/image', stream=True)
-    # buffer = BytesIO()
-    # response.raw.decode_content = True
-    # for chunk in response:
-    #   buffer.write(chunk)
-    
-    # return {
-    #     'UserId': user_id,
-    #     'Image': str(b64encode(buffer.getvalue()),'utf-8'),
-    #     'Properties': properties
-    #   }
-    raise ValueError("No Image specified.")
 
 def print_response(response:requests.models.Response)->None:
   '''
