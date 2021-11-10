@@ -28,7 +28,7 @@ class RIVApp(core.App):
     riv_stack_name = environ.get('RIV_STACK_NAME')
     if riv_stack_name is None:
       riv_stack_name = 'Riv-Prod'
-    self.riv_stack = DefaultRivStack(self,'RIV-%s' % riv_stack_name, riv_stack_name=riv_stack_name, env=env)
+    self.riv_stack = DefaultRivStack(self,riv_stack_name, riv_stack_name=riv_stack_name, env=env)
 
   @property
   def zones(self)->List[IRivStack]:

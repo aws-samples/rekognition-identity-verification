@@ -49,6 +49,18 @@ class ConfigManager:
     return False
 
   @property
+  def use_automated_backup(self)->bool:
+    if 'use_automated_backup' in self.json:
+      return self.json['use_automated_backup']
+    return False
+
+  @property
+  def include_bulk_loader(self)->bool:
+    if 'include_bulk_loader' in self.json:
+      return self.json['include_bulk_loader']
+    return False
+
+  @property
   def use_custom_asset_bucket(self)->bool:
     if not 'use_custom_asset_bucket' in self.json:
       return False

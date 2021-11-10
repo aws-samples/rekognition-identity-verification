@@ -21,11 +21,11 @@ A solution to assist with identity verification using Amazon Rekognition.
 **Option: Local Install**:  Debian (Bullseye), Ubuntu (Focal), OSX (Catalina), and Amazon Linux 2 users can run the [one-click.sh](one-click.sh) script to synthesize the OneClickTemplate.template.json for Amazon CloudFormation and deploy the supporting Lambda functions.  The script will also install any missing dependencies on the local box.
 
 ```sh
-# Create a bucket in your desired region
+# Create a bucket in your desired region.
+# If the specified bucket does not exist, it will be created.
 # Note: Bucket name cannot contain dots (.)
-REGION_NAME=us-east-1
-BUCKET_NAME=my-unique-bucket-name
-aws s3api create-bucket --region $REGION_NAME --create-bucket-configuration "{\"LocationConstraint\": \"$REGION_NAME\"}" --bucket $BUCKET_NAME
+export AWS_REGION_NAME=us-east-1
+export BUCKET_NAME=my-unique-bucket-name
 
 # Customers can deploy multiple instances to the same region (Prod vs Dev)
 # If this value is not set then it defaults to 'Riv-Prod'
@@ -33,7 +33,7 @@ aws s3api create-bucket --region $REGION_NAME --create-bucket-configuration "{\"
 export RIV_STACK_NAME=Riv-Prod
 
 # Running this command will install any dependencies (brew, yum, or apt required)
-# After preparing the machine it will synthesize and deploy the environment
+# After preparing the local machine it will synthesize and deploy into your environment.
 ./one-click.sh $BUCKET_NAME
 ```
 

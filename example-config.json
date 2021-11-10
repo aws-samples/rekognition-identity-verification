@@ -2,6 +2,8 @@
     "region": "ca-central-1",
     "account": "111111111",
     "use_isolated_subnets": false,
+    "use_automated_backup": false,
+    "include_bulk_loader": false,
     "use_custom_asset_bucket": false,
     "custom_asset_bucket_name": "nbachmei.riv.ca-central-1",
     "custom_assets": {

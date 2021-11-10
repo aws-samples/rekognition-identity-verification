@@ -38,9 +38,12 @@ class VpcRivStack(IVpcRivStack):
       self.networking.endpoints.add_rekognition_support()
       self.networking.endpoints.add_textract_support()
 
-    # Create the default backup policy...
-    self.backup_policy = BackupStrategyConstruct(self,'Backup',
-      riv_stack=self)
+    if config.use_automated_backup:
+      '''
+      Create default backup policy for all resources 
+      '''
+      self.backup_policy = BackupStrategyConstruct(self,'Backup',
+        riv_stack=self)
 
     # Create default security group...
     self.security_group = ec2.SecurityGroup(self,'SecurityGroup',
@@ -113,15 +116,16 @@ class DefaultRivStack(VpcRivStack):
     # Create the User Portal
     userportal = RivUserPortal(self,'UserPortal', riv_stack=self, sharedStorage=sharedStorage)
     
-    # Create the bulk loader
-    bulk_loader = RivBulkLoader(self,'BulkLoader', riv_stack=self, sharedStorage=sharedStorage)
+    if config.include_bulk_loader:
+      # Create the bulk loader
+      bulk_loader = RivBulkLoader(self,'BulkLoader', riv_stack=self, sharedStorage=sharedStorage)
 
-    # Declare any explicit dependencies
-    bulk_loader.node.add_dependency(userportal)
+      # Declare any explicit dependencies
+      bulk_loader.node.add_dependency(userportal)
 
   @property
   def cidr_block(self)->str:
-    return '10.25.0.0/16'
+    return '10.0.0.0/16'
 
   @property
   def riv_stack_name(self)->str:
