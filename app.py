@@ -3,8 +3,8 @@ from os import environ
 from infra.configsettings import ConfigManager
 from typing import List
 from aws_cdk import core
-from infra.interfaces  import ILandingZone
-from infra.topologies import DefaultLandingZone
+from infra.interfaces  import IRivStack
+from infra.topologies import DefaultRivStack
 
 config_mgr = ConfigManager()
 
@@ -25,14 +25,14 @@ class RIVApp(core.App):
 
     env = get_environment()
 
-    landing_zone_name = environ.get('ZONE_NAME')
-    if landing_zone_name is None:
-      landing_zone_name = 'Simple'
-    self.landing_zone = DefaultLandingZone(self,'RIV-%s' % landing_zone_name, zone_name=landing_zone_name, env=env)
+    riv_stack_name = environ.get('RIV_STACK_NAME')
+    if riv_stack_name is None:
+      riv_stack_name = 'Riv-Prod'
+    self.riv_stack = DefaultRivStack(self,riv_stack_name, riv_stack_name=riv_stack_name, env=env)
 
   @property
-  def zones(self)->List[ILandingZone]:
-    return [ self.landing_zone ]
+  def zones(self)->List[IRivStack]:
+    return [ self.riv_stack ]
 
 app = RIVApp()
 assembly = app.synth()

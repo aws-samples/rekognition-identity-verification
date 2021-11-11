@@ -4,7 +4,7 @@ from infra.bulkloader.batch_handler import RivBulkLoaderBatchHandler
 from infra.bulkloader.throttled_indexer import RivBulkLoaderThrottledIndexer
 from infra.storage.topology import RivSharedDataStores
 from infra.bulkloader.inventory_created import RivBulkLoaderInventoryCreatedHandler
-from infra.interfaces import IVpcLandingZone
+from infra.interfaces import IVpcRivStack
 from aws_cdk import (
   core,
   aws_iam as iam,
@@ -16,7 +16,7 @@ class RivBulkLoader(core.Construct):
   '''
   Represents the root construct for the Bulk Loader Service.
   '''
-  def __init__(self, scope: core.Construct, id: builtins.str, landing_zone:IVpcLandingZone, sharedStorage:RivSharedDataStores, subnet_group_name:str='Default', **kwargs) -> None:
+  def __init__(self, scope: core.Construct, id: builtins.str, riv_stack:IVpcRivStack, sharedStorage:RivSharedDataStores, subnet_group_name:str='Default', **kwargs) -> None:
     super().__init__(scope, id)
 
     '''
@@ -47,14 +47,14 @@ class RivBulkLoader(core.Construct):
     Only applicable items are put into an SQS queue that throttles data loading speeds.
     '''
     self.throttled_indexer = RivBulkLoaderThrottledIndexer(self,'BatchIndexer',
-      landing_zone=landing_zone,
+      riv_stack=riv_stack,
       sharedStorage=sharedStorage,
       subnet_group_name=subnet_group_name,
       env={
         # 'IMPORT_TABLE_NAME': self.import_history_table.table_name,
-        'ZONE_NAME': landing_zone.zone_name,
+        'RIV_STACK_NAME': riv_stack.riv_stack_name,
         'USER_PORTAL_PARAM': '/riv/{}/userportal/url'.format(
-          landing_zone.zone_name),
+          riv_stack.riv_stack_name),
       })
 
     '''
@@ -63,7 +63,7 @@ class RivBulkLoader(core.Construct):
     Reasons for skipping images include: already processed, incomplete information, etc. 
     '''
     self.batch_handler = RivBulkLoaderBatchHandler(self,'BatchHandler',
-      landing_zone=landing_zone,
+      riv_stack=riv_stack,
       sharedStorage=sharedStorage,
       subnet_group_name=subnet_group_name,
       env={
@@ -78,12 +78,12 @@ class RivBulkLoader(core.Construct):
     This message forwards to an SNS Topic then into this function.  After light-filtering and creates the S3 Batch job. 
     '''
     self.inventory_created_handler = RivBulkLoaderInventoryCreatedHandler(self,'InventoryCreatedHandler',
-      landing_zone=landing_zone,
+      riv_stack=riv_stack,
       sharedStorage=sharedStorage,
       subnet_group_name=subnet_group_name,
       env={
         'ACCOUNT_ID': core.Stack.of(self).account,
         'BATCH_FUNCTION_ARN': self.batch_handler.function.function_arn,
         'BATCH_ROLE_ARN': self.batch_service_role.role_arn,
-        'ZONE_NAME': landing_zone.zone_name,
+        'RIV_STACK_NAME': riv_stack.riv_stack_name,
       })

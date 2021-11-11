@@ -7,7 +7,7 @@ This utility configures any Amazon Rekognition objects required for your environ
 The script requires three enviroment variables.  A later update should convert this to the click framework.
 
 ```sh
-export ZONE_NAME=Prod
+export RIV_STACK_NAME=Prod
 export REGION=ca-central-1
 export TOTAL_COLLECTIONS=2
 ./app.py

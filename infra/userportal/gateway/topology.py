@@ -2,7 +2,7 @@ import builtins
 from infra.userportal.states.interfaces import IRivUserPortalStateMachines, RivStateMachineConstruct
 from infra.userportal.gateway.models import GatewayModels
 from json import dumps
-from infra.interfaces import IVpcLandingZone
+from infra.interfaces import IVpcRivStack
 from aws_cdk import (
   core,
   aws_iam as iam,
@@ -29,19 +29,19 @@ class RivUserPortalGateway(core.Construct):
   def component_name(self)->str:
     return self.__class__.__name__
 
-  def __init__(self, scope: core.Construct, id: builtins.str, landing_zone:IVpcLandingZone) -> None:
+  def __init__(self, scope: core.Construct, id: builtins.str, riv_stack:IVpcRivStack) -> None:
     super().__init__(scope, id)
     
     # Define the gateway...
     self.rest_api = api.RestApi(self,'UserPortal',
-      rest_api_name='Riv{}-UserPortal'.format(landing_zone.zone_name),
+      rest_api_name='{}-UserPortal'.format(riv_stack.riv_stack_name),
       description='Gateway for {}'.format(self.component_name))
 
     self.models = GatewayModels(self,'Models', rest_api= self.rest_api)
 
     # Specify the role to use with integrations...
     self.role = iam.Role(self,'Role',
-      #role_name='{}@riv.{}.{}'.format(self.component_name, landing_zone.zone_name, core.Stack.of(self).region),
+      #role_name='{}@riv.{}.{}'.format(self.component_name, riv_stack.riv_stack_name, core.Stack.of(self).region),
       assumed_by=iam.ServicePrincipal(service='apigateway'),
       managed_policies=[
         iam.ManagedPolicy.from_aws_managed_policy_name(managed_policy_name='AWSStepFunctionsFullAccess')
@@ -49,7 +49,7 @@ class RivUserPortalGateway(core.Construct):
 
     # Persist the endpoint for test automation...
     ssm.StringParameter(self,'EndpointAddress',
-      parameter_name='/riv/{}/userportal/url'.format(landing_zone.zone_name),
+      parameter_name='/riv/{}/userportal/url'.format(riv_stack.riv_stack_name),
       string_value=self.rest_api.url)
 
   def bind_state_machines(self, state_machines:IRivUserPortalStateMachines)->api.ProxyResource:

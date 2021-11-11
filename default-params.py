@@ -4,7 +4,7 @@
 #   default Stack Parameter values.
 #########################################################
 
-from os import environ
+from os import environ, path
 from json import loads,dumps
 from sys import stderr
 
@@ -33,8 +33,16 @@ if __name__ == '__main__':
   The program main routine.
   '''
   #content = stdin.read()
-  with open(environ.get('STACK_TEMPLATE_FILE'),'rt') as f:
-    content = loads(f.read()) #stdin.read())
+  template_file=environ.get('STACK_TEMPLATE_FILE')
+  if template_file is None:
+    print("Missing environment variable STACK_TEMPLATE_FILE")
+    exit(1)
+  elif not path.isfile(template_file):
+    print('Unable to find template file %s' % template_file)
+    exit(1)
+  else:
+    with open(template_file,'rt') as f:
+      content = loads(f.read()) #stdin.read())
 
   parameters:dict = content['Parameters']
   for key in parameters.keys():

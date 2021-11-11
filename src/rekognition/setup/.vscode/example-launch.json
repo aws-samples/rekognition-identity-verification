@@ -8,7 +8,7 @@
             "program": "app.py",
             "console": "integratedTerminal",
             "env": {
-                "ZONE_NAME": "Simple",
+                "RIV_STACK_NAME": "Riv-Prod",
                 "REGION": "ca-central-1",
                 "TOTAL_COLLECTIONS": "10"
             }

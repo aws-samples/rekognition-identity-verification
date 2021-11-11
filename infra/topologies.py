@@ -6,7 +6,7 @@ from typing import List
 from infra.bulkloader.topology import RivBulkLoader
 from infra.storage.topology import RivSharedDataStores
 from infra.userportal.topology import RivUserPortal
-from infra.interfaces import IVpcLandingZone, IVpcNetworkingConstruct
+from infra.interfaces import IVpcRivStack, IVpcNetworkingConstruct
 from aws_cdk import (
     core,
     aws_ec2 as ec2,
@@ -14,15 +14,15 @@ from aws_cdk import (
 
 config = ConfigManager()
 
-class VpcLandingZone(IVpcLandingZone):
+class VpcRivStack(IVpcRivStack):
   '''
   Represents an empty deployment enviroment with VPC and default services.
   '''
-  def __init__(self:IVpcLandingZone, scope:core.Construct, id:str, **kwargs)->None:
+  def __init__(self:IVpcRivStack, scope:core.Construct, id:str, **kwargs)->None:
     super().__init__(scope, id, **kwargs)
-    core.Tags.of(self).add('landing_zone',self.zone_name)
+    core.Tags.of(self).add('riv_stack',self.riv_stack_name)
 
-    self.networking = VpcNetworkingConstruct(self,self.zone_name,
+    self.networking = VpcNetworkingConstruct(self,self.riv_stack_name,
       cidr=self.cidr_block,
       subnet_configuration=self.subnet_configuration)
 
@@ -38,13 +38,16 @@ class VpcLandingZone(IVpcLandingZone):
       self.networking.endpoints.add_rekognition_support()
       self.networking.endpoints.add_textract_support()
 
-    # Create the default backup policy...
-    self.backup_policy = BackupStrategyConstruct(self,'Backup',
-      landing_zone=self)
+    if config.use_automated_backup:
+      '''
+      Create default backup policy for all resources 
+      '''
+      self.backup_policy = BackupStrategyConstruct(self,'Backup',
+        riv_stack=self)
 
     # Create default security group...
     self.security_group = ec2.SecurityGroup(self,'SecurityGroup',
-      description='Default-SG for {} landing zone'.format(self.zone_name),
+      description='Default-SG for {} RIV stack'.format(self.riv_stack_name),
       vpc= self.vpc,
       allow_all_outbound=True)
     
@@ -76,7 +79,7 @@ class VpcLandingZone(IVpcLandingZone):
   @property
   def subnet_configuration(self)->List[ec2.SubnetConfiguration]:
     '''
-    Gets the Vpc LandingZone's subnet configuration.
+    Gets the Vpc RivStack's subnet configuration.
     '''
     default_subnet_type = ec2.SubnetType.PRIVATE
     if config.use_isolated_subnets:
@@ -97,32 +100,33 @@ class VpcLandingZone(IVpcLandingZone):
   def vpc(self)->ec2.IVpc:
     return self.networking.vpc    
 
-class DefaultLandingZone(VpcLandingZone):
+class DefaultRivStack(VpcRivStack):
   '''
   Represents the simple deployment environment for RIV.
   '''
-  def __init__(self, scope:core.Construct, id:str, zone_name:str, **kwargs)->None:
-    self.__zone_name = zone_name
+  def __init__(self, scope:core.Construct, id:str, riv_stack_name:str, **kwargs)->None:
+    self.__zone_name = riv_stack_name
     super().__init__(scope, id, **kwargs)
     
-    assert self.zone_name is not None
+    assert self.riv_stack_name is not None
     
     # Add Shared Services...
-    sharedStorage = RivSharedDataStores(self,'SharedStorage',landing_zone=self)
+    sharedStorage = RivSharedDataStores(self,'SharedStorage',riv_stack=self)
 
     # Create the User Portal
-    userportal = RivUserPortal(self,'UserPortal', landing_zone=self, sharedStorage=sharedStorage)
+    userportal = RivUserPortal(self,'UserPortal', riv_stack=self, sharedStorage=sharedStorage)
     
-    # Create the bulk loader
-    bulk_loader = RivBulkLoader(self,'BulkLoader', landing_zone=self, sharedStorage=sharedStorage)
+    if config.include_bulk_loader:
+      # Create the bulk loader
+      bulk_loader = RivBulkLoader(self,'BulkLoader', riv_stack=self, sharedStorage=sharedStorage)
 
-    # Declare any explicit dependencies
-    bulk_loader.node.add_dependency(userportal)
+      # Declare any explicit dependencies
+      bulk_loader.node.add_dependency(userportal)
 
   @property
   def cidr_block(self)->str:
-    return '10.25.0.0/16'
+    return '10.0.0.0/16'
 
   @property
-  def zone_name(self)->str:
+  def riv_stack_name(self)->str:
     return self.__zone_name

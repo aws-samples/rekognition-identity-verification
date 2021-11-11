@@ -12,12 +12,12 @@ logger = Logger(name='LambdaFunction')
 ACCOUNT_ID = environ.get('ACCOUNT_ID')
 BATCH_FUNCTION_ARN = environ.get('BATCH_FUNCTION_ARN')
 BATCH_ROLE_ARN = environ.get('BATCH_ROLE_ARN')
-ZONE_NAME= environ.get('ZONE_NAME')
+RIV_STACK_NAME= environ.get('RIV_STACK_NAME')
 
 assert ACCOUNT_ID is not None, "ACCOUNT_ID is missing"
 assert BATCH_FUNCTION_ARN is not None, "BATCH_FUNCTION_ARN is missing"
 assert BATCH_ROLE_ARN is not None, "BATCH_ROLE_ARN is missing"
-assert ZONE_NAME is not None, "ZONE_NAME is missing"
+assert RIV_STACK_NAME is not None, "RIV_STACK_NAME is missing"
 
 '''
 Prepare XRAY, if available.
@@ -115,7 +115,7 @@ def process_message_record(record:dict)->dict:
     Priority=123,
     RoleArn=BATCH_ROLE_ARN,
     Tags=[
-      {'Key':'landing_zone', 'Value': ZONE_NAME},
+      {'Key':'riv_stack', 'Value': RIV_STACK_NAME},
       {'Key':'inventory_bucket', 'Value': parser.inventory_bucket_name},
       {'Key':'content_bucket', 'Value': references[0].bucket_name},
     ])

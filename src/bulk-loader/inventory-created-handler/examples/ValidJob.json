@@ -36,7 +36,7 @@
             "ReportScope": "AllTasks"
         },
         "CreationTime": "2021-08-17T21:15:29.624000+00:00",
-        "RoleArn": "arn:aws:iam::581361757134:role/RIV-Simple-BulkLoaderBatchServiceRoleEED69548-TCLICRLXS3R6",
+        "RoleArn": "arn:aws:iam::581361757134:role/RIV-Riv-Prod-BulkLoaderBatchServiceRoleEED69548-TCLICRLXS3R6",
         "SuspendedDate": "2021-08-17T21:15:31.370000+00:00",
         "SuspendedCause": "AwaitingConfirmation"
     }

@@ -13,7 +13,7 @@ Initialize the environment
 logger = Logger(name='LambdaFunction')
 USER_PORTAL_PARAM = environ.get('USER_PORTAL_PARAM')
 REGION_NAME = environ.get('REGION')
-ZONE_NAME =environ.get('ZONE_NAME')
+RIV_STACK_NAME =environ.get('RIV_STACK_NAME')
 
 assert USER_PORTAL_PARAM is not None, "USER_PORTAL_PARAM is missing"
 assert REGION_NAME is not None, "REGION_NAME is missing"
@@ -43,7 +43,7 @@ def get_user_portal_url()->str:
   #xray_recorder.begin_segment('get_user_portal_url')
   try:
     #xray_recorder.context.context_missing
-    parameter_name = '/riv/{}/userportal/url'.format(ZONE_NAME)
+    parameter_name = '/riv/{}/userportal/url'.format(RIV_STACK_NAME)
     
     response = ssm_client.get_parameter(Name=parameter_name)
     value:str = response['Parameter']['Value']

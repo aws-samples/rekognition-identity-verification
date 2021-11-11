@@ -1,6 +1,5 @@
 import boto3
 
-
 class TransientError(Exception):
   '''
   Represents a retryable error.
