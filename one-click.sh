@@ -22,15 +22,19 @@ function color_reset(){
   echo -e "\e[1;0m"
 }
 
+color_green
+echo "###########################################################"
+echo "Configuring collections"
+echo "###########################################################"
+
 color_reset
 if [ -z "$TOTAL_COLLECTIONS" ]
 then
-  color_green
-  echo "###########################################################"
-  echo "Defaulting total collections to 10 (<=200M faces)"
-  echo "###########################################################"
+  color_reset
   export TOTAL_COLLECTIONS=10
-  echo
+  echo "TOTAL_COLLECTIONS not set, defaulted to 10 collections (200M faces)."
+else
+  echo "TOTAL_COLLECTIONS overridden to $TOTAL_COLLECTIONS (1 collection = 20M faces)."
 fi
 
 if [ -z "$RIV_STACK_NAME" ]
@@ -375,7 +379,7 @@ fi
 
 color_green
 echo "===================================="
-echo "Stack Deployment Command"
+echo "Deploying Stack "
 echo "===================================="
 color_reset
 
