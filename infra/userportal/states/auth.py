@@ -16,43 +16,48 @@ class AuthStateMachine(RivStateMachineConstruct):
     '''
     Check if this is a valid image...
     '''
-    detect = sft.LambdaInvoke(self,'Detect',
+    detect = sft.LambdaInvoke(self,'Check-ImageQuality',
+      lambda_function=functions.detect_faces.function,
       input_path='$.inputRequest',
       result_path='$.detection',
       output_path='$',
-      lambda_function=functions.detect_faces.function,
-      invocation_type= sft.LambdaInvocationType.REQUEST_RESPONSE)    
+      invocation_type= sft.LambdaInvocationType.REQUEST_RESPONSE) 
 
     '''
     Check if the user exists already within DynamoDB table
     '''
-    compare = sft.LambdaInvoke(self,'Compare',
+    compare = sft.LambdaInvoke(self,'Compare-CachedFaces',
       input_path='$.inputRequest',   
       result_path='$.compare',
       output_path='$',
-      lambda_function=functions.search_faces_by_image.function,
+      lambda_function=functions.compare_faces.function,
       invocation_type= sft.LambdaInvocationType.REQUEST_RESPONSE)
 
     detect.next(compare)
 
     '''
-    Use output of compare as Match/No-Match. If match -> Return success
+    Format response
     '''
-    user_exists = sf.Choice(self,'UserExists')
+    auth_completed = sf.Pass(self,'Auth-Complete',
+      parameters={
+        'UserId.$': '$.inputRequest.UserId',
+        'Status': 'Verified'
+      })
+   
+    '''
+    Use output of compare as Match/No-Match. 
+    '''
+    user_exists = sf.Choice(self,'CompareFaces-IsMatches')
     user_exists.when(
-        condition= sf.Condition.boolean_equals('$.search.Payload.TopMatch.IsCallerUser',True),
-        next=sf.Pass(self,'Authentication-Complete',
-          parameters={
-            'UserId.$': '$.inputRequest.UserId',
-            'Status': 'Verified'
-          }))
+      condition= sf.Condition.boolean_equals('$.compare.Payload.IsMatch', True),
+      next=auth_completed)
 
     compare.next(user_exists)
-    
+
     '''
     If not in Dynamo, Search collection to authenticate the users
     '''
-    search = sft.LambdaInvoke(self,'Search',
+    search = sft.LambdaInvoke(self,'Search-ExistingFaces',
       input_path='$.inputRequest',   
       result_path='$.search',
       output_path='$',
@@ -64,19 +69,15 @@ class AuthStateMachine(RivStateMachineConstruct):
     '''
     Confirm the caller's has the correct picture
     '''
-    is_authenticated = sf.Choice(self,'IsAuthenticated')
-    is_authenticated.when(
-      condition= sf.Condition.boolean_equals('$.compare.Payload.IsMatch',False),
+    is_calleruser = sf.Choice(self,'Check-SearchResults')
+    is_calleruser.when(
+      condition= sf.Condition.boolean_equals('$.compare.Payload.TopMatch.IsCallerUser',False),
       next= sf.Fail(self,'InvalidCredentials',
         error='UserAccessDenied',
         cause='The wrong person is in the photo.'))
     
-    # Format the message into API Gateway Model
-    is_authenticated.otherwise(sf.Pass(self,'Auth-Complete',
-      parameters={
-        'UserId.$': '$.inputRequest.UserId',
-        'Status': 'Verified'
-      }))
+    is_calleruser.otherwise(auth_completed)
+    search.next(is_calleruser)
 
     '''
     Definition is complete, route it.

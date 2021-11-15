@@ -24,7 +24,6 @@ def get_userportal_address(region_name:str, riv_stack_name:str, endpoint:str)->s
     exit(1)
     
   userportal_url:str = response['Parameter']['Value']
-  
   if not userportal_url.endswith('/'):
     userportal_url = userportal_url + '/'
 
@@ -79,7 +78,6 @@ def print_response(response:requests.models.Response)->None:
   
   colorful = highlight(dumps(code, indent=2), lexer=JsonLexer(),formatter=formatters.TerminalFormatter())
   print(colorful)
-
 
 @click.group("cli")
 @click.pass_context
