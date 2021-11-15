@@ -22,9 +22,8 @@ def get_userportal_address(region_name:str, riv_stack_name:str, endpoint:str)->s
   except Exception as error:
     print('[ERROR] ssm:GetParameter(name=%s, region=%s) failed. - %s' % (parameter_name,region_name, str(error)))
     exit(1)
-
+    
   userportal_url:str = response['Parameter']['Value']
-  
   if not userportal_url.endswith('/'):
     userportal_url = userportal_url + '/'
 
