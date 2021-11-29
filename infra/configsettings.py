@@ -32,6 +32,10 @@ class ConfigManager:
   def region_name(self)->str:
     if 'region' in self.json:
       return self.json['region']
+
+    region = os.environ.get("CDK_DEFAULT_REGION")
+    if not region is None:
+      return region
     else:
       return cdk.Aws.REGION
 
@@ -39,6 +43,10 @@ class ConfigManager:
   def account(self)->str:
     if 'account' in self.json:
       return self.json['account']
+
+    account = os.environ.get('CDK_DEFAULT_ACCOUNT')
+    if not account is None:
+      return account
     else:
       return cdk.Aws.ACCOUNT_ID
 
@@ -53,6 +61,18 @@ class ConfigManager:
     if 'use_automated_backup' in self.json:
       return self.json['use_automated_backup']
     return False
+
+  @property
+  def total_collections(self)->int:
+    if 'total_collections' in self.json:
+      return int(self.json['total_collections'])
+    
+    # Support the same variable as one-click.sh
+    total_collections = os.environ.get('TOTAL_COLLECTIONS')
+    if total_collections is None:
+      total_collections = 10
+    
+    return int(total_collections)
 
   @property
   def include_bulk_loader(self)->bool:

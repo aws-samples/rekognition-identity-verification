@@ -30,10 +30,6 @@ class RIVApp(core.App):
       riv_stack_name = 'Riv-Prod'
     self.riv_stack = DefaultRivStack(self,riv_stack_name, riv_stack_name=riv_stack_name, env=env)
 
-  @property
-  def zones(self)->List[IRivStack]:
-    return [ self.riv_stack ]
-
 app = RIVApp()
 assembly = app.synth()
 
