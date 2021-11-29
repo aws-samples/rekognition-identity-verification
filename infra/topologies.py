@@ -4,6 +4,7 @@ from infra.services.networking.vpc import VpcNetworkingConstruct
 from infra.services.core.backup import BackupStrategyConstruct
 from typing import List
 from infra.bulkloader.topology import RivBulkLoader
+from infra.services.rekognition.topology import RivRekognitionSetupConstruct
 from infra.storage.topology import RivSharedDataStores
 from infra.userportal.topology import RivUserPortal
 from infra.interfaces import IVpcRivStack, IVpcNetworkingConstruct
@@ -115,6 +116,9 @@ class DefaultRivStack(VpcRivStack):
 
     # Create the User Portal
     userportal = RivUserPortal(self,'UserPortal', riv_stack=self, sharedStorage=sharedStorage)
+
+    # Setup Rekognition
+    RivRekognitionSetupConstruct(self,'RekognitionSetup', riv_stack=self)
     
     if config.include_bulk_loader:
       # Create the bulk loader

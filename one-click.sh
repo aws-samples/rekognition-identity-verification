@@ -362,20 +362,21 @@ color_green
 echo Passed.
 echo
 
-echo "===================================="
-echo "Create Rekognition Objects"
-echo "===================================="
-color_reset
-REGION=$S3_REGION python3 $BASE_DIR/src/rekognition/setup/app.py
-if [ "$?" -ne "0" ]
-then
-  color_red
-  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-  echo "!! Configure Rekognition Failed   !!"
-  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-  color_reset
-  exit 1
-fi
+# /infra/services/rekognition/topology.py - handles this step.
+# echo "===================================="
+# echo "Create Rekognition Objects"
+# echo "===================================="
+# color_reset
+# REGION=$S3_REGION python3 $BASE_DIR/src/rekognition/setup/app.py
+# if [ "$?" -ne "0" ]
+# then
+#   color_red
+#   echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+#   echo "!! Configure Rekognition Failed   !!"
+#   echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+#   color_reset
+#   exit 1
+# fi
 
 color_green
 echo "===================================="
