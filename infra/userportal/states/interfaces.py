@@ -1,8 +1,9 @@
 import builtins
 from infra.userportal.functions.topology import RivUserPortalFunctionSet
 from infra.interfaces import  IVpcRivStack
+import aws_cdk as core
+from constructs import Construct
 from aws_cdk import (
-  core,
   aws_logs as logs,
   aws_stepfunctions as sf,
 )
@@ -10,7 +11,7 @@ from aws_cdk import (
 # Hard-limit due to API Gateway
 max_runtime= core.Duration.seconds(30)
 
-class RivStateMachineConstruct(core.Construct):
+class RivStateMachineConstruct(Construct):
   '''
   Represents the base class for RivUserPortal StateMachines.
   '''
@@ -35,7 +36,7 @@ class RivStateMachineConstruct(core.Construct):
     '''
     return self.__state_machine
 
-  def __init__(self, scope: core.Construct, id: builtins.str, riv_stack:IVpcRivStack,functions:RivUserPortalFunctionSet, state_machine_type:sf.StateMachineType) -> None:
+  def __init__(self, scope: Construct, id: builtins.str, riv_stack:IVpcRivStack,functions:RivUserPortalFunctionSet, state_machine_type:sf.StateMachineType) -> None:
     '''
     Initializes a new instance of the RivStateMachineConstruct.
     '''
@@ -80,11 +81,11 @@ class RivStateMachineConstruct(core.Construct):
         destination= self.log_group
       ))
 
-class IRivUserPortalStateMachines(core.Construct):
+class IRivUserPortalStateMachines(Construct):
   '''
   Represents an interface bundle for accessing the UserPortal StateMachines.
   '''
-  def __init__(self, scope: core.Construct, id: builtins.str) -> None:
+  def __init__(self, scope: Construct, id: builtins.str) -> None:
     '''
     Initializes a new instance of this base class.
     '''

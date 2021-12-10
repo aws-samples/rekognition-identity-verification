@@ -1,11 +1,12 @@
 import builtins
 from infra.interfaces import IVpcRivStack
+from constructs import Construct
+import aws_cdk as core
 from aws_cdk import (
-  core,
   aws_dynamodb as ddb,
 )
 
-class RivStorageFaceMetadata(core.Construct):
+class RivStorageFaceMetadata(Construct):
   '''
   Represents a central storage for Facial metadata.
   '''
@@ -20,7 +21,7 @@ class RivStorageFaceMetadata(core.Construct):
   def face_table(self,value:ddb.ITable)->None:
     self.__face_table = value
 
-  def __init__(self, scope: core.Construct, id: builtins.str, riv_stack:IVpcRivStack) -> None:
+  def __init__(self, scope: Construct, id: builtins.str, riv_stack:IVpcRivStack) -> None:
     super().__init__(scope, id)
 
     self.face_table = ddb.Table(self,'FaceTable',

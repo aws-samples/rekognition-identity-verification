@@ -1,8 +1,9 @@
 from typing import Mapping
 from infra.default_lambda import RivDefaultFunction
 from infra.interfaces import IVpcRivStack
+import aws_cdk as core
+from constructs import Construct
 from aws_cdk import (
-  core,
   aws_iam as iam,
 )
 
@@ -24,7 +25,7 @@ class RivUserPortalFunction(RivDefaultFunction):
   def function_timeout(self)->core.Duration:
     return core.Duration.seconds(30)
   
-  def __init__(self, scope: core.Construct, id: str, riv_stack:IVpcRivStack,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
+  def __init__(self, scope: Construct, id: str, riv_stack:IVpcRivStack,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
     super().__init__(scope, id, riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=env, **kwargs)
 
     '''
@@ -43,7 +44,7 @@ class RivUserPortalFunction(RivDefaultFunction):
 
 
 class RivUserPortalCompareFaces(RivUserPortalFunction):
-  def __init__(self, scope: core.Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
+  def __init__(self, scope: Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
     super().__init__(scope, id, riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=env)
 
   @property
@@ -55,7 +56,7 @@ class RivUserPortalCompareFaces(RivUserPortalFunction):
     return 'CompareFaces'
 
 class RivUserPortalDetectFaces(RivUserPortalFunction):
-  def __init__(self, scope: core.Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
+  def __init__(self, scope: Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
     super().__init__(scope, id, riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=env)
 
   @property
@@ -67,7 +68,7 @@ class RivUserPortalDetectFaces(RivUserPortalFunction):
     return 'DetectFaces'
 
 class RivUserPortalIndexFaces(RivUserPortalFunction):
-  def __init__(self, scope: core.Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
+  def __init__(self, scope: Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
     super().__init__(scope, id, riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=env)
 
   @property
@@ -79,7 +80,7 @@ class RivUserPortalIndexFaces(RivUserPortalFunction):
     return 'IndexFaces'
 
 class RivUserPortalSearchFacesByImage(RivUserPortalFunction):
-  def __init__(self, scope: core.Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
+  def __init__(self, scope: Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
     super().__init__(scope, id, riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=env)
 
   @property
@@ -91,7 +92,7 @@ class RivUserPortalSearchFacesByImage(RivUserPortalFunction):
     return 'SearchFaces'
 
 class RivUserPortalExtractIdCard(RivUserPortalFunction):
-  def __init__(self, scope: core.Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
+  def __init__(self, scope: Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
     super().__init__(scope, id, riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=env)
 
     self.function.role.add_managed_policy(

@@ -1,15 +1,16 @@
 import builtins
 from json import dumps
+import aws_cdk as core
+from constructs import Construct
 from aws_cdk import (
-  core,
   aws_apigateway as api,
 )
 
-class GatewayModels(core.Construct):
+class GatewayModels(Construct):
   '''
   Represents the UserPortal API Gateway service contracts.
   '''
-  def __init__(self, scope: core.Construct, id: builtins.str, rest_api:api.IRestApi) -> None:
+  def __init__(self, scope: Construct, id: builtins.str, rest_api:api.IRestApi) -> None:
     '''
     Initializes the models for a given API Gateway.
     :param scope: - 

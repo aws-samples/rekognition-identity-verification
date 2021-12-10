@@ -1,18 +1,19 @@
 from typing import List, Mapping
 
 from infra.interfaces import IVpcRivStack
+from constructs import Construct
 from aws_cdk import (
     core,
     aws_ec2 as ec2,
     aws_iam as iam,
 )
 
-class JumpBoxConstruct(core.Construct):
+class JumpBoxConstruct(Construct):
   @property
   def riv_stack(self)->IVpcRivStack:
     return self.__landing_zone
 
-  def __init__(self, scope:core.Construct, id:str, riv_stack:IVpcRivStack, **kwargs) -> None:
+  def __init__(self, scope:Construct, id:str, riv_stack:IVpcRivStack, **kwargs) -> None:
     '''
     Configure emphemeral jumpbox for testing
     '''

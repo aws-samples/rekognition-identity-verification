@@ -1,8 +1,4 @@
 virtualenv
 boto3
-aws-cdk.core
-aws-cdk.aws_s3
-aws-cdk.aws_lambda
-aws_cdk.aws_lambda_event_sources
-aws_cdk.aws_backup
-aws_cdk.aws_stepfunctions_tasks
+aws-cdk-lib >=2.0.0
+constructs >=10.0.0
