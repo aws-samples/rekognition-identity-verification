@@ -5,18 +5,18 @@ from infra.bulkloader.throttled_indexer import RivBulkLoaderThrottledIndexer
 from infra.storage.topology import RivSharedDataStores
 from infra.bulkloader.inventory_created import RivBulkLoaderInventoryCreatedHandler
 from infra.interfaces import IVpcRivStack
+from constructs import Construct
 from aws_cdk import (
-  core,
   aws_iam as iam,
   #aws_dynamodb as ddb,
   #aws_ssm as ssm,
 )
 
-class RivBulkLoader(core.Construct):
+class RivBulkLoader(Construct):
   '''
   Represents the root construct for the Bulk Loader Service.
   '''
-  def __init__(self, scope: core.Construct, id: builtins.str, riv_stack:IVpcRivStack, sharedStorage:RivSharedDataStores, subnet_group_name:str='Default', **kwargs) -> None:
+  def __init__(self, scope: Construct, id: builtins.str, riv_stack:IVpcRivStack, sharedStorage:RivSharedDataStores, subnet_group_name:str='Default', **kwargs) -> None:
     super().__init__(scope, id)
 
     '''

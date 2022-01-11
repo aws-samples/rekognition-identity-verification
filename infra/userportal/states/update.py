@@ -2,14 +2,14 @@ import builtins
 from infra.userportal.functions.topology import RivUserPortalFunctionSet
 from infra.userportal.states.interfaces import RivStateMachineConstruct
 from infra.interfaces import IVpcRivStack
+from constructs import Construct
 from aws_cdk import (
-  core,
   aws_stepfunctions as sf,
   aws_stepfunctions_tasks as sft,
 )
 
 class UpdateStateMachine(RivStateMachineConstruct):
-  def __init__(self, scope: core.Construct, id: builtins.str, riv_stack: IVpcRivStack, functions:RivUserPortalFunctionSet, state_machine_type:sf.StateMachineType) -> None:
+  def __init__(self, scope: Construct, id: builtins.str, riv_stack: IVpcRivStack, functions:RivUserPortalFunctionSet, state_machine_type:sf.StateMachineType) -> None:
     super().__init__(scope, id, riv_stack, functions, state_machine_type=state_machine_type)
 
     '''

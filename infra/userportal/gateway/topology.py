@@ -3,8 +3,8 @@ from infra.userportal.states.interfaces import IRivUserPortalStateMachines, RivS
 from infra.userportal.gateway.models import GatewayModels
 from json import dumps
 from infra.interfaces import IVpcRivStack
+from constructs import Construct
 from aws_cdk import (
-  core,
   aws_iam as iam,
   aws_apigateway as api,
   aws_ssm as ssm,
@@ -21,7 +21,7 @@ def make_template(state_machine_arn:str)->str:
   return templateString
 
 
-class RivUserPortalGateway(core.Construct):
+class RivUserPortalGateway(Construct):
   '''
   Represents the root User Portal using API Gateway Construct.
   '''  
@@ -29,7 +29,7 @@ class RivUserPortalGateway(core.Construct):
   def component_name(self)->str:
     return self.__class__.__name__
 
-  def __init__(self, scope: core.Construct, id: builtins.str, riv_stack:IVpcRivStack) -> None:
+  def __init__(self, scope: Construct, id: builtins.str, riv_stack:IVpcRivStack) -> None:
     super().__init__(scope, id)
     
     # Define the gateway...

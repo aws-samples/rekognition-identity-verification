@@ -1,6 +1,5 @@
 import os
 from json import loads
-import aws_cdk.core as cdk
 
 src_root_dir = os.path.join(os.path.dirname(__file__),'..')
 default_config_file = os.path.join(src_root_dir,'config.json')

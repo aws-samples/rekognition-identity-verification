@@ -1,15 +1,15 @@
 from typing import List, Mapping
-from aws_cdk.core import Construct, Tags, Stack
+from aws_cdk import Tags, Stack
+from constructs import Construct
 from aws_cdk import (
-    core,
     aws_ec2 as ec2,
 )
 
-class IVpcEndpointsForAWSServices(core.Construct):
+class IVpcEndpointsForAWSServices(Construct):
   '''
   Represents an interface for creating VPC-endpoints.
   '''
-  def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
+  def __init__(self, scope: Construct, id: str, **kwargs) -> None:
     super().__init__(scope, id, **kwargs)
 
     self.__interfaces = {}
@@ -43,11 +43,11 @@ class IRivStack(Stack):
     '''
     raise NotImplementedError()
 
-class IVpcNetworkingConstruct(core.Construct):
+class IVpcNetworkingConstruct(Construct):
   '''
   Represent a networking configuration for an IRivStack.
   '''
-  def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
+  def __init__(self, scope: Construct, id: str, **kwargs) -> None:
     super().__init__(scope, id, **kwargs)
 
   @property
