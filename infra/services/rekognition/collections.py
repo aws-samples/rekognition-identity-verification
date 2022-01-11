@@ -1,11 +1,12 @@
 import builtins
+
+from constructs import Construct
 from aws_cdk import (
-  core,
   custom_resources as cr,
 )
 
-class RekognitionCollectionConstruct(core.Construct):
-  def __init__(self, scope: core.Construct, id: builtins.str, collection_id:str) -> None:
+class RekognitionCollectionConstruct(Construct):
+  def __init__(self, scope: Construct, id: builtins.str, collection_id:str) -> None:
     super().__init__(scope, id)
     assert not collection_id is None, "CollectionId is missing"
 

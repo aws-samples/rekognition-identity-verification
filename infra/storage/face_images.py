@@ -1,7 +1,8 @@
 import builtins
 from infra.interfaces import IVpcRivStack
+import aws_cdk as core
+from constructs import Construct
 from aws_cdk import (
-  core,
   aws_s3 as s3,
   aws_sqs as sqs,
   aws_sns as sns,
@@ -9,7 +10,7 @@ from aws_cdk import (
   aws_sns_subscriptions as subs,
 )
 
-class RivStorageImageStore(core.Construct):
+class RivStorageImageStore(Construct):
   '''
   Represents the ImageStore construct.
   '''
@@ -46,7 +47,7 @@ class RivStorageImageStore(core.Construct):
   def inventory_created(self,value:sns.ITopic)->None:
     self.__inventory_created = value
 
-  def __init__(self, scope: core.Construct, id: builtins.str, riv_stack:IVpcRivStack) -> None:
+  def __init__(self, scope: Construct, id: builtins.str, riv_stack:IVpcRivStack) -> None:
     super().__init__(scope, id)
 
     self.image_bucket = s3.Bucket(self,'ImageBucket',

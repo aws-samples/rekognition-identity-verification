@@ -2,17 +2,17 @@ from os import path
 from infra.configsettings import ConfigManager
 from typing import Mapping
 from infra.interfaces import IVpcRivStack
+import aws_cdk as core
+from constructs import Construct
 from aws_cdk import (
-  core,
   aws_ec2 as ec2,
   aws_iam as iam,
   aws_lambda as lambda_,
-  aws_s3 as s3,
 )
 
 config_mgr = ConfigManager()
 shared_deps_path = path.join(path.dirname(__file__),'../src/shared')
-class RivDefaultFunction(core.Construct):
+class RivDefaultFunction(Construct):
   '''
   Represents the base template for a UserPortal Lambda function.
   ''' 
@@ -44,7 +44,7 @@ class RivDefaultFunction(core.Construct):
   def function(self,value:lambda_.IFunction)->None:
     self.__function = value
   
-  def __init__(self, scope: core.Construct, id: str, riv_stack:IVpcRivStack,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
+  def __init__(self, scope: Construct, id: str, riv_stack:IVpcRivStack,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
     super().__init__(scope, id, **kwargs)
     self.__landing_zone = riv_stack
 

@@ -2,7 +2,7 @@
 from os import environ
 from infra.configsettings import ConfigManager
 from typing import List
-from aws_cdk import core
+import aws_cdk as core
 from infra.interfaces  import IRivStack
 from infra.topologies import DefaultRivStack
 

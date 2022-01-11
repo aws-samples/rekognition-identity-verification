@@ -159,7 +159,10 @@ then
   exit 1
 fi
 
-export S3_ASSET_PREFIX=`date +%Y/%m/%d/%H`
+if [ -z "$S3_ASSET_PREFIX" ]
+then
+  export S3_ASSET_PREFIX=`date +%Y/%m/%d/%H`
+fi
 
 if [ -z "$S3_REGION" ]
 then
