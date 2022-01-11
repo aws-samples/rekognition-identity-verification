@@ -3,12 +3,14 @@ from os import environ
 from infra.configsettings import ConfigManager
 from infra.interfaces import IVpcRivStack
 from infra.services.rekognition.collections import RekognitionCollectionConstruct
+
 from constructs import Construct
 from aws_cdk import (
   aws_ssm as ssm,
 )
 
 config_mgr = ConfigManager()
+
 class RivRekognitionSetupConstruct(Construct):
   def __init__(self, scope: Construct, id: builtins.str, riv_stack:IVpcRivStack) -> None:
     super().__init__(scope, id)

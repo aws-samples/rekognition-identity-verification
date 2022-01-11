@@ -1,4 +1,5 @@
 import builtins
+
 from constructs import Construct
 from aws_cdk import (
   custom_resources as cr,
