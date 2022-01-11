@@ -2,9 +2,8 @@ from typing import Mapping
 from infra.default_lambda import RivDefaultFunction
 from infra.storage.topology import RivSharedDataStores
 from infra.interfaces import IVpcRivStack
-from aws_cdk import (
-  core,
-)
+import aws_cdk as core
+from constructs import Construct
 
 class RivBulkLoaderBatchHandler(RivDefaultFunction):
   '''
@@ -28,7 +27,7 @@ class RivBulkLoaderBatchHandler(RivDefaultFunction):
       self.riv_stack.riv_stack_name,
       self.component_name)
   
-  def __init__(self, scope: core.Construct, id: str, riv_stack:IVpcRivStack, sharedStorage:RivSharedDataStores, subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
+  def __init__(self, scope: Construct, id: str, riv_stack:IVpcRivStack, sharedStorage:RivSharedDataStores, subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
     super().__init__(scope, id, **kwargs, riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=env)
 
     '''

@@ -2,15 +2,13 @@ import builtins
 from infra.storage.face_images import RivStorageImageStore
 from infra.storage.face_metadata import RivStorageFaceMetadata
 from infra.interfaces import IVpcRivStack
-from aws_cdk import (
-  core,
-)
+from constructs import Construct
 
-class RivSharedDataStores(core.Construct):
+class RivSharedDataStores(Construct):
   '''
   Represents the root construct for deploying shared data stores.
   '''
-  def __init__(self, scope: core.Construct, id: builtins.str, riv_stack:IVpcRivStack) -> None:
+  def __init__(self, scope: Construct, id: builtins.str, riv_stack:IVpcRivStack) -> None:
     super().__init__(scope, id)
 
     '''

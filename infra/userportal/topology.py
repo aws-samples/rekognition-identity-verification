@@ -8,13 +8,11 @@ from infra.userportal.states.topology import RivUserPortalStateMachines
 from infra.userportal.gateway.topology import RivUserPortalGateway
 from json import dumps
 from infra.interfaces import IVpcRivStack
-from aws_cdk import (
-  core,
-)
+from constructs import Construct
 
 config = ConfigManager()
-class RivUserPortal(core.Construct):
-  def __init__(self, scope: core.Construct, id: builtins.str, riv_stack:IVpcRivStack, sharedStorage, subnet_group_name:str='Default') -> None:
+class RivUserPortal(Construct):
+  def __init__(self, scope: Construct, id: builtins.str, riv_stack:IVpcRivStack, sharedStorage, subnet_group_name:str='Default') -> None:
     super().__init__(scope, id)
     
     if config.use_isolated_subnets:

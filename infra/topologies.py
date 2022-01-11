@@ -8,8 +8,9 @@ from infra.services.rekognition.topology import RivRekognitionSetupConstruct
 from infra.storage.topology import RivSharedDataStores
 from infra.userportal.topology import RivUserPortal
 from infra.interfaces import IVpcRivStack, IVpcNetworkingConstruct
+import aws_cdk as core
+from constructs import Construct
 from aws_cdk import (
-    core,
     aws_ec2 as ec2,
 )
 
@@ -19,7 +20,7 @@ class VpcRivStack(IVpcRivStack):
   '''
   Represents an empty deployment enviroment with VPC and default services.
   '''
-  def __init__(self:IVpcRivStack, scope:core.Construct, id:str, **kwargs)->None:
+  def __init__(self:IVpcRivStack, scope:Construct, id:str, **kwargs)->None:
     super().__init__(scope, id, **kwargs)
     core.Tags.of(self).add('riv_stack',self.riv_stack_name)
 
@@ -75,16 +76,16 @@ class VpcRivStack(IVpcRivStack):
 
   @property
   def cidr_block(self)->str:
-    raise NotImplementedError()  
+    raise NotImplementedError()
 
   @property
   def subnet_configuration(self)->List[ec2.SubnetConfiguration]:
     '''
     Gets the Vpc RivStack's subnet configuration.
     '''
-    default_subnet_type = ec2.SubnetType.PRIVATE
+    default_subnet_type = ec2.SubnetType.PRIVATE_WITH_NAT
     if config.use_isolated_subnets:
-      default_subnet_type = ec2.SubnetType.ISOLATED
+      default_subnet_type = ec2.SubnetType.PRIVATE_ISOLATED
 
     return [      
       # 16k addresses x 2 AZ
@@ -94,7 +95,7 @@ class VpcRivStack(IVpcRivStack):
       ec2.SubnetConfiguration(name='Public', subnet_type=ec2.SubnetType.PUBLIC, cidr_mask=19),
       
       # 8k addresses x 2 AZ
-      ec2.SubnetConfiguration(name='Reserved', subnet_type=ec2.SubnetType.ISOLATED, cidr_mask=19),
+      ec2.SubnetConfiguration(name='Reserved', subnet_type=ec2.SubnetType.PRIVATE_ISOLATED, cidr_mask=19),
     ]
 
   @property
@@ -105,7 +106,7 @@ class DefaultRivStack(VpcRivStack):
   '''
   Represents the simple deployment environment for RIV.
   '''
-  def __init__(self, scope:core.Construct, id:str, riv_stack_name:str, **kwargs)->None:
+  def __init__(self, scope:Construct, id:str, riv_stack_name:str, **kwargs)->None:
     self.__zone_name = riv_stack_name
     super().__init__(scope, id, **kwargs)
     

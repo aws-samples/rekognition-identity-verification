@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 from infra.services.networking.vpce import VpcEndpointsForAWSServices
 from typing import List
+from constructs import Construct
 from aws_cdk import (
-  core,
   aws_ec2 as ec2,
 )
 
-class VpcNetworkingConstruct(core.Construct):
+class VpcNetworkingConstruct(Construct):
   '''
   Configure the networking layer
   '''
-  def __init__(self, scope: core.Construct, id: str,cidr:str,subnet_configuration:List[ec2.SubnetConfiguration], **kwargs) -> None:
+  def __init__(self, scope: Construct, id: str,cidr:str,subnet_configuration:List[ec2.SubnetConfiguration], **kwargs) -> None:
     super().__init__(scope, id, **kwargs)
 
     # Determine if we need NAT Gateways...
-    has_private_networks = len([x for x in subnet_configuration if x.subnet_type == ec2.SubnetType.PRIVATE])
+    has_private_networks = len([x for x in subnet_configuration if x.subnet_type == ec2.SubnetType.PRIVATE_WITH_NAT])
     nat_gateways=0
     if has_private_networks > 0:
       nat_gateways = 1
