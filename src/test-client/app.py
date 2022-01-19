@@ -29,7 +29,7 @@ def get_userportal_address(region_name:str, riv_stack_name:str, endpoint:str)->s
 
   return userportal_url + endpoint.lstrip('/')
 
-def create_payload(image_path:PathLike=None, user_id:str=None, properties:Mapping[str,str]=None)->dict:
+def create_payload(image_path:PathLike=None, user_id:str=None, properties:Mapping[str,str]=None, idcard:PathLike=None)->dict:
   '''
   Creates a valid payload for testing. 
   '''
@@ -43,14 +43,23 @@ def create_payload(image_path:PathLike=None, user_id:str=None, properties:Mappin
       'lname': names.get_last_name()
     }
 
+  payload = {
+    'UserId': user_id,
+    #'Image': str(b64encode(photo_contents),'utf-8'),
+    'Properties': properties
+  }
+
   if image_path is not None:
     with open(image_path,'rb') as f:
       photo_contents = f.read()
-      return {
-          'UserId': user_id,
-          'Image': str(b64encode(photo_contents),'utf-8'),
-          'Properties': properties
-      }
+      payload['Image'] = str(b64encode(photo_contents),'utf-8')
+
+  if idcard is not None:
+    with open(image_path,'rb') as f:
+      photo_contents = f.read()
+      payload['IdCard'] = str(b64encode(photo_contents),'utf-8')
+
+  return payload
 
 def print_response(response:requests.models.Response)->None:
   '''
@@ -89,7 +98,7 @@ def cli(ctx):#, region:str, stack:str):
 
 @cli.command("register")
 @click.option("-r", "--region", help="Amazon region hosting RIV", required=True)
-@click.option("-z", "--stack", help="RIV Zone Name", required=True)
+@click.option("-z", "--stack", help="RIV Stack Name", required=True)
 @click.option("-u", "--userid", help="Username to register")
 @click.option("-p", "--picture", help="File location for the user's picture")
 @click.pass_context
@@ -109,9 +118,32 @@ def register_user(ctx:click.Context, region:str, stack:str, userid:str, picture:
     print_response(str(error))
     exit(1)
 
+@cli.command("register-idcard")
+@click.option("-r", "--region", help="Amazon region hosting RIV", required=True)
+@click.option("-z", "--stack", help="RIV Stack Name", required=True)
+@click.option("-u", "--userid", help="Username to register", required=True)
+@click.option("-p", "--picture", help="File location for the user's picture",required=True)
+@click.option("-c", "--idcard", help="File location for the user's idcard", required=True)
+@click.pass_context
+def register_idcard(ctx:click.Context, region:str, stack:str, userid:str, picture:PathLike, idcard:PathLike, verbose:bool=False):
+  '''
+  Registers a new user with a given user_id and picture (password).
+  '''
+
+  # Find the registration endpoint...
+  register_url = get_userportal_address(region,stack,'register')
+  payload = create_payload(image_path=picture, user_id=userid, idcard=idcard)
+  
+  try:
+    response = requests.post(url=register_url,json=payload)
+    print_response(response)
+  except Exception as error:
+    print_response(str(error))
+    exit(1)
+
 @cli.command("update")
 @click.option("-r", "--region", help="Amazon region hosting RIV", required=True)
-@click.option("-z", "--stack", help="RIV Zone Name", required=True)
+@click.option("-z", "--stack", help="RIV Stack Name", required=True)
 @click.option("-u", "--userid", help="Username to register", required=True)
 @click.option("-p", "--picture", help="File location for the user's picture",required=True)
 @click.pass_context
@@ -131,7 +163,7 @@ def update_user(ctx:click.Context, region:str, stack:str, userid:str, picture:Pa
 
 @cli.command("auth")
 @click.option("-r", "--region", help="Amazon region hosting RIV", required=True)
-@click.option("-z", "--stack", help="RIV Zone Name", required=True)
+@click.option("-z", "--stack", help="RIV Stack Name", required=True)
 @click.option("-u", "--userid", help="Username to register", required=True)
 @click.option("-p", "--picture", help="File location for the user's picture",required=True)
 @click.pass_context

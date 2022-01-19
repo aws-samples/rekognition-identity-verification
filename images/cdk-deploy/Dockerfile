@@ -1,7 +1,7 @@
 FROM node:16
 
 RUN apt-get -y update && apt-get -y install --no-install-recommends python3-pip npm curl zip groff \
-  && npm install -g aws-cdk@2.0.0
+  && npm install -g aws-cdk@2.1.0
 
 RUN /usr/bin/python3 -m pip install --upgrade pip
 RUN curl -sSL https://get.docker.com/ | sh

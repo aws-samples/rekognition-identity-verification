@@ -10,10 +10,19 @@ If you do not specify the value, it defaults to **Riv-Prod**.
 
 ## How do I use the test-client
 
-1. Run `pip3 install -r src/test-client/requirements.txt`
-1. Run `python3 src/test-client/app.py help`
-1. Ensure help runs as expected (python3 ./app.py help)
-1. You can now start testing/using the application
+```sh
+# Optional/Recommended create a virtual enviroment (removes need for sudo)
+virtualenv .env
+
+# Activate this the virtual environment
+source .env/bin/activate 
+
+# Install dependencies
+pip3 install -r src/test-client/requirements.txt
+
+# Confirm the client starts
+python3 src/test-client/app.py help
+```
 
 ## What permissions does this tool require
 
@@ -25,11 +34,14 @@ This requirement is due to the `get_userportal_address` dynamically fetching the
 
 Developers can create new users with any of the following examples.
 
-It is not supported to register the "same face" multiple times under different **UserId**.  However, due to the current hashing algorithm it "might work", as the uniqueness checks do not span Amazon Rekognition Collections (shards).  
+It is not supported to register the "same face" multiple times under different **UserId**.
 
 ```sh
-# Generate the user nbachmei from a local image 
+# Register the user nbachmei from a local image 
 python3 ./app.py register -z Riv-Prod -r ca-central-1 -u nbachmei -p ./faces/nbachmei.jpg
+
+# Register the user nbachmei with properties from an idcard
+python3 ./app.py register-idcard -z Riv-Prod -r ca-central-1 -u nbachmei -p ./faces/nbachmei.jpg -c ./faces/private/license.jpg
 ```
 
 ## How do I update an existing user
