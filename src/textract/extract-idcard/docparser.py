@@ -5,6 +5,20 @@ from json import dumps
 from model import BlockType, DocumentKeyValueBlock, IDocumentBlock, ITextractDocument
 
 class DocumentParser:
+  '''
+  Represents a utility for parsing the response from Textract:AnalzyeDocument.
+    
+    Note: This was the preferred way to import an ID Card during RIV v1.
+    Since then, Textract:AnalyzeId became available and is purpose-built for our use-case.
+
+  :example:
+  response = textract_client.analyze_document(...)
+  parser = DocumentParser(TextractDocument(response))` for more fine-grained control.    
+  properties = inputRequest.property_bag
+  form = parser.extract_form()
+  for key in form.keys():
+    properties[key] = form[key]
+  '''
   def __init__(self, document:ITextractDocument) -> None:
     self.document = document
 

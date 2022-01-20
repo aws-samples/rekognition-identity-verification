@@ -71,8 +71,8 @@ if [[ "`is_present yum`" -eq "0" ]]; then
 
 fi 
 if [[ "`is_present apt-get`" -eq "0" ]]; then
-  apt-get -y update
-  apt-get -y install --no-install-recommends npm curl zip jq python3 pip
+  apt-get -y update  
+  apt-get -y install --no-install-recommends npm curl zip jq python3-pip
 fi
 if [[ "`is_present brew`" -eq "0" ]]; then
   brew update
@@ -285,7 +285,7 @@ echo "#  Zip the assets"
 echo "###########################################################"
 echo 
 color_reset
-for f in `ls $BASE_DIR/cdk.out/ | grep asset | grep -v .zip`
+for f in `ls $BASE_DIR/cdk.out/ | grep 'asset\.' | grep -v .zip`
 do
   pushd $BASE_DIR/cdk.out/$f
   if [ -e "$BASE_DIR/cdk.out/$f/requirements.txt" ]
@@ -309,7 +309,7 @@ do
   echo Zipped `wc -l zip.log | cut -d ' ' -f 1` files.
   color_reset
   popd
-  rm -rf $BASE_DIR/cdk.out/$f
+  #rm -rf $BASE_DIR/cdk.out/$f
 done
 
 aws --region ${S3_REGION} s3 cp --recursive $BASE_DIR/cdk.out/ s3://$S3_ASSET_BUCKET/$S3_ASSET_PREFIX/
@@ -351,6 +351,7 @@ fi
 
 color_reset
 cdk bootstrap aws://${ACCOUNT_ID}/${S3_REGION}
+#npx cdk@2.1.0 bootstrap aws://${ACCOUNT_ID}/${S3_REGION}
 
 if [[ "$?" -ne "0" ]]; then
   color_red
@@ -387,19 +388,21 @@ echo "Deploying Stack "
 echo "===================================="
 color_reset
 
-aws cloudformation describe-stacks --stack-name ${RIV_STACK_NAME} --region ${S3_REGION} 2>/dev/null >/dev/null
-if [[ "$?" -eq "0" ]]; then
-  cfn_command=update-stack
-else
-  cfn_command=create-stack
-fi
+CDK_REGION=S3_REGION cdk deploy -a ./app.py --require-approval never
 
-STACK_NAME=`echo --region ${S3_REGION} --stack-name ${RIV_STACK_NAME}`
-TEMPLATE_URL=`echo --template-url https://${S3_ASSET_BUCKET}.s3.${S3_REGION}.amazonaws.com/${S3_ASSET_PREFIX}/${RIV_STACK_NAME}.template.json`
-IAM_CAPABILITIES=`echo --capabilities CAPABILITY_NAMED_IAM`
+# aws cloudformation describe-stacks --stack-name ${RIV_STACK_NAME} --region ${S3_REGION} 2>/dev/null >/dev/null
+# if [[ "$?" -eq "0" ]]; then
+#   cfn_command=update-stack
+# else
+#   cfn_command=create-stack
+# fi
 
-color_green
-echo "aws cloudformation ${cfn_command} ${STACK_NAME} ${TEMPLATE} ${TEMPLATE_URL} ${IAM_CAPABILITIES}"
-color_reset
+# STACK_NAME=`echo --region ${S3_REGION} --stack-name ${RIV_STACK_NAME}`
+# TEMPLATE_URL=`echo --template-url https://${S3_ASSET_BUCKET}.s3.${S3_REGION}.amazonaws.com/${S3_ASSET_PREFIX}/${RIV_STACK_NAME}.template.json`
+# IAM_CAPABILITIES=`echo --capabilities CAPABILITY_NAMED_IAM`
 
-aws cloudformation ${cfn_command} ${STACK_NAME} ${TEMPLATE} ${TEMPLATE_URL} ${IAM_CAPABILITIES}
+# color_green
+# echo "aws cloudformation ${cfn_command} ${STACK_NAME} ${TEMPLATE} ${TEMPLATE_URL} ${IAM_CAPABILITIES}"
+# color_reset
+
+# aws cloudformation ${cfn_command} ${STACK_NAME} ${TEMPLATE} ${TEMPLATE_URL} ${IAM_CAPABILITIES}

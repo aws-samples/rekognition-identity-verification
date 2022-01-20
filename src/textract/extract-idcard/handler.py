@@ -3,7 +3,7 @@ import boto3
 from docparser import DocumentParser
 from base64 import b64encode, b64decode
 from os import environ, path
-from typing import Any, Mapping
+from typing import Any, List, Mapping
 from json import loads, dumps
 from logging import Logger
 
@@ -29,17 +29,16 @@ Initialize any clients (... after xray!)
 textract_client = boto3.client('textract', region_name=region_name)
 
 #@xray_recorder.capture('DocumentParser::extract_form')
-def analyze_document(inputRequest:InputRequest)->dict:
+def analyze_id(inputRequest:InputRequest)->dict:
   '''
   Analyze the image using Amazon Textract.
   '''
   try:
-    response = textract_client.analyze_document(
-      Document={
-        'Bytes': inputRequest.idcard_image_bytes,
-      },
-      FeatureTypes=['FORMS']
-    )
+    response = textract_client.analyze_id(
+      DocumentPages=[
+        {'Bytes': inputRequest.idcard_image_bytes},
+      ])
+
     return response
   except textract_client.exceptions.UnsupportedDocumentException:
     logger.error('User %s provided an invalid document.' % inputRequest.user_id)
@@ -63,23 +62,24 @@ def function_main(event:Mapping[str,Any],_=None):
   '''
   #print(dumps(event))
   inputRequest = InputRequest(event)
-  response = analyze_document(inputRequest)
+  response = analyze_id(inputRequest)
   
   '''
   Create a document parser and extract a table.
-    Customers can include additional business logic here.
-    IE: Confirm the idcard is from your company 
+    Customers can include additional business logic here (e.g., confirm company watermarks).  
   '''
-  parser = DocumentParser(TextractDocument(response))
-  #logger.debug(parser.pretty_print())
+  if not len(response['IdentityDocuments']) == 1:
+    raise NotImplementedError('Sample does not support multiple documents.')
 
   '''
   Generate a response based on the input.
   '''
   properties = inputRequest.property_bag
-  form = parser.extract_form()
-  for key in form.keys():
-    properties[key] = form[key]
+  document_fields:List[dict] = response['IdentityDocuments'][0]['IdentityDocumentFields']
+  for field in document_fields:
+    key = field['Type']['Text']
+    value = field['ValueDetection']['Text']    
+    properties[key] = value
 
   return {
     'UserId': inputRequest.user_id,
