@@ -31,8 +31,8 @@ color_reset
 if [ -z "$TOTAL_COLLECTIONS" ]
 then
   color_reset
-  export TOTAL_COLLECTIONS=10
-  echo "TOTAL_COLLECTIONS not set, defaulted to 10 collections (200M faces)."
+  export TOTAL_COLLECTIONS=1
+  echo "TOTAL_COLLECTIONS not set, defaulted to 1 collections (200M faces)."
 else
   echo "TOTAL_COLLECTIONS overridden to $TOTAL_COLLECTIONS (1 collection = 20M faces)."
 fi
@@ -389,6 +389,72 @@ echo "===================================="
 color_reset
 
 CDK_REGION=S3_REGION cdk deploy -a ./app.py --require-approval never
+
+
+export API_END_POINT=`aws cloudformation describe-stacks --stack-name $RIV_STACK_NAME --query "Stacks[0].Outputs[0].OutputValue" --output text`
+
+export BRANCH_NAME=prod
+
+function wait-for-deployment() {
+    local jobId=$1
+    local timeout=300
+    while [[ ! $jobStatus == 'SUCCEED' || $timer > $timeout ]]; do
+        local job=$(aws amplify get-job --branch-name ${BRANCH_NAME} --app-id ${APP_ID} --job-id ${jobId})
+        local jobStatus=$(echo ${job} | jq -r '.job.summary.status')
+        if [[ $((timer % 5)) == 0 ]]; then
+            echo Waiting for job current status ${jobStatus}
+        fi
+        sleep 1
+        timer=$((timer + 1))
+    done
+
+    curl $(echo ${job} | jq -r '.job.steps[] | select ( .stepName  | contains ( "DEPLOY")) | .logUrl')
+
+}
+
+
+echo "###########################################################"
+echo "# Build react   APP"
+echo "###########################################################"
+_pwd=$(pwd)
+cd 'src/frontend'
+REACT_APP_ENV_API_URL=$API_END_POINT npm run build
+
+echo "###########################################################"
+echo "#  Create APP"
+echo "###########################################################"
+
+printf -v data '{"REACT_APP_ENV_API_URL": "%s"}' "$API_END_POINT"
+export APP_ID=`aws amplify create-app  --name $RIV_STACK_NAME --environment-variables "$data" --custom-rules source='</^((?!\.(css|gif|ico|jpg|js|png|txt|svg|woff|ttf)$).)*$/>',target='/index.html',status=200 --build-spec "REACT_APP_ENV_API_URL=$REACT_APP_ENV_API_URL"  | jq '.app.appId' | tr -d '"'`
+echo $APP_ID
+
+echo "###########################################################"
+echo "#  Create Brach"
+echo "###########################################################"
+
+aws amplify create-branch --app-id ${APP_ID} --environment-variables "$data" --branch-name ${BRANCH_NAME} 2>&1 >/dev/null || true
+
+echo "###########################################################"
+echo "#  Create ZIP"
+echo "###########################################################"
+ echo Creating zip and uploading to S3 bucket ${S3_ASSET_BUCKET}
+    _pwd=$(pwd)
+    echo $PWD
+    cd 'build'
+    rm ${BRANCH_NAME}.zip 2>/dev/null || true
+    zip -rq ${BRANCH_NAME}.zip .
+    #aws s3 cp ${BRANCH_NAME}.zip s3://${S3_ASSET_BUCKET}
+    cd $_pwd
+
+
+read jobId URL < <(echo $(aws amplify create-deployment --app-id  ${APP_ID} --branch ${BRANCH_NAME} | 
+     jq -r '.jobId, .zipUploadUrl'))
+
+curl -v --upload-file 'build/prod.zip' $URL
+deployment=$(aws amplify start-deployment --app-id ${APP_ID} --branch-name ${BRANCH_NAME} --job-id ${jobId})
+wait-for-deployment $(echo ${deployment} | jq -r '.jobSummary.jobId')
+
+
 
 # aws cloudformation describe-stacks --stack-name ${RIV_STACK_NAME} --region ${S3_REGION} 2>/dev/null >/dev/null
 # if [[ "$?" -eq "0" ]]; then
