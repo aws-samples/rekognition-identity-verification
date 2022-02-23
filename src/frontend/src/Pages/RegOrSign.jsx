@@ -6,9 +6,9 @@ const Login = () => {
   const [open, setOpen] = useState(true);
 
   // function to handle modal open
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  // const handleOpen = () => {
+  //   setOpen(true);
+  // };
 
   // function to handle modal close
   const handleClose = () => {

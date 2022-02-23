@@ -3,8 +3,6 @@ import styled from "styled-components";
 import IconButton from '@mui/material/IconButton';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 
-
-
 export const FileUploadContainer = styled.section`
   position: relative;
   margin: 25px 0 15px;
@@ -35,8 +33,6 @@ export const FormField = styled.input`
   }
 `;
 
-
-
 export const DragDropText = styled.p`
   font-weight: bold;
   letter-spacing: 2.2px;
@@ -44,13 +40,7 @@ export const DragDropText = styled.p`
   text-align: center;
 `;
 
-
-
-const KILO_BYTES_PER_BYTE = 1000;
 const DEFAULT_MAX_FILE_SIZE_IN_BYTES = 500000;
-
-
-
 
 const FileUpload = ({
     label,
@@ -60,7 +50,6 @@ const FileUpload = ({
 }) => {
     const fileInputField = useRef(null);
     const [files, setFiles] = useState();
-
     const handleUploadBtnClick = () => {
         fileInputField.current.click();
     };
@@ -87,7 +76,7 @@ const FileUpload = ({
             <FileUploadContainer>
                 <DragDropText>Drag and drop your ID card</DragDropText>
                 <IconButton onClick={handleUploadBtnClick}>
-                  <FileUploadIcon sx={{ fontSize: 80}} />
+                    <FileUploadIcon sx={{ fontSize: 80 }} />
                 </IconButton>
                 <FormField
                     type="file"

@@ -14,14 +14,14 @@ import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import { API } from "aws-amplify";
 import {
-    Navigate,useNavigate
+   useNavigate
 } from "react-router-dom";
 
 export default function RIVMenu() {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const [resetSuccess, setresetSuccess] = React.useState();
+  // const [resetSuccess, setresetSuccess] = React.useState();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -34,20 +34,17 @@ export default function RIVMenu() {
       let responseData = response
       console.log(responseData)
       if (responseData.status === "SUCCEEDED") {
-              // let responseSuccessData = JSON.parse(responseData.output)
-              // console.log(responseSuccessData);
-              //setresetSuccess({responseData});
-              navigate("/");
-          }
-          else {
-             console.log(responseData.status + " : " + responseData.error)
-          }
+        navigate("/");
+      }
+      else {
+        console.log(responseData.status + " : " + responseData.error)
+      }
     });
   };
 
   return (
-      <div>
-    <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+    <div>
+      <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
         <Tooltip title="Account settings">
           <IconButton
             color="inherit"
@@ -58,17 +55,17 @@ export default function RIVMenu() {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-                     <MenuIcon></MenuIcon>
+            <MenuIcon></MenuIcon>
           </IconButton>
         </Tooltip>
       </Box>
-      <Menu 
+      <Menu
         anchorEl={anchorEl}
         id="account-menu"
         open={open}
         onClose={handleClose}
         onClick={handleClose}
-         PaperProps={{
+        PaperProps={{
           elevation: 0,
           sx: {
             overflow: 'visible',
@@ -97,60 +94,45 @@ export default function RIVMenu() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        {/* <MenuItem>
-            <Button
-                color="inherit"
-                href="/success"
-            >
-                <Avatar /> Profile
-            </Button>
-        </MenuItem> */}
-           <MenuItem>
-        <Button
+        <MenuItem>
+          <Button
             color="inherit"
-            href="/login"
-        >
-              <Avatar /> Sign-in
-        </Button>
+            href="/login">
+            <Avatar /> Sign-in
+          </Button>
         </MenuItem>
         <Divider />
         <MenuItem>
-            <Button
-                color="inherit"
-                href="/register"
-            >
-                <ListItemIcon>
-                    <PersonAdd fontSize="small" />
-                </ListItemIcon>
-                Register
-            </Button>
+          <Button
+            color="inherit"
+            href="/register">
+            <ListItemIcon>
+              <PersonAdd fontSize="small" />
+            </ListItemIcon>
+            Register
+          </Button>
         </MenuItem>
         <MenuItem>
           <Button
-                color="inherit"
-                href="/registerwithid"
-            >
+            color="inherit"
+            href="/registerwithid">
             <ListItemIcon>
-                <Settings fontSize="small" />
+              <Settings fontSize="small" />
             </ListItemIcon>
             Register with ID
-         </Button>
+          </Button>
         </MenuItem>
         <MenuItem>
-            <Button
-                color="inherit"
-                onClick={clear}
-            >
+          <Button
+            color="inherit"
+            onClick={clear}>
             <ListItemIcon>
-                <Logout fontSize="small" />
+              <Logout fontSize="small" />
             </ListItemIcon>
             Logout
           </Button>
         </MenuItem>
       </Menu>
-      {/* {resetSuccess && < Navigate to='/login'
-            >
-            </Navigate >} */}
-      </div>
+    </div>
   );
 }

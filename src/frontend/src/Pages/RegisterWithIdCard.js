@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
@@ -18,16 +17,12 @@ import {
 } from "react-router-dom";
 import Title from '../Components/PageTitle';
 import StyledButton from '../Components/ButtonTheme';
-import Container from '@mui/material/Container';
-
-
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
     textAlign: 'center',
     color: theme.palette.text.secondary,
 }));
-
 const initialUserState = {
     fName: "",
     lName: "",
@@ -35,17 +30,15 @@ const initialUserState = {
     age: "",
 };
 
-export default function RegidterWithId() {
-
+//New user registration with ID card
+export default function RegisterWithIdCard() {
     const [properties, setProperties] = useState(initialUserState)
     const [error, setError] = useState()
     const [registerSuccess, setregisterSuccess] = useState()
     const [progress, setprogress] = useState(false)
     const [imgSrc, setImgSrc] = React.useState(null);
     const [idCard, setidCard] = useState(null);
-    const [cardState, setCardSubmit] = useState(false);
-
-
+  
     const updateUploadedFile = (file) => {
         setidCard(file)
     }
@@ -61,10 +54,10 @@ export default function RegidterWithId() {
 
         setidCard(null);
     }
-    const cardSubmit = () => {
+    // const cardSubmit = () => {
 
-        setCardSubmit(true);
-    }
+    //     setCardSubmit(true);
+    // }
 
     useEffect(() => {
         properties.fName = "Happy"
@@ -106,14 +99,11 @@ export default function RegidterWithId() {
         }
         event.preventDefault();
     };
-
-
     const handleChange = (event) => {
         const id = [event.target.id]
         properties[id] = event.target.value
         setProperties(properties)
     };
-
 
     return (
         <>
@@ -124,66 +114,44 @@ export default function RegidterWithId() {
                 alignItems="stretch"
 
             >
-                <Grid item xs={5} md={5}
-                >
+                <Grid item xs={5} md={5}>
                     {imgSrc ?
                         <Item elevation={5}
-                            style={{ borderRadius: "8px !important" }}
-                        >
-                            <img width="100%" height="100%"
-                                src={imgSrc}
-                            />
-
+                            style={{ borderRadius: "8px !important" }}>
+                            <img width="100%" height="100%" src={imgSrc} />
                             <StyledButton onClick={recapture} variant="contained" >
                                 RECAPTURE
                             </StyledButton>
                         </Item>
                         :
-                        <Item elevation={5}
-                        >
+                        <Item elevation={5}>
                             <WebCam UpdateWebCamImage={capture} label="CAPTURE PHOTO" ></WebCam>
                         </Item>
                     }
                 </Grid>
                 <Grid item xs={5} md={5}>
                     {idCard ?
-
-                        <Item elevation={5}
-                        >
+                        <Item elevation={5}>
                             <Card >
                                 <CardMedia
                                     component="img"
-
                                     image={idCard}
                                     alt="green iguana"
                                 />
-
                             </Card>
-
                             <StyledButton onClick={update} variant="contained">
                                 UPDATE
                             </StyledButton>
                         </Item>
-
-
-
-                        : <Item
-                            elevation={3}
-
-
-                        >
+                        : <Item elevation={3}>
                             <FileUpload
                                 accept=".jpg,.png,.jpeg"
                                 label=""
                                 updateFilesCb={updateUploadedFile}
                             />
-
                         </Item>
                     }
                 </Grid>
-                {/* </Grid> */}
-                {/* <Container maxWidth="md"> */}
-                {/* <Grid container spacing={2}> */}
                 <Grid item xs={8}>
                     <Item elevation={5}>
                         <Grid container
@@ -219,7 +187,6 @@ export default function RegidterWithId() {
                                             </Box>
                                         }
                                     </Box>
-
                                 </Stack>
                             </Grid>
                         </Grid>

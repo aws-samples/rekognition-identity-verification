@@ -16,7 +16,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Title from '../Components/PageTitle';
 import StyledButton from '../Components/ButtonTheme';
 
-
+//User Success page
 const SuccessPage = () => {
     const location = useLocation()
     const { userName } = location.state
@@ -27,104 +27,98 @@ const SuccessPage = () => {
     const { age } = location.state
     const { pic } = localStorage.getItem("pic")
     console.log(location.state)
-
     return (
         <>
-          <Title pagetitle={label}  />
-                <Grid
-                    container
-                    direction="column"
-                    justifyContent="center"
-                    alignItems="center"
-                >
-                    <Grid>
-                        <img src={localStorage.getItem('pic')} 
+            <Title pagetitle={label} />
+            <Grid
+                container
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+            >
+                <Grid>
+                    <img src={localStorage.getItem('pic')}
                         alt={imageId}
-                        />
+                    />
                     {pic &&
                         <Card sx={{ maxWidth: 345 }}>
-                        <CardMedia
-                            component="img"
-                            // height="194"
-                            image={pic}
-                            alt={imageId}
-                        />
-                    </Card>
-                        }
-                    </Grid>
+                            <CardMedia
+                                component="img"
+                                // height="194"
+                                image={pic}
+                                alt={imageId}
+                            />
+                        </Card>
+                    }
+                </Grid>
+                <Grid item xs={10} sx={{ pt: 2 }}>
+                    <div>
+                        <Paper elevation={4}>
+                            <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                                {userName &&
+                                    <ListItem>
+                                        <ListItemAvatar>
+                                            <Avatar>
+                                                <PersonIcon />
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText primary={userName} />
+                                    </ListItem>
+                                }
+                                {fName &&
+                                    <ListItem>
+                                        <ListItemAvatar>
+                                            <Avatar>
+                                                <BadgeIcon />
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText primary={fName} />
+                                    </ListItem>
+                                }
+                                {lName &&
+                                    <ListItem>
+                                        <ListItemAvatar>
+                                            <Avatar>
+                                                <BadgeIcon />
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText primary={lName} />
+                                    </ListItem>
+                                }
+                                {age &&
+                                    <ListItem>
+                                        <ListItemAvatar>
+                                            <Avatar>
+                                                <CakeIcon />
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText primary={age} />
+                                    </ListItem>
+                                }
+                            </List>
+                            {userName && imageId &&
+                                <Grid
+                                    container
+                                    direction="row"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                >
+                                    <Grid item xs>
+                                        <StyledButton variant="contained" href="/login">
+                                            Login
+                                        </StyledButton>
 
-                    <Grid item xs={10} sx={{pt:2}}>
-                        <div>
-                    <Paper elevation={4}>
-                    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                        {userName &&
-                            <ListItem>
-                                <ListItemAvatar>
-                                    <Avatar>
-                                        <PersonIcon />
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary={userName} />
-                            </ListItem>
-                        }
-                        {fName &&
-                            <ListItem>
-                                <ListItemAvatar>
-                                    <Avatar>
-                                        <BadgeIcon />
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary={fName} />
-                            </ListItem>
-                        }
-                        {lName &&
-                            <ListItem>
-                                <ListItemAvatar>
-                                    <Avatar>
-                                        <BadgeIcon />
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary={lName} />
-                            </ListItem>
-                        }
-                        {age &&
-                            <ListItem>
-                                <ListItemAvatar>
-                                    <Avatar>
-                                        <CakeIcon />
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary={age} />
-                            </ListItem>
-                        }
-                    </List>
-                    
-                    
-                {userName && imageId &&
-                    <Grid
-                        container
-                        direction="row"
-                        justifyContent="center"
-                        alignItems="center"
-                    >
-                    
-                        <Grid item xs>
-                            <StyledButton variant="contained" href="/login">
-                                Login
-                            </StyledButton>
-                
-                            <StyledButton variant="contained" href="/register">
-                                Register
-                            </StyledButton>
-                        </Grid>
-                    </Grid>
-                }
-                </Paper>
-                </div>
-                 </Grid>
-                 </Grid>
+                                        <StyledButton variant="contained" href="/register">
+                                            Register
+                                        </StyledButton>
+                                    </Grid>
+                                </Grid>
+                            }
+                        </Paper>
+                    </div>
+                </Grid>
+            </Grid>
         </>
     );
 }
-
 export default SuccessPage;

@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
@@ -19,8 +18,6 @@ import {
 import Title from '../Components/PageTitle';
 import StyledButton from '../Components/ButtonTheme';
 
-
-
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
     textAlign: 'center',
@@ -33,9 +30,8 @@ const initialUserState = {
     id: "",
     age: "1970-01-01",
 };
-
-export default function RegidterWithId() {
-
+//User profile page
+export default function Profile() {
     const [properties, setProperties] = useState(initialUserState)
     const [error, setError] = useState()
     const [registerSuccess, setregisterSuccess] = useState()
@@ -100,103 +96,90 @@ export default function RegidterWithId() {
         event.preventDefault();
     };
 
-
     const handleChange = (event) => {
-        // console.log(userDetails)
         const id = [event.target.id]
         properties[id] = event.target.value
         setProperties(properties)
         console.log(properties)
     };
 
-
     return (
         <>
-         <Title pagetitle="Register new user with ID card"  />
-
-                {cardState ?
-                  <Grid container spacing={2}
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="stretch"
-                  >
-                            {imgSrc ?
-                            <>
-                              <Grid item xs={5} md={5}
-                                >
-                                <Item elevation={0}
-                                    
-                                >
-                                    <img width="100%" height="100%"
-                                        src={imgSrc}
-                                    />
-
-                                    <StyledButton onClick={recapture} variant="contained" >
-                                        RECAPTURE
-                                    </StyledButton>
-                                </Item>
-                              </Grid>
-                              <Grid container justifyContent="center" alignItems="center">
-                              <Grid item xs={4} alignItems="stretch" justifyContent="center">
-                                <Item>
-                                  <Stack
-                                    sx={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        alignItems: "center",
-                                        // justifyContent: "center",
-                                        //  height: "250px",
-                                        //  width: "60%",
-                                    }}
-                                >
-                                {error && (
-                                    <Typography color="red" variant="subtitle2" gutterBottom component="div">
-                                        {error}
-                                    </Typography>
-                                )}
-
-                                <TextField textAlign="center" id="id" label="User Id" variant="standard" onChange={handleChange} />
-                                {/* <TextField id="fName" label="First Name" variant="standard" onChange={handleChange} />
-                                <TextField id="lName" label="Last Name" variant="standard" onChange={handleChange} />
-                                <TextField id="age" value={properties.age} variant="standard" onChange={handleChange} /> */}
-                                <div  >
-                                    <StyledButton variant="contained" onClick={handleSubmit} >
-                                        REGISTER
-                                    </StyledButton>
-                                    {progress &&
-                                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: "-50px", marginLeft: "95px" }}>
-                                            <CircularProgress size={20} color="inherit" style={{ color: 'white' }} />
-                                        </Box>
-                                    }
-                                </div>
-
-                                        </Stack>
-                                      </Item>
-                              </Grid>
-                              </Grid>
-                                  </>
-                                :
-                                  <Grid item xs={5} md={5}>
-                                    <Item elevation={0}
-                                      >
-                                      <WebCam UpdateWebCamImage={capture} label="CAPTURE PHOTO" ></WebCam>
-                                    </Item>
-                                  </Grid>
-                            }
-                    </Grid> 
-                :  
-                          
+            <Title pagetitle="Register new user with ID card" />
+            {cardState ?
                 <Grid container spacing={2}
                     direction="row"
                     justifyContent="center"
                     alignItems="stretch"
-                >     
-                    <Grid item xs={6} md={5}
-                    >
-                        {idCard ?
+                >
+                    {imgSrc ?
+                        <>
+                            <Grid item xs={5} md={5}>
+                                <Item elevation={0}>
+                                    <img width="100%" height="100%"
+                                        src={imgSrc}
+                                    />
+                                    <StyledButton onClick={recapture} variant="contained" >
+                                        RECAPTURE
+                                    </StyledButton>
+                                </Item>
+                            </Grid>
+                            <Grid container justifyContent="center" alignItems="center">
+                                <Grid item xs={4} alignItems="stretch" justifyContent="center">
+                                    <Item>
+                                        <Stack
+                                            sx={{
+                                                display: "flex",
+                                                flexDirection: "column",
+                                                alignItems: "center",
+                                                // justifyContent: "center",
+                                                //  height: "250px",
+                                                //  width: "60%",
+                                            }}
+                                        >
+                                            {error && (
+                                                <Typography color="red" variant="subtitle2" gutterBottom component="div">
+                                                    {error}
+                                                </Typography>
+                                            )}
 
+                                            <TextField textAlign="center" id="id" label="User Id" variant="standard" onChange={handleChange} />
+                                            {/* <TextField id="fName" label="First Name" variant="standard" onChange={handleChange} />
+                                <TextField id="lName" label="Last Name" variant="standard" onChange={handleChange} />
+                                <TextField id="age" value={properties.age} variant="standard" onChange={handleChange} /> */}
+                                            <div  >
+                                                <StyledButton variant="contained" onClick={handleSubmit} >
+                                                    REGISTER
+                                                </StyledButton>
+                                                {progress &&
+                                                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: "-50px", marginLeft: "95px" }}>
+                                                        <CircularProgress size={20} color="inherit" style={{ color: 'white' }} />
+                                                    </Box>
+                                                }
+                                            </div>
+                                        </Stack>
+                                    </Item>
+                                </Grid>
+                            </Grid>
+                        </>
+                        :
+                        <Grid item xs={5} md={5}>
                             <Item elevation={0}
                             >
+                                <WebCam UpdateWebCamImage={capture} label="CAPTURE PHOTO" ></WebCam>
+                            </Item>
+                        </Grid>
+                    }
+                </Grid>
+                :
+                <Grid container spacing={2}
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="stretch"
+                >
+                    <Grid item xs={6} md={5}>
+                        {idCard ?
+                            <Item elevation={0}>
                                 <Card >
                                     <CardMedia
                                         component="img"
@@ -204,41 +187,32 @@ export default function RegidterWithId() {
                                         image={idCard}
                                         alt="green iguana"
                                     />
-
                                 </Card>
-
                                 <StyledButton onClick={update} variant="contained">
                                     UPDATE
                                 </StyledButton>
                                 <StyledButton onClick={cardSubmit} variant="contained">
                                     Submit
                                 </StyledButton>
-                               
                             </Item>
-
                             : <Item
-                                elevation={0}
-
-
-                            >
+                                elevation={0}>
                                 <FileUpload
                                     accept=".jpg,.png,.jpeg"
                                     label=""
                                     updateFilesCb={updateUploadedFile}
                                 />
-
                             </Item>
                         }
                     </Grid>
-                    
                 </Grid>
+            }
+            {registerSuccess && < Navigate
+                to='/success'
+                state={registerSuccess
                 }
-                {registerSuccess && < Navigate
-                    to='/success'
-                    state={registerSuccess
-                    }
-                >
-                </Navigate >}
+            >
+            </Navigate >}
         </>
     );
 }
