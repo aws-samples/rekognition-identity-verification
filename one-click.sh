@@ -435,7 +435,7 @@ echo $APP_ID
 
 color_green
 echo "###########################################################"
-echo "#  Create Brach"
+echo "#  Create Branch"
 echo "###########################################################"
 color_reset
 
