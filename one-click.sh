@@ -447,7 +447,7 @@ echo "#  Create ZIP"
 echo "###########################################################"
 color_reset
 
-echo Creating zip and uploading to S3 bucket ${S3_ASSET_BUCKET}
+echo Creating zip
   _pwd=$(pwd)
   echo $PWD
   cd 'build'
