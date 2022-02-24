@@ -193,7 +193,7 @@ then
         # Every other region requires this flag
         if [ "${!var}" == "us-east-1" ]
         then
-          awscliv2 s3api create-bucket --region ${!var} --create-bucket-configuration --bucket $S3_ASSET_BUCKET
+          awscliv2 s3api create-bucket --region ${!var} --bucket $S3_ASSET_BUCKET
         else
           awscliv2 s3api create-bucket --region ${!var} --create-bucket-configuration LocationConstraint=${!var} --bucket $S3_ASSET_BUCKET
         fi
@@ -251,6 +251,7 @@ then
   exit 1
 fi
 
+chmod a+x $BASE_DIR/app.py
 cdk synth -a $BASE_DIR/app.py --require-approval never > $BASE_DIR/cdk.out/synth.log
 if [ "$?" -ne "0" ]
 then
@@ -494,7 +495,7 @@ color_reset
 echo "===================="
 echo "Compressing files"
 echo "===================="
-pushd 'src/frontend/build'
+pushd "${BASE_DIR}/src/frontend/build"
 rm -f ${BRANCH_NAME}.zip
 zip -rq ${BRANCH_NAME}.zip .
 ls -lh ${BRANCH_NAME}.zip
@@ -526,11 +527,10 @@ color_reset
 echo "===================="
 echo "Terminating any pending jobs"
 echo "===================="
-
-for jobId in `awscliv2 amplify list-jobs --app-id $APP_ID --branch-name $BRANCH_NAME | jq '.jobSummaries[]|select(.status=="PENDING")|.jobId'`;
+for jobId in `awscliv2 amplify list-jobs --app-id $APP_ID --branch-name $BRANCH_NAME | jq -r '.jobSummaries[]|select(.status=="PENDING")|.jobId'`;
 do
   echo "awscliv2 amplify stop-job --app-id $APP_ID --branch-name $BRANCH_NAME --job-id $jobId"  
-  awscliv2 amplify stop-job --app-id $APP_ID --branch-name $BRANCH_NAME --job-id $jobId
+  awscliv2 amplify stop-job --app-id $APP_ID --branch-name $BRANCH_NAME --job-id jobId
 done
 
 echo Passed.
@@ -541,7 +541,7 @@ echo "amplify create-deployment"
 echo "===================="
 
 read jobId URL < <(echo $(awscliv2 amplify create-deployment --app-id  ${APP_ID} --branch ${BRANCH_NAME} | jq -r '.jobId, .zipUploadUrl'))
-curl -v --upload-file "${BASE_DIR}/src/frontend/${BRANCH_NAME}.zip" $URL
+curl -v --upload-file "${BASE_DIR}/src/frontend/build/${BRANCH_NAME}.zip" $URL
 if [[ "$?" -ne "0" ]]; then
     color_red
     echo "!!!!!!!!!!!!!!!!!!!!!!!!!"

@@ -47,7 +47,7 @@ This table enumerates the overridable environment variables.  The deployment scr
 # Create a bucket in your desired region.
 # If the specified bucket does not exist, it will be created.
 # Note: Bucket name cannot contain dots (.)
-export AWS_REGION_NAME=us-east-1
+export AWS_REGION=us-east-1
 export BUCKET_NAME=my-unique-bucket-name
 
 # Customers can deploy multiple instances to the same region (Prod vs Dev)
@@ -59,7 +59,6 @@ export RIV_STACK_NAME=Riv-Prod
 # After preparing the local machine it will synthesize and deploy into your environment.
 TOTAL_COLLECTIONS=1 ./one-click.sh $BUCKET_NAME
 ```
-
 
 |Name|	Default|	Description|
 |----|----------|------------|
