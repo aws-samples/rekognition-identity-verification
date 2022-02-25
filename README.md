@@ -47,7 +47,7 @@ This table enumerates the overridable environment variables.  The deployment scr
 # Create a bucket in your desired region.
 # If the specified bucket does not exist, it will be created.
 # Note: Bucket name cannot contain dots (.)
-export AWS_REGION_NAME=us-east-1
+export AWS_REGION=us-east-1
 export BUCKET_NAME=my-unique-bucket-name
 
 # Customers can deploy multiple instances to the same region (Prod vs Dev)
@@ -57,16 +57,32 @@ export RIV_STACK_NAME=Riv-Prod
 
 # Running this command will install any dependencies (brew, yum, or apt required)
 # After preparing the local machine it will synthesize and deploy into your environment.
-TOTAL_COLLECTIONS=10 ./one-click.sh $BUCKET_NAME
+TOTAL_COLLECTIONS=1 ./one-click.sh $BUCKET_NAME
 ```
-
 
 |Name|	Default|	Description|
 |----|----------|------------|
-|TOTAL_COLLECTIONS|	10|	Total Rekognition Collections to Create (1=20M faces)|
+|TOTAL_COLLECTIONS|	1|	Total Rekognition Collections to Create (1=20M faces)|
 |RIV_STACK_NAME	|Riv-Prod	|The stack name |
 |S3_ASSET_BUCKET|	Argument |	The Amazon S3 Bucket to stage deployment artifacts|
 |S3_REGION|	Discovered |	The Region hosting the S3_ASSET_BUCKET|
+
+## How do I run the amplify app locally
+#First create a .env.local file in the frontend directory with the following contents:
+
+```
+REACT_APP_ENV_API_URL=https://YOUR_API_GW_STAGE_URL
+
+```
+
+#Install depedency and start the app
+
+```
+npm install
+npm start
+
+```
+
 
 ## How is the code organized
 
@@ -81,6 +97,7 @@ TOTAL_COLLECTIONS=10 ./one-click.sh $BUCKET_NAME
   - [bulk-loader](src/bulk-loader).  Imports a source bucket into the RIV service
   - [test-client](src/test-client).  A command line interface for interacting with the RIV service.
   - [textract](src/textract).  Step function tasks for interacting with Amazon Textract
+  - [frontend](src/frontend).  React Frontend Web App for Indentificaton Verification
 
 ## How do I get intellisence in Microsoft Visual Studio Code
 

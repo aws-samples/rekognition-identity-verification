@@ -105,6 +105,12 @@ class RivUserPortalGateway(Construct):
     '''    
     resource = self.rest_api.root.add_resource(
       path_part=resource_name,
+      default_cors_preflight_options= api.CorsOptions(
+        allow_origins=api.Cors.ALL_ORIGINS,
+        allow_headers=['Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'],
+        allow_credentials=True,
+        allow_methods=['OPTIONS', 'POST'],
+      ),
       default_method_options=api.MethodOptions(
         request_models= {
           "application/json": model_in
