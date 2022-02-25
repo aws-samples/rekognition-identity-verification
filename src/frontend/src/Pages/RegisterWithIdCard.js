@@ -78,7 +78,7 @@ export default function RegisterWithIdCard() {
                 headers: { "Content-Type": "application/json" }, // OPTIONAL
             };
             console.log(requestData);
-            API.post("identityverification", "/register-idcard", requestData).then(response => {
+            API.post("identityverification", "register-idcard", requestData).then(response => {
                 let responseData = response
                 if (responseData.status === "SUCCEEDED") {
                     let responseSuccessData = JSON.parse(responseData.output)

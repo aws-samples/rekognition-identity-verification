@@ -69,7 +69,7 @@ class ConfigManager:
     # Support the same variable as one-click.sh
     total_collections = os.environ.get('TOTAL_COLLECTIONS')
     if total_collections is None:
-      total_collections = 10
+      total_collections = 1
     
     return int(total_collections)
 

@@ -75,7 +75,7 @@ export default function Profile() {
                 body: { "Properties": properties, "UserId": properties.id, "Image": base64Image, "IdCard": base64ImageId }, // replace this with attributes you need
                 headers: { "Content-Type": "application/json" }, // OPTIONAL
             };
-            API.post("identityverification", "/register-idcard", requestData).then(response => {
+            API.post("identityverification", "register-idcard", requestData).then(response => {
                 let responseData = response
                 if (responseData.status === "SUCCEEDED") {
                     let responseSuccessData = JSON.parse(responseData.output)
