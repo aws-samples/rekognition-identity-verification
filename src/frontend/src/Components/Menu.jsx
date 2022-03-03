@@ -30,16 +30,17 @@ export default function RIVMenu() {
   };
   const clear = () => {
     localStorage.removeItem("pic");
-    API.get("identityverification", "/reset").then(response => {
-      let responseData = response
-      console.log(responseData)
-      if (responseData.status === "SUCCEEDED") {
-        navigate("/");
-      }
-      else {
-        console.log(responseData.status + " : " + responseData.error)
-      }
-    });
+    navigate("/");
+    // API.get("identityverification", "/reset").then(response => {
+    //   let responseData = response
+    //   console.log(responseData)
+    //   if (responseData.status === "SUCCEEDED") {
+    //     navigate("/");
+    //   }
+    //   else {
+    //     console.log(responseData.status + " : " + responseData.error)
+    //   }
+    // });
   };
 
   return (
