@@ -59,22 +59,22 @@ export default function RegisterWithIdCard() {
     //     setCardSubmit(true);
     // }
 
-    useEffect(() => {
-        properties.fName = "Happy"
-        properties.lName = "Traveler"
-        properties.age = "1981-01-01"
-    }, [idCard])
+    // useEffect(() => {
+    //     properties.fName = "Happy"
+    //     properties.lName = "Traveler"
+    //     properties.age = "1981-01-01"
+    // }, [idCard])
 
     const handleSubmit = (event) => {
         setError(null)
-        if (properties.fName === '' || properties.lName === '' || imgSrc === null || properties.age === '' || properties.id === '' || idCard === null) {
+        if (imgSrc === null  || properties.id === '' || idCard === null) {
             setError(" Error! Please fill in all fields; *and* please ensure that you've supplied a selfie image and id card image.")
         } else {
             setprogress(true)
             var base64Image = imgSrc.replace(/^data:image\/[a-z]+;base64,/, "");
             var base64ImageId = idCard.replace(/^data:image\/[a-z]+;base64,/, "");
             const requestData = {
-                body: { "Properties": properties, "UserId": properties.id, "Image": base64Image, "IdCard": base64ImageId }, // replace this with attributes you need
+                body: { "Properties": {}, "UserId": properties.id, "Image": base64Image, "IdCard": base64ImageId }, // replace this with attributes you need
                 headers: { "Content-Type": "application/json" }, // OPTIONAL
             };
             console.log(requestData);
@@ -82,7 +82,7 @@ export default function RegisterWithIdCard() {
                 let responseData = response
                 if (responseData.status === "SUCCEEDED") {
                     let responseSuccessData = JSON.parse(responseData.output)
-                    setregisterSuccess({ "userName": responseSuccessData.UserId, "imageId": responseSuccessData.ImageId, "label": "       Successfully Registered User", "fName": properties.fName, "lName": properties.lName, "age": properties.age })
+                    setregisterSuccess({ "userName": responseSuccessData.UserId, "imageId": responseSuccessData.ImageId, "label": "       Successfully Registered User", "fName": responseSuccessData.Properties.FIRST_NAME, "lName": responseSuccessData.Properties.LAST_NAME, "age": responseSuccessData.Properties.DATE_OF_BIRTH })
 
                 } else {
                     console.log(responseData.error)
@@ -174,9 +174,6 @@ export default function RegisterWithIdCard() {
                                         </Typography>
                                     )}
                                     <TextField id="id" label="User Id" variant="standard" onChange={handleChange} />
-                                    <TextField id="fName" value={properties.fName} label="First Name" variant="standard" onChange={handleChange} />
-                                    <TextField id="lName" value={properties.lName} label="Last Name" variant="standard" onChange={handleChange} />
-                                    <TextField id="age" value={properties.age} label="Date of birth (YYYY-MM-DD)" variant="standard" onChange={handleChange} />
                                     <Box textAlign='center' >
                                         <StyledButton variant="contained" onClick={handleSubmit} style={{ maxWidth: '30%', maxHeight: '30%', minWidth: '30%', minHeight: '30%' }}>
                                             REGISTER

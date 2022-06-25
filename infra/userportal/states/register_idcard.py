@@ -111,7 +111,8 @@ class RegisterIdCardStateMachine(RivStateMachineConstruct):
       parameters={
         'UserId.$': '$.inputRequest.UserId',
         'ImageId.$': '$.index.Payload.FaceRecord.Face.ImageId',
-        'Status': 'Registered'
+        'Status': 'Registered',
+        "Properties.$": "$.idcard.Payload.Properties"
       }))
 
     self.set_state_machine(
