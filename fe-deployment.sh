@@ -27,6 +27,61 @@ echo "Deploying Stack "
 echo "===================================="
 color_reset
 
+function is_present(){
+  app_path_len=`command -v $1 | wc -c`
+  if [[ "$app_path_len" -gt "0" ]];
+  then
+    echo "0"
+  else
+    echo "1"
+  fi
+}
+
+if [[ "`is_present yum`" -eq "0" ]]; then
+  yum -y update
+  yum -y install zip jq python3 curl
+  curl -sL https://rpm.nodesource.com/setup_16.x | bash -
+  yum -y install nodejs
+
+fi 
+if [[ "`is_present apt-get`" -eq "0" ]]; then
+  apt-get -y update  
+  apt-get -y install --no-install-recommends npm curl zip jq python3-pip
+fi
+if [[ "`is_present brew`" -eq "0" ]]; then
+  brew update
+  brew install node curl zip jq python
+fi
+
+for f in npm python3 jq zip; do
+  if [[ "`is_present $f`" -eq "1" ]]; then
+    color_red
+    echo "Requirement: [$f]: MISSING"
+    color_reset
+    exit 1
+  fi
+done
+
+if [[ "`is_present awscliv2`" -eq "1" ]]; then
+  pip3 install awscliv2
+  awscliv2 --install
+  if [[ "$?" -ne "0" ]]; then
+    color_red
+    echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    echo "!! Install awscli Failed  !!"
+    echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    color_reset
+    exit 1
+  fi
+
+  echo "=============================="
+  echo "You must configure AWS CLI"
+  echo "=============================="
+  echo "https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html"
+  echo
+  awscliv2 configure
+fi
+
 if [ -z "$RIV_STACK_NAME" ]
 then
   color_green
@@ -38,15 +93,15 @@ then
 fi
 
 
-export API_END_POINT=`aws cloudformation describe-stacks --stack-name $RIV_STACK_NAME --query "Stacks[0].Outputs[0].OutputValue" --output text`
+export API_END_POINT=`awscliv2 cloudformation describe-stacks --stack-name $RIV_STACK_NAME --query "Stacks[0].Outputs[0].OutputValue" --output text`
 export BRANCH_NAME=prod
 
 function wait-for-deployment() {
     local jobId=$1
     local timeout=300
-    echo "MONITORING: aws amplify get-job --branch-name ${BRANCH_NAME} --app-id ${APP_ID} --job-id ${jobId}"
+    echo "MONITORING: awscliv2 amplify get-job --branch-name ${BRANCH_NAME} --app-id ${APP_ID} --job-id ${jobId}"
     while [[ ! $jobStatus == 'SUCCEED' || $timer > $timeout ]]; do
-        local job=$(aws amplify get-job --branch-name ${BRANCH_NAME} --app-id ${APP_ID} --job-id ${jobId})
+        local job=$(awscliv2 amplify get-job --branch-name ${BRANCH_NAME} --app-id ${APP_ID} --job-id ${jobId})
         local jobStatus=$(echo ${job} | jq -r '.job.summary.status')
         if [[ $((timer % 5)) == 0 ]]; then
             echo "Waiting for job current status ${jobStatus}"
@@ -78,13 +133,13 @@ echo "#  Create Amplify App"
 echo "###########################################################"
 color_reset
 
-export AmplifyApp=`aws amplify list-apps | jq  '.apps[]| select(.name=="Riv-Prod")'`
+export AmplifyApp=`awscliv2 amplify list-apps | jq  '.apps[]| select(.name=="Riv-Prod")'`
 if [ -z "$AmplifyApp" ]; then
   echo "===================="
   echo "Creating new app"
   echo "===================="
   printf -v data '{"REACT_APP_ENV_API_URL": "%s"}' "$API_END_POINT"
-  aws amplify create-app --name $RIV_STACK_NAME --environment-variables "$data" --custom-rules source='</^((?!\.(css|gif|ico|jpg|js|png|txt|svg|woff|ttf)$).)*$/>',target='/index.html',status=200 --build-spec "REACT_APP_ENV_API_URL=$REACT_APP_ENV_API_URL" 
+  awscliv2 amplify create-app --name $RIV_STACK_NAME --environment-variables "$data" --custom-rules source='</^((?!\.(css|gif|ico|jpg|js|png|txt|svg|woff|ttf)$).)*$/>',target='/index.html',status=200 --build-spec "REACT_APP_ENV_API_URL=$REACT_APP_ENV_API_URL" 
   if [[ "$?" -ne "0" ]]; then
     color_red
     echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
@@ -93,7 +148,7 @@ if [ -z "$AmplifyApp" ]; then
     color_reset
     exit 1
   fi
-  export AmplifyApp=`aws amplify list-apps | jq  '.apps[]| select(.name=="Riv-Prod")'`
+  export AmplifyApp=`awscliv2 amplify list-apps | jq  '.apps[]| select(.name=="Riv-Prod")'`
 fi
 
 echo "===================="
@@ -109,12 +164,12 @@ echo "#  Create Branch"
 echo "###########################################################"
 color_reset
 
-AmplifyBranch=`aws amplify list-branches --app-id $APP_ID | jq '.branches[]|select(.branchName=="prod")'`
+AmplifyBranch=`awscliv2 amplify list-branches --app-id $APP_ID | jq '.branches[]|select(.branchName=="prod")'`
 if [ -z "$AmplifyBranch" ]; then
   echo "===================="
   echo "Creating new branch"
   echo "===================="
-  aws amplify create-branch --app-id ${APP_ID} --environment-variables "$data" --branch-name ${BRANCH_NAME}
+  awscliv2 amplify create-branch --app-id ${APP_ID} --environment-variables "$data" --branch-name ${BRANCH_NAME}
   if [[ "$?" -ne "0" ]]; then
     color_red
     echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
@@ -123,7 +178,7 @@ if [ -z "$AmplifyBranch" ]; then
     color_reset
     exit 1
   fi
-  AmplifyBranch=`aws amplify list-branches --app-id $APP_ID | jq '.branches[]|select(.branchName=="prod")'`
+  AmplifyBranch=`awscliv2 amplify list-branches --app-id $APP_ID | jq '.branches[]|select(.branchName=="prod")'`
 fi
 
 echo "===================="
@@ -159,7 +214,7 @@ color_reset
 # echo "===================="
 
 # while [[ 1 ]]; do
-#   ListJobs=`aws amplify list-jobs --app-id $APP_ID --branch-name $BRANCH_NAME | jq '.jobSummaries[]|select(.status=="PENDING")'`
+#   ListJobs=`awscliv2 amplify list-jobs --app-id $APP_ID --branch-name $BRANCH_NAME | jq '.jobSummaries[]|select(.status=="PENDING")'`
 #   if [ -z "$ListJobs" ]; then
 #     echo "All previous jobs have finished."
 #     break
@@ -172,10 +227,10 @@ color_reset
 echo "===================="
 echo "Terminating any pending jobs"
 echo "===================="
-for jobId in `aws amplify list-jobs --app-id $APP_ID --branch-name $BRANCH_NAME | jq -r '.jobSummaries[]|select(.status=="PENDING")|.jobId'`;
+for jobId in `awscliv2 amplify list-jobs --app-id $APP_ID --branch-name $BRANCH_NAME | jq -r '.jobSummaries[]|select(.status=="PENDING")|.jobId'`;
 do
-  echo "aws amplify stop-job --app-id $APP_ID --branch-name $BRANCH_NAME --job-id $jobId"  
-  aws amplify stop-job --app-id $APP_ID --branch-name $BRANCH_NAME --job-id jobId
+  echo "awscliv2 amplify stop-job --app-id $APP_ID --branch-name $BRANCH_NAME --job-id $jobId"  
+  awscliv2 amplify stop-job --app-id $APP_ID --branch-name $BRANCH_NAME --job-id jobId
 done
 
 echo Passed.
@@ -185,7 +240,7 @@ echo "===================="
 echo "amplify create-deployment"
 echo "===================="
 
-read jobId URL < <(echo $(aws amplify create-deployment --app-id  ${APP_ID} --branch ${BRANCH_NAME} | jq -r '.jobId, .zipUploadUrl'))
+read jobId URL < <(echo $(awscliv2 amplify create-deployment --app-id  ${APP_ID} --branch ${BRANCH_NAME} | jq -r '.jobId, .zipUploadUrl'))
 curl -v --upload-file "${BASE_DIR}/src/frontend/build/${BRANCH_NAME}.zip" $URL
 if [[ "$?" -ne "0" ]]; then
     color_red
@@ -196,7 +251,7 @@ if [[ "$?" -ne "0" ]]; then
     exit 1
 fi
 
-deployment=$(aws amplify start-deployment --app-id ${APP_ID} --branch-name ${BRANCH_NAME} --job-id ${jobId})
+deployment=$(awscliv2 amplify start-deployment --app-id ${APP_ID} --branch-name ${BRANCH_NAME} --job-id ${jobId})
 if [[ "$?" -ne "0" ]]; then
     color_red
     echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
@@ -218,7 +273,7 @@ color_green
 echo Deployment Complete.
 color_reset
 
-# aws cloudformation describe-stacks --stack-name ${RIV_STACK_NAME} --region ${S3_REGION} 2>/dev/null >/dev/null
+# awscliv2 cloudformation describe-stacks --stack-name ${RIV_STACK_NAME} --region ${S3_REGION} 2>/dev/null >/dev/null
 # if [[ "$?" -eq "0" ]]; then
 #   cfn_command=update-stack
 # else
@@ -230,7 +285,7 @@ color_reset
 # IAM_CAPABILITIES=`echo --capabilities CAPABILITY_NAMED_IAM`
 
 # color_green
-# echo "aws cloudformation ${cfn_command} ${STACK_NAME} ${TEMPLATE} ${TEMPLATE_URL} ${IAM_CAPABILITIES}"
+# echo "awscliv2 cloudformation ${cfn_command} ${STACK_NAME} ${TEMPLATE} ${TEMPLATE_URL} ${IAM_CAPABILITIES}"
 # color_reset
 
-# aws cloudformation ${cfn_command} ${STACK_NAME} ${TEMPLATE} ${TEMPLATE_URL} ${IAM_CAPABILITIES}
+# awscliv2 cloudformation ${cfn_command} ${STACK_NAME} ${TEMPLATE} ${TEMPLATE_URL} ${IAM_CAPABILITIES}
