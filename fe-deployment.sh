@@ -39,18 +39,18 @@ function is_present(){
 
 if [[ "`is_present yum`" -eq "0" ]]; then
   yum -y update
-  yum -y install zip jq python3 curl
+  yum -y install python3 curl
   curl -sL https://rpm.nodesource.com/setup_16.x | bash -
   yum -y install nodejs
 
 fi 
 if [[ "`is_present apt-get`" -eq "0" ]]; then
   apt-get -y update  
-  apt-get -y install --no-install-recommends npm curl zip jq python3-pip
+  apt-get -y install --no-install-recommends npm curl python3-pip
 fi
 if [[ "`is_present brew`" -eq "0" ]]; then
   brew update
-  brew install node curl zip jq python
+  brew install node curl python
 fi
 
 for f in npm python3 jq zip; do
