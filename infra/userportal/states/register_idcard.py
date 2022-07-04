@@ -55,6 +55,17 @@ class RegisterIdCardStateMachine(RivStateMachineConstruct):
     detect.next(search)
 
     '''
+    Compate Faces with ID CARD
+    '''
+    check_face_with_id_card = sft.LambdaInvoke(self,'CompareFacesWithIDCard',
+      lambda_function=functions.compare_face_with_idcard.function,
+      input_path='$.inputRequest',
+      result_path='$.search',
+      output_path='$',
+      invocation_type= sft.LambdaInvocationType.REQUEST_RESPONSE)   
+
+    
+    '''
     Extract properties from id card
     '''
     extract_id_card = sft.LambdaInvoke(self,'Extract-IDCard',
@@ -90,7 +101,7 @@ class RegisterIdCardStateMachine(RivStateMachineConstruct):
     '''
     user_exists = sf.Choice(self,'Check-SearchResults')
     user_exists.when(
-      next=extract_id_card,
+      next=check_face_with_id_card,
       condition=sf.Condition.or_(
         sf.Condition.string_equals(
           '$.search.Payload.TopMatch.Face.ExternalImageId',
@@ -105,6 +116,24 @@ class RegisterIdCardStateMachine(RivStateMachineConstruct):
         cause='Cannot register double faces in same collections.'))
 
     search.next(user_exists)
+
+    '''
+    Stitch everything together...
+    '''
+    compare_face = sf.Choice(self,'Check-FaceCompareWithIDCard')
+    compare_face.when(
+      next=extract_id_card,
+      condition=sf.Condition.or_(
+        sf.Condition.boolean_equals(
+        '$.search.Payload.IsMatch',
+        True)))
+
+    compare_face.otherwise(
+      sf.Fail(self,'FaceNotMatchWithIDCardError',
+        error='FaceNotMatchWithIDCard',
+        cause='User face not match with the provided ID Card.'))
+
+    check_face_with_id_card.next(compare_face)
 
     # Format the message into API Gateway Model
     index.next(sf.Pass(self,'Registration-Complete',

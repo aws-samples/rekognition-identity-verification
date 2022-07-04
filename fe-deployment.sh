@@ -122,8 +122,8 @@ color_reset
 
 pushd $BASE_DIR/src/frontend
 
-npm install
-REACT_APP_ENV_API_URL=$API_END_POINT npm run build
+npm install --force
+REACT_APP_ENV_API_URL=$API_END_POINT npm run build 
 
 popd
 
