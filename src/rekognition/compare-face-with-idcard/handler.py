@@ -1,4 +1,3 @@
-from ddb import FaceTableClient
 from models import InputRequest
 import boto3
 from os import environ, path
@@ -28,7 +27,7 @@ except:
 Initialize any clients (... after xray!)
 '''
 rek_client = boto3.client('rekognition', region_name=environ.get('REGION'))
-face_table_client = FaceTableClient(environ.get('FACE_TABLE_NAME'), region_name=region_name)
+
 
 def function_main(event:Mapping[str,Any],_=None):
   inputRequest = InputRequest(event)
