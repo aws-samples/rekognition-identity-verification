@@ -1,5 +1,5 @@
 from infra.storage.topology import RivSharedDataStores
-from infra.userportal.functions.definitions import RivUserPortalCompareFaces, RivUserPortalDetectFaces, RivUserPortalExtractIdCard, RivUserPortalIndexFaces, RivUserPortalSearchFacesByImage
+from infra.userportal.functions.definitions import RivUserPortalCompareFaces, RivUserPortalDetectFaces, RivUserPortalExtractIdCard, RivUserPortalIndexFaces, RivUserPortalSearchFacesByImage,RivUserPortalCompareFacesWithIDCard
 from infra.interfaces import IVpcRivStack
 import aws_cdk as core
 from constructs import Construct
@@ -28,6 +28,9 @@ class RivUserPortalFunctionSet(Construct):
       riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=default_environment_var)
 
     self.extract_id_card = RivUserPortalExtractIdCard(self,'ExtractIdCard',
+      riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=default_environment_var)
+    
+    self.compare_face_with_idcard = RivUserPortalCompareFacesWithIDCard(self,'CompareFacesWithIDCard',
       riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=default_environment_var)
     
     '''

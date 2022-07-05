@@ -20,13 +20,24 @@ import StyledButton from '../Components/ButtonTheme';
 const SuccessPage = () => {
     const location = useLocation()
     const { userName } = location.state
+    let { properties } = location.state
     const { imageId } = location.state
     const { label } = location.state
-    const { lName } = location.state
-    const { fName } = location.state
-    const { age } = location.state
+    let { lName } = location.state
+    let { fName } = location.state
+    let { age } = location.state
+    if (properties) {
+        Object.keys(properties).forEach(key => {
+            if (properties[key] === '') {
+                delete properties[key];
+            }
+        });
+        lName = null;
+        fName = null;
+        age = null;
+
+    } 
     const { pic } = localStorage.getItem("pic")
-    console.log(location.state)
     return (
         <>
             <Title pagetitle={label} />
@@ -55,6 +66,7 @@ const SuccessPage = () => {
                     <div>
                         <Paper elevation={4}>
                             <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+
                                 {userName &&
                                     <ListItem>
                                         <ListItemAvatar>
@@ -95,6 +107,15 @@ const SuccessPage = () => {
                                         <ListItemText primary={age} />
                                     </ListItem>
                                 }
+                                {properties &&
+                                    Object.keys(properties).map((key, i) => (
+                                        <ListItem>
+                                            <ListItemText primary={key} />
+                                            <ListItemText primary={properties[key]} />
+                                        </ListItem>
+
+                                    ))
+                                }
                             </List>
                             {userName && imageId &&
                                 <Grid
@@ -114,6 +135,7 @@ const SuccessPage = () => {
                                     </Grid>
                                 </Grid>
                             }
+
                         </Paper>
                     </div>
                 </Grid>

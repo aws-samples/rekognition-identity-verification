@@ -105,3 +105,15 @@ class RivUserPortalExtractIdCard(RivUserPortalFunction):
   @property
   def component_name(self)->str:
     return 'Extract-IdCard'
+
+class RivUserPortalCompareFacesWithIDCard(RivUserPortalFunction):
+  def __init__(self, scope: Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default', env:Mapping[str,str]={}, **kwargs) -> None:
+    super().__init__(scope, id, riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=env)
+
+  @property
+  def source_directory(self)->str:
+    return 'src/rekognition/compare-face-with-idcard'
+
+  @property
+  def component_name(self)->str:
+    return 'CompareFacesWithIDCard'

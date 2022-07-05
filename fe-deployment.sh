@@ -27,6 +27,61 @@ echo "Deploying Stack "
 echo "===================================="
 color_reset
 
+function is_present(){
+  app_path_len=`command -v $1 | wc -c`
+  if [[ "$app_path_len" -gt "0" ]];
+  then
+    echo "0"
+  else
+    echo "1"
+  fi
+}
+
+if [[ "`is_present yum`" -eq "0" ]]; then
+  yum -y update
+  yum -y install python3 curl
+  curl -sL https://rpm.nodesource.com/setup_16.x | bash -
+  yum -y install nodejs
+
+fi 
+if [[ "`is_present apt-get`" -eq "0" ]]; then
+  apt-get -y update  
+  apt-get -y install --no-install-recommends npm curl python3-pip
+fi
+if [[ "`is_present brew`" -eq "0" ]]; then
+  brew update
+  brew install node curl python
+fi
+
+for f in npm python3 jq zip; do
+  if [[ "`is_present $f`" -eq "1" ]]; then
+    color_red
+    echo "Requirement: [$f]: MISSING"
+    color_reset
+    exit 1
+  fi
+done
+
+if [[ "`is_present awscliv2`" -eq "1" ]]; then
+  pip3 install awscliv2
+  awscliv2 --install
+  if [[ "$?" -ne "0" ]]; then
+    color_red
+    echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    echo "!! Install awscli Failed  !!"
+    echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    color_reset
+    exit 1
+  fi
+
+  echo "=============================="
+  echo "You must configure AWS CLI"
+  echo "=============================="
+  echo "https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html"
+  echo
+  awscliv2 configure
+fi
+
 if [ -z "$RIV_STACK_NAME" ]
 then
   color_green
@@ -67,8 +122,8 @@ color_reset
 
 pushd $BASE_DIR/src/frontend
 
-npm install
-REACT_APP_ENV_API_URL=$API_END_POINT npm run build
+npm install --force
+REACT_APP_ENV_API_URL=$API_END_POINT npm run build 
 
 popd
 

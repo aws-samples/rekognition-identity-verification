@@ -82,11 +82,15 @@ export default function RegisterWithIdCard() {
                 let responseData = response
                 if (responseData.status === "SUCCEEDED") {
                     let responseSuccessData = JSON.parse(responseData.output)
-                    setregisterSuccess({ "userName": responseSuccessData.UserId, "imageId": responseSuccessData.ImageId, "label": "       Successfully Registered User", "fName": responseSuccessData.Properties.FIRST_NAME, "lName": responseSuccessData.Properties.LAST_NAME, "age": responseSuccessData.Properties.DATE_OF_BIRTH })
+                    setregisterSuccess({ "userName": responseSuccessData.UserId, "imageId": responseSuccessData.ImageId, "label": "       Successfully Registered User","properties":responseSuccessData.Properties})
 
                 } else {
                     console.log(responseData.error)
-                    setError("Faces don't match")
+                    if(responseData.error === 'FaceNotMatchWithIDCard'){
+                        setError("Describe Face not match with the ID card");
+                    }else{
+                        setError("User already exist")
+                    }
                     //setError(responseData.status + " : Identification information doesn't match")
                 }
                 setprogress(false)

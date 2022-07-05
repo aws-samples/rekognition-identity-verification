@@ -90,13 +90,23 @@ class RivUserPortalGateway(Construct):
             selection_pattern='200',
             response_templates={                
               'application/json':'''$input.json('$')'''
-            }),
+            },
+            response_parameters={
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Methods": "'*'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+    }),
           api.IntegrationResponse(
             status_code='500',
             selection_pattern='500',
             response_templates={
               'application/json':'''$input.json('$')'''
-            })
+            },
+            response_parameters={
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Methods": "'*'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+    })
         ],
         passthrough_behavior= api.PassthroughBehavior.NEVER))
 
@@ -120,9 +130,17 @@ class RivUserPortalGateway(Construct):
       integration=integration,
       method_responses=[
         api.MethodResponse(status_code='200', response_models={
-          'application/json': model_out
-        }),
+          'application/json': model_out,
+        },response_parameters={
+            "method.response.header.Access-Control-Allow-Headers": True,
+            "method.response.header.Access-Control-Allow-Methods": True,
+            "method.response.header.Access-Control-Allow-Origin": True
+    }),
         api.MethodResponse(status_code='500', response_models={
           'application/json': api.Model.ERROR_MODEL
-        })
+        },response_parameters={
+            "method.response.header.Access-Control-Allow-Headers": True,
+            "method.response.header.Access-Control-Allow-Methods": True,
+            "method.response.header.Access-Control-Allow-Origin": True
+    })
       ])
