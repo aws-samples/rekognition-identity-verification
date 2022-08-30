@@ -414,164 +414,164 @@ function wait-for-deployment() {
 
 }
 
-color_green
-echo "###########################################################"
-echo "# Build React Frontend APP"
-echo "###########################################################"
-color_reset
+# color_green
+# echo "###########################################################"
+# echo "# Build React Frontend APP"
+# echo "###########################################################"
+# color_reset
 
-pushd $BASE_DIR/src/frontend
+# pushd $BASE_DIR/src/frontend
 
-npm install
-REACT_APP_ENV_API_URL=$API_END_POINT npm run build
+# npm install --force
+# REACT_APP_ENV_API_URL=$API_END_POINT npm run build
 
-popd
+# popd
 
-color_green
-echo "###########################################################"
-echo "#  Create Amplify App"
-echo "###########################################################"
-color_reset
+# color_green
+# echo "###########################################################"
+# echo "#  Create Amplify App"
+# echo "###########################################################"
+# color_reset
 
-export AmplifyApp=`awscliv2 amplify list-apps | jq  '.apps[]| select(.name=="Riv-Prod")'`
-if [ -z "$AmplifyApp" ]; then
-  echo "===================="
-  echo "Creating new app"
-  echo "===================="
-  printf -v data '{"REACT_APP_ENV_API_URL": "%s"}' "$API_END_POINT"
-  awscliv2 amplify create-app --name $RIV_STACK_NAME --environment-variables "$data" --custom-rules source='</^((?!\.(css|gif|ico|jpg|js|png|txt|svg|woff|ttf)$).)*$/>',target='/index.html',status=200 --build-spec "REACT_APP_ENV_API_URL=$REACT_APP_ENV_API_URL" 
-  if [[ "$?" -ne "0" ]]; then
-    color_red
-    echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-    echo "!! amplify create-app failed   !!"
-    echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-    color_reset
-    exit 1
-  fi
-  export AmplifyApp=`awscliv2 amplify list-apps | jq  '.apps[]| select(.name=="Riv-Prod")'`
-fi
-
-echo "===================="
-echo "Using amplify app   "
-echo "===================="
-echo $AmplifyApp | jq
-
-export APP_ID=`echo $AmplifyApp | jq .appId | tr -d '"'`
-
-color_green
-echo "###########################################################"
-echo "#  Create Branch"
-echo "###########################################################"
-color_reset
-
-AmplifyBranch=`awscliv2 amplify list-branches --app-id $APP_ID | jq '.branches[]|select(.branchName=="prod")'`
-if [ -z "$AmplifyBranch" ]; then
-  echo "===================="
-  echo "Creating new branch"
-  echo "===================="
-  awscliv2 amplify create-branch --app-id ${APP_ID} --environment-variables "$data" --branch-name ${BRANCH_NAME}
-  if [[ "$?" -ne "0" ]]; then
-    color_red
-    echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-    echo "!! amplify create-branch failed!!"
-    echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-    color_reset
-    exit 1
-  fi
-  AmplifyBranch=`awscliv2 amplify list-branches --app-id $APP_ID | jq '.branches[]|select(.branchName=="prod")'`
-fi
-
-echo "===================="
-echo "Using branch"
-echo "===================="
-echo $AmplifyBranch | jq
-
-color_green
-echo "###########################################################"
-echo "#  Create Zip Archive"
-echo "###########################################################"
-color_reset
-
-echo "===================="
-echo "Compressing files"
-echo "===================="
-pushd "${BASE_DIR}/src/frontend/build"
-rm -f ${BRANCH_NAME}.zip
-zip -rq ${BRANCH_NAME}.zip .
-ls -lh ${BRANCH_NAME}.zip
-popd
-
-echo Passed.
-
-color_green
-echo "###########################################################"
-echo "#  Deploying Amplify frontend"
-echo "###########################################################"
-color_reset
-
-# echo "===================="
-# echo "Waiting for any pending"
-# echo "===================="
-
-# while [[ 1 ]]; do
-#   ListJobs=`awscliv2 amplify list-jobs --app-id $APP_ID --branch-name $BRANCH_NAME | jq '.jobSummaries[]|select(.status=="PENDING")'`
-#   if [ -z "$ListJobs" ]; then
-#     echo "All previous jobs have finished."
-#     break
+# export AmplifyApp=`awscliv2 amplify list-apps | jq  '.apps[]| select(.name=="Riv-Prod")'`
+# if [ -z "$AmplifyApp" ]; then
+#   echo "===================="
+#   echo "Creating new app"
+#   echo "===================="
+#   printf -v data '{"REACT_APP_ENV_API_URL": "%s"}' "$API_END_POINT"
+#   awscliv2 amplify create-app --name $RIV_STACK_NAME --environment-variables "$data" --custom-rules source='</^((?!\.(css|gif|ico|jpg|js|png|txt|svg|woff|ttf)$).)*$/>',target='/index.html',status=200 --build-spec "REACT_APP_ENV_API_URL=$REACT_APP_ENV_API_URL" 
+#   if [[ "$?" -ne "0" ]]; then
+#     color_red
+#     echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+#     echo "!! amplify create-app failed   !!"
+#     echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+#     color_reset
+#     exit 1
 #   fi
+#   export AmplifyApp=`awscliv2 amplify list-apps | jq  '.apps[]| select(.name=="Riv-Prod")'`
+# fi
+
+# echo "===================="
+# echo "Using amplify app   "
+# echo "===================="
+# echo $AmplifyApp | jq
+
+# export APP_ID=`echo $AmplifyApp | jq .appId | tr -d '"'`
+
+# color_green
+# echo "###########################################################"
+# echo "#  Create Branch"
+# echo "###########################################################"
+# color_reset
+
+# AmplifyBranch=`awscliv2 amplify list-branches --app-id $APP_ID | jq '.branches[]|select(.branchName=="prod")'`
+# if [ -z "$AmplifyBranch" ]; then
+#   echo "===================="
+#   echo "Creating new branch"
+#   echo "===================="
+#   awscliv2 amplify create-branch --app-id ${APP_ID} --environment-variables "$data" --branch-name ${BRANCH_NAME}
+#   if [[ "$?" -ne "0" ]]; then
+#     color_red
+#     echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+#     echo "!! amplify create-branch failed!!"
+#     echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+#     color_reset
+#     exit 1
+#   fi
+#   AmplifyBranch=`awscliv2 amplify list-branches --app-id $APP_ID | jq '.branches[]|select(.branchName=="prod")'`
+# fi
+
+# echo "===================="
+# echo "Using branch"
+# echo "===================="
+# echo $AmplifyBranch | jq
+
+# color_green
+# echo "###########################################################"
+# echo "#  Create Zip Archive"
+# echo "###########################################################"
+# color_reset
+
+# echo "===================="
+# echo "Compressing files"
+# echo "===================="
+# pushd "${BASE_DIR}/src/frontend/build"
+# rm -f ${BRANCH_NAME}.zip
+# zip -rq ${BRANCH_NAME}.zip .
+# ls -lh ${BRANCH_NAME}.zip
+# popd
+
+# echo Passed.
+
+# color_green
+# echo "###########################################################"
+# echo "#  Deploying Amplify frontend"
+# echo "###########################################################"
+# color_reset
+
+# # echo "===================="
+# # echo "Waiting for any pending"
+# # echo "===================="
+
+# # while [[ 1 ]]; do
+# #   ListJobs=`awscliv2 amplify list-jobs --app-id $APP_ID --branch-name $BRANCH_NAME | jq '.jobSummaries[]|select(.status=="PENDING")'`
+# #   if [ -z "$ListJobs" ]; then
+# #     echo "All previous jobs have finished."
+# #     break
+# #   fi
   
-#   echo "Waiting on $APP_ID ($BRANCH_NAME) to complete `echo $ListJobs|grep status|wc -l` jobs."
-#   sleep 15
-# done  
+# #   echo "Waiting on $APP_ID ($BRANCH_NAME) to complete `echo $ListJobs|grep status|wc -l` jobs."
+# #   sleep 15
+# # done  
 
-echo "===================="
-echo "Terminating any pending jobs"
-echo "===================="
-for jobId in `awscliv2 amplify list-jobs --app-id $APP_ID --branch-name $BRANCH_NAME | jq -r '.jobSummaries[]|select(.status=="PENDING")|.jobId'`;
-do
-  echo "awscliv2 amplify stop-job --app-id $APP_ID --branch-name $BRANCH_NAME --job-id $jobId"  
-  awscliv2 amplify stop-job --app-id $APP_ID --branch-name $BRANCH_NAME --job-id jobId
-done
+# echo "===================="
+# echo "Terminating any pending jobs"
+# echo "===================="
+# for jobId in `awscliv2 amplify list-jobs --app-id $APP_ID --branch-name $BRANCH_NAME | jq -r '.jobSummaries[]|select(.status=="PENDING")|.jobId'`;
+# do
+#   echo "awscliv2 amplify stop-job --app-id $APP_ID --branch-name $BRANCH_NAME --job-id $jobId"  
+#   awscliv2 amplify stop-job --app-id $APP_ID --branch-name $BRANCH_NAME --job-id jobId
+# done
 
-echo Passed.
-echo
+# echo Passed.
+# echo
 
-echo "===================="
-echo "amplify create-deployment"
-echo "===================="
+# echo "===================="
+# echo "amplify create-deployment"
+# echo "===================="
 
-read jobId URL < <(echo $(awscliv2 amplify create-deployment --app-id  ${APP_ID} --branch ${BRANCH_NAME} | jq -r '.jobId, .zipUploadUrl'))
-curl -v --upload-file "${BASE_DIR}/src/frontend/build/${BRANCH_NAME}.zip" $URL
-if [[ "$?" -ne "0" ]]; then
-    color_red
-    echo "!!!!!!!!!!!!!!!!!!!!!!!!!"
-    echo "!! Upload file failed  !!"
-    echo "!!!!!!!!!!!!!!!!!!!!!!!!!"
-    color_reset
-    exit 1
-fi
+# read jobId URL < <(echo $(awscliv2 amplify create-deployment --app-id  ${APP_ID} --branch ${BRANCH_NAME} | jq -r '.jobId, .zipUploadUrl'))
+# curl -v --upload-file "${BASE_DIR}/src/frontend/build/${BRANCH_NAME}.zip" $URL
+# if [[ "$?" -ne "0" ]]; then
+#     color_red
+#     echo "!!!!!!!!!!!!!!!!!!!!!!!!!"
+#     echo "!! Upload file failed  !!"
+#     echo "!!!!!!!!!!!!!!!!!!!!!!!!!"
+#     color_reset
+#     exit 1
+# fi
 
-deployment=$(awscliv2 amplify start-deployment --app-id ${APP_ID} --branch-name ${BRANCH_NAME} --job-id ${jobId})
-if [[ "$?" -ne "0" ]]; then
-    color_red
-    echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-    echo "!! Start-Deployment Failed  !!"
-    echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-    color_reset
-    exit 1
-fi
+# deployment=$(awscliv2 amplify start-deployment --app-id ${APP_ID} --branch-name ${BRANCH_NAME} --job-id ${jobId})
+# if [[ "$?" -ne "0" ]]; then
+#     color_red
+#     echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+#     echo "!! Start-Deployment Failed  !!"
+#     echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+#     color_reset
+#     exit 1
+# fi
 
-echo $deployment | jq
+# echo $deployment | jq
 
-echo "===================="
-echo "Waiting for deployment"
-echo "===================="
+# echo "===================="
+# echo "Waiting for deployment"
+# echo "===================="
 
-wait-for-deployment $(echo ${deployment} | jq -r '.jobSummary.jobId')
+# wait-for-deployment $(echo ${deployment} | jq -r '.jobSummary.jobId')
 
-color_green
-echo Deployment Complete.
-color_reset
+# color_green
+# echo Deployment Complete.
+# color_reset
 
 # awscliv2 cloudformation describe-stacks --stack-name ${RIV_STACK_NAME} --region ${S3_REGION} 2>/dev/null >/dev/null
 # if [[ "$?" -eq "0" ]]; then

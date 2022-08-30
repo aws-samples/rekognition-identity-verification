@@ -1,5 +1,6 @@
 import builtins
 from infra.userportal.states.interfaces import IRivUserPortalStateMachines, RivStateMachineConstruct
+from infra.userportal.functions.topology import RivUserPortalFunctionSet
 from infra.userportal.gateway.models import GatewayModels
 from json import dumps
 from infra.interfaces import IVpcRivStack
@@ -36,9 +37,8 @@ class RivUserPortalGateway(Construct):
     self.rest_api = api.RestApi(self,'UserPortal',
       rest_api_name='{}-UserPortal'.format(riv_stack.riv_stack_name),
       description='Gateway for {}'.format(self.component_name))
-
+    
     self.models = GatewayModels(self,'Models', rest_api= self.rest_api)
-
     # Specify the role to use with integrations...
     self.role = iam.Role(self,'Role',
       #role_name='{}@riv.{}.{}'.format(self.component_name, riv_stack.riv_stack_name, core.Stack.of(self).region),
@@ -52,6 +52,9 @@ class RivUserPortalGateway(Construct):
       parameter_name='/riv/{}/userportal/url'.format(riv_stack.riv_stack_name),
       string_value=self.rest_api.url)
 
+  def rest_api_url(self):
+        return self.rest_api.url
+  
   def bind_state_machines(self, state_machines:IRivUserPortalStateMachines)->api.ProxyResource:
     '''
     Creates a service integration between a given path and state machine
@@ -65,6 +68,72 @@ class RivUserPortalGateway(Construct):
     self.__bind_state_machine('update', state_machines.update_existing_user, self.models.update_user_request, self.models.update_respose_model)
     self.__bind_state_machine('auth', state_machines.auth_existing_user, self.models.auth_input_model, self.models.auth_response_model)
     
+  
+  def bind_reset_user(self, functions:RivUserPortalFunctionSet)->api.ProxyResource:
+    '''
+    Configure the service integration
+    :param resource_name:  The UserPortal's URL fragment.
+    :param handler: The user flows implementing Step Function Express instance
+    :param model_in: The request's data contract definition
+    :param model_out: The response's data contract definition
+    '''
+    integration = api.LambdaIntegration(functions.reset_user.function,
+    integration_responses=[
+          api.IntegrationResponse(
+            status_code='200',
+            selection_pattern='200',
+            response_parameters={
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Methods": "'*'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+    }),
+          api.IntegrationResponse(
+            status_code='500',
+            selection_pattern='500',
+            response_parameters={
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Methods": "'*'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+    })
+        ],
+        passthrough_behavior= api.PassthroughBehavior.NEVER)
+        
+    '''
+    Configure the /resource-name...
+    '''    
+    resource = self.rest_api.root.add_resource(
+      path_part='reset-user',
+      default_cors_preflight_options= api.CorsOptions(
+        allow_origins=api.Cors.ALL_ORIGINS,
+        allow_headers=['Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'],
+        allow_credentials=True,
+        allow_methods=['OPTIONS', 'GET'],
+      ),
+      default_method_options=api.MethodOptions(
+        request_models= {
+          "application/json": self.models.auth_input_model
+        }))
+
+    resource.add_method(http_method='GET',
+      integration=integration,
+      method_responses=[
+        api.MethodResponse(status_code='200', response_models={
+          'application/json': self.models.auth_response_model,
+        },response_parameters={
+            "method.response.header.Access-Control-Allow-Headers": True,
+            "method.response.header.Access-Control-Allow-Methods": True,
+            "method.response.header.Access-Control-Allow-Origin": True
+    }),
+        api.MethodResponse(status_code='500', response_models={
+          'application/json': api.Model.ERROR_MODEL
+        },response_parameters={
+            "method.response.header.Access-Control-Allow-Headers": True,
+            "method.response.header.Access-Control-Allow-Methods": True,
+            "method.response.header.Access-Control-Allow-Origin": True
+    })
+      ])
+    
+
   def __bind_state_machine(self,resource_name:str,handler:RivStateMachineConstruct,model_in:api.Model,model_out:api.Model)->None:
     '''
     Configure the service integration

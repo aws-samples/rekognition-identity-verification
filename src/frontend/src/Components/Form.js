@@ -33,7 +33,7 @@ const Form = ({ imgSrc }) => {
         body: { "Properties": { fName, lName, age, id }, "UserId": id, "Image": base64Image }, // replace this with attributes you need
         headers: { "Content-Type": "application/json" }, // OPTIONAL
       };
-      API.post("identityverification", "/register", requestData).then(response => {
+      API.post("identityverification", "register", requestData).then(response => {
         let responseData = response;
         if (responseData.status === "SUCCEEDED") {
           let responseSuccessData = JSON.parse(responseData.output)

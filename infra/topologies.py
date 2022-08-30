@@ -7,6 +7,9 @@ from infra.bulkloader.topology import RivBulkLoader
 from infra.services.rekognition.topology import RivRekognitionSetupConstruct
 from infra.storage.topology import RivSharedDataStores
 from infra.userportal.topology import RivUserPortal
+from infra.frontend.topology import RivFrontEnd
+from infra.frontend.topology import TriggerRivFrontEndBuild
+from infra.frontend.topology import RivFrontEndBuildStatus
 from infra.interfaces import IVpcRivStack, IVpcNetworkingConstruct
 import aws_cdk as core
 from constructs import Construct
@@ -120,6 +123,16 @@ class DefaultRivStack(VpcRivStack):
 
     # Setup Rekognition
     RivRekognitionSetupConstruct(self,'RekognitionSetup', riv_stack=self)
+
+    #Setup FE
+    feapp = RivFrontEnd(self,"RIVWebAPP",riv_stack=self, apigateway=userportal.api_gateway )
+
+    triggerfeapp = TriggerRivFrontEndBuild(self,"RIVWebAPPTrigger",riv_stack=self,amplifyApp=feapp)
+    # feapp = RivFrontEnd(self,"RIVWebAPP",riv_stack=self)
+    triggerfeapp.node.add_dependency(feapp)
+    feappstatus = RivFrontEndBuildStatus(self,"RIVWebAPPStatus",riv_stack=self, amplifyApp=feapp , buildTrigger=triggerfeapp)
+    feappstatus.node.add_dependency(triggerfeapp)
+
     
     if config.include_bulk_loader:
       # Create the bulk loader
