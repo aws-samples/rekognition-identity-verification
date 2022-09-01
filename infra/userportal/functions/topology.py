@@ -1,5 +1,5 @@
 from infra.storage.topology import RivSharedDataStores
-from infra.userportal.functions.definitions import RivUserPortalCompareFaces, RivUserPortalDetectFaces, RivUserPortalExtractIdCard, RivUserPortalIndexFaces, RivUserPortalSearchFacesByImage,RivUserPortalCompareFacesWithIDCard
+from infra.userportal.functions.definitions import RivUserPortalCompareFaces, RivUserPortalDetectFaces, RivUserPortalExtractIdCard, RivUserPortalIndexFaces, RivUserPortalSearchFacesByImage,RivUserPortalCompareFacesWithIDCard,RivUserPortalResetUser
 from infra.interfaces import IVpcRivStack
 import aws_cdk as core
 from constructs import Construct
@@ -33,6 +33,9 @@ class RivUserPortalFunctionSet(Construct):
     self.compare_face_with_idcard = RivUserPortalCompareFacesWithIDCard(self,'CompareFacesWithIDCard',
       riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=default_environment_var)
     
+    self.reset_user = RivUserPortalResetUser(self,'ResetUser',
+      riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=default_environment_var)
+    
     '''
     Configure the Index Faces
     '''
@@ -48,5 +51,6 @@ class RivUserPortalFunctionSet(Construct):
     sharedStorage.face_metadata.face_table.grant_read_data(self.compare_faces.function.role)
     sharedStorage.face_metadata.face_table.grant_read_write_data(self.index_faces.function.role)
     sharedStorage.face_metadata.face_table.grant_read_write_data(self.index_faces.function.role)
+    sharedStorage.face_metadata.face_table.grant_read_write_data(self.reset_user.function.role)
     sharedStorage.images.image_bucket.grant_put(self.index_faces.function.role)
 

@@ -42,6 +42,8 @@ class RivUserPortal(Construct):
 
     self.api_gateway.bind_state_machines(self.state_machines)
 
+    self.api_gateway.bind_reset_user(self.functions)
+
     '''
     Create Standard Stepfunctions to simplify developer troubleshooting.
     '''

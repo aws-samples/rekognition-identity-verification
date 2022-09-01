@@ -12,16 +12,18 @@ import Tooltip from '@mui/material/Tooltip';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { API } from "aws-amplify";
+
 import {
    useNavigate
 } from "react-router-dom";
+
 
 export default function RIVMenu() {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  // const [resetSuccess, setresetSuccess] = React.useState();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -29,18 +31,17 @@ export default function RIVMenu() {
     setAnchorEl(null);
   };
   const clear = () => {
-    localStorage.removeItem("pic");
+    // localStorage.removeItem("pic");
     navigate("/");
-    // API.get("identityverification", "/reset").then(response => {
-    //   let responseData = response
-    //   console.log(responseData)
-    //   if (responseData.status === "SUCCEEDED") {
-    //     navigate("/");
-    //   }
-    //   else {
-    //     console.log(responseData.status + " : " + responseData.error)
-    //   }
-    // });
+  };
+  const reset = () => {
+    const options = { headers: {
+      'Content-Type': 'application/json'
+    }}
+    API.get("identityverification", "reset-user", options).then(response => {
+        // localStorage.removeItem("pic");
+        navigate("/");
+     });
   };
 
   return (
@@ -121,6 +122,17 @@ export default function RIVMenu() {
               <Settings fontSize="small" />
             </ListItemIcon>
             Register with ID
+          </Button>
+        </MenuItem>
+        <MenuItem>
+          <Button
+            color="inherit"
+            onClick={reset}
+            >
+            <ListItemIcon>
+              <RestartAltIcon fontSize="small" />
+            </ListItemIcon>
+            Reset Users
           </Button>
         </MenuItem>
         <MenuItem>
