@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import IconButton from '@mui/material/IconButton';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import Typography from '@mui/material/Typography';
 
 export const FileUploadContainer = styled.section`
   position: relative;
@@ -50,16 +51,22 @@ const FileUpload = ({
 }) => {
     const fileInputField = useRef(null);
     const [files, setFiles] = useState();
+    const [error, setError] = useState();
     const handleUploadBtnClick = () => {
         fileInputField.current.click();
     };
 
     const callUpdateFilesCb = (file) => {
+        setError(null)
+        if(file.size > 150000) {
+            setError(" Error! Please upload image size of less than 150 kb.")
+        }else {
         const reader = new FileReader();
         reader.onloadend = function () {
             updateFilesCb(reader.result);
         }
         reader.readAsDataURL(file);
+    }
 
     };
 
@@ -73,8 +80,18 @@ const FileUpload = ({
 
     return (
         <>
+          {error && (
+          <Typography color="red" variant="subtitle2" gutterBottom component="div">
+            {error}
+          </Typography>
+        )}
             <FileUploadContainer>
-                <DragDropText>Drag and drop your ID card</DragDropText>
+                <DragDropText>Drag and drop your ID card
+                <Typography variant="caption" display="block" gutterBottom>
+                Please upload image size of less than 150 kb
+      </Typography>
+                    <p></p>
+                </DragDropText>
                 <IconButton onClick={handleUploadBtnClick}>
                     <FileUploadIcon sx={{ fontSize: 80 }} />
                 </IconButton>

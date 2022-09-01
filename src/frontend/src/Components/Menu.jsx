@@ -31,7 +31,7 @@ export default function RIVMenu() {
     setAnchorEl(null);
   };
   const clear = () => {
-    localStorage.removeItem("pic");
+    // localStorage.removeItem("pic");
     navigate("/");
   };
   const reset = () => {
@@ -39,7 +39,7 @@ export default function RIVMenu() {
       'Content-Type': 'application/json'
     }}
     API.get("identityverification", "reset-user", options).then(response => {
-        localStorage.removeItem("pic");
+        // localStorage.removeItem("pic");
         navigate("/");
      });
   };
