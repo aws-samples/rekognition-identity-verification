@@ -14,13 +14,13 @@ class VpcNetworkingConstruct(Construct):
     super().__init__(scope, id, **kwargs)
 
     # Determine if we need NAT Gateways...
-    has_private_networks = len([x for x in subnet_configuration if x.subnet_type == ec2.SubnetType.PRIVATE_WITH_NAT])
+    has_private_networks = len([x for x in subnet_configuration if x.subnet_type == ec2.SubnetType.PRIVATE_WITH_EGRESS])
     nat_gateways=0
     if has_private_networks > 0:
       nat_gateways = 1
 
     self.vpc = ec2.Vpc(self,'Network',
-      cidr=cidr,
+      ip_addresses= ec2.IpAddresses.cidr(cidr),
       enable_dns_hostnames=True,
       enable_dns_support=True,
       max_azs= 2,

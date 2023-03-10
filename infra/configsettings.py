@@ -1,4 +1,5 @@
 import os
+import aws_cdk as cdk
 from json import loads
 
 src_root_dir = os.path.join(os.path.dirname(__file__),'..')
@@ -78,6 +79,10 @@ class ConfigManager:
     if 'include_bulk_loader' in self.json:
       return self.json['include_bulk_loader']
     return False
+
+  @property
+  def include_front_end(self)->bool:
+    return self.json.get('include_front_end',True)
 
   @property
   def use_custom_asset_bucket(self)->bool:

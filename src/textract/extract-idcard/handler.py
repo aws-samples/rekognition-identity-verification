@@ -1,6 +1,5 @@
-from model import InputRequest, InvalidImageError, TextractDocument
+from model import InputRequest, InvalidImageError
 import boto3
-from docparser import DocumentParser
 from base64 import b64encode, b64decode
 from os import environ, path
 from typing import Any, List, Mapping
