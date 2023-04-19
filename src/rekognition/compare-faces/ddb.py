@@ -4,6 +4,7 @@ from typing import Mapping
 from urllib.parse import urlparse
 from boto3.dynamodb.conditions import BeginsWith, Key
 from boto3.dynamodb.conditions import Key, Attr
+from base64 import b64encode
 #from aws_xray_sdk.core import xray_recorder
 
 
@@ -26,7 +27,7 @@ class FaceTableClient:
     self.s3 = boto3.client('s3', region_name=region_name)
 
   #@xray_recorder.capture('get_faces')
-  def get_faces(self, user_id:str)->Mapping[str,bytes]:
+  def get_faces(self, user_id:str)->Mapping[str,str]:
     '''
     Gets every face associated with a given user.
     :param user_id:  The users alias.
@@ -43,8 +44,11 @@ class FaceTableClient:
       face_id:str = str(item['SortKey']).replace('Face::','',1).lower()
       if 'image' in item:
         faces[face_id] = item['image']
-      elif 's3_uri' in item:
-        faces[face_id] = self.__get_image_from_uri(item['s3_uri'])
+      # elif 's3_uri' in item:
+      #   faces[face_id] = self.__get_image_from_uri(item['s3_uri'])
+      elif 'bucket' in item:
+        faces[face_id] = {'bucket':item['bucket'],'name':item['name']}
+        # faces[face_id] = self.__get_image_from_uri(item['bucket'],item['name'])
       else:
         #faces[face_id] = None
         print('user {} - face_id {} has no face.'.format(user_id,face_id))
