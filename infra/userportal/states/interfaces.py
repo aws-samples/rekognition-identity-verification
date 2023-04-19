@@ -1,6 +1,6 @@
 import builtins
 from infra.userportal.functions.topology import RivUserPortalFunctionSet
-from infra.interfaces import  IVpcRivStack
+from infra.interfaces import  IRivStack
 import aws_cdk as core
 from constructs import Construct
 from aws_cdk import (
@@ -16,7 +16,7 @@ class RivStateMachineConstruct(Construct):
   Represents the base class for RivUserPortal StateMachines.
   '''
   @property
-  def riv_stack(self)->IVpcRivStack:
+  def riv_stack(self)->IRivStack:
     '''
     Gets the destination RIV stack.
     '''
@@ -36,7 +36,7 @@ class RivStateMachineConstruct(Construct):
     '''
     return self.__state_machine
 
-  def __init__(self, scope: Construct, id: builtins.str, riv_stack:IVpcRivStack,functions:RivUserPortalFunctionSet, state_machine_type:sf.StateMachineType) -> None:
+  def __init__(self, scope: Construct, id: builtins.str, riv_stack:IRivStack,functions:RivUserPortalFunctionSet, state_machine_type:sf.StateMachineType) -> None:
     '''
     Initializes a new instance of the RivStateMachineConstruct.
     '''
@@ -115,7 +115,7 @@ class IRivUserPortalStateMachines(Construct):
     assert self.__register_idcard is not None, "Missing call to setter register_with_idcard"
     return self.__register_idcard
 
-  @register_new_user.setter
+  @register_with_idcard.setter
   def register_with_idcard(self,value:RivStateMachineConstruct)->None:
     '''
     Sets the RivStateMachineConstruct that implements the Register with Id Card flow.

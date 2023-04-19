@@ -5,7 +5,7 @@ from infra.userportal.states.register_user import RegisterStateMachine
 from infra.userportal.states.register_idcard import RegisterIdCardStateMachine
 from infra.userportal.states.update import UpdateStateMachine
 from infra.userportal.states.auth import AuthStateMachine
-from infra.interfaces import IVpcRivStack
+from infra.interfaces import IRivStack
 from constructs import Construct
 from aws_cdk import (
   aws_stepfunctions as sf,
@@ -15,7 +15,7 @@ class RivUserPortalStateMachines(IRivUserPortalStateMachines):
   '''
   Represents a Construct containing all UserPortal state machines.
   '''
-  def __init__(self, scope: Construct, id: builtins.str, riv_stack:IVpcRivStack,functions:RivUserPortalFunctionSet, state_machine_type:sf.StateMachineType) -> None:
+  def __init__(self, scope: Construct, id: builtins.str, riv_stack:IRivStack,functions:RivUserPortalFunctionSet, state_machine_type:sf.StateMachineType) -> None:
     '''
     Initializes a new instance of the RivUserPortalStateMachines Construct.
     '''

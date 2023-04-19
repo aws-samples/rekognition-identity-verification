@@ -1,5 +1,4 @@
 import os
-import aws_cdk as cdk
 from json import loads
 
 src_root_dir = os.path.join(os.path.dirname(__file__),'..')
@@ -50,18 +49,7 @@ class ConfigManager:
     else:
       return cdk.Aws.ACCOUNT_ID
 
-  @property
-  def use_isolated_subnets(self)->bool:
-    if 'use_isolated_subnets' in self.json:
-      return self.json['use_isolated_subnets']
-    return False
-
-  @property
-  def use_automated_backup(self)->bool:
-    if 'use_automated_backup' in self.json:
-      return self.json['use_automated_backup']
-    return False
-
+ 
   @property
   def total_collections(self)->int:
     if 'total_collections' in self.json:
@@ -73,16 +61,6 @@ class ConfigManager:
       total_collections = 1
     
     return int(total_collections)
-
-  @property
-  def include_bulk_loader(self)->bool:
-    if 'include_bulk_loader' in self.json:
-      return self.json['include_bulk_loader']
-    return False
-
-  @property
-  def include_front_end(self)->bool:
-    return self.json.get('include_front_end',True)
 
   @property
   def use_custom_asset_bucket(self)->bool:

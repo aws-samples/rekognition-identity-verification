@@ -1,7 +1,7 @@
 from os import path
 from infra.configsettings import ConfigManager
 from typing import Mapping
-from infra.interfaces import IVpcRivStack
+from infra.interfaces import IRivStack
 import aws_cdk as core
 from constructs import Construct
 from aws_cdk import (
@@ -29,12 +29,12 @@ class RivDefaultFunction(Construct):
     raise NotImplementedError()
 
   @property
-  def riv_stack(self)->IVpcRivStack:
+  def riv_stack(self)->IRivStack:
     return self.__landing_zone
 
   @property
   def function_timeout(self)->core.Duration:
-    return core.Duration.seconds(30)
+    return core.Duration.seconds(60)
 
   @property
   def function(self)->lambda_.IFunction:
@@ -44,10 +44,10 @@ class RivDefaultFunction(Construct):
   def function(self,value:lambda_.IFunction)->None:
     self.__function = value
   
-  def __init__(self, scope: Construct, id: str, riv_stack:IVpcRivStack,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
+  def __init__(self, scope: Construct, id: str, riv_stack:IRivStack,env:Mapping[str,str]={}, **kwargs) -> None:
     super().__init__(scope, id, **kwargs)
-    self.__landing_zone = riv_stack
 
+    self.__landing_zone = riv_stack
     role = iam.Role(self,'Role',
       assumed_by=iam.ServicePrincipal(service='lambda'),
       description='{} for the {} component.'.format(self.__class__.__name__, self.component_name),
@@ -78,13 +78,15 @@ class RivDefaultFunction(Construct):
       description='Python container lambda function for '+self.component_name,
       timeout= self.function_timeout,
       handler='handler.function_main',
-      runtime= lambda_.Runtime.PYTHON_3_8,
+      runtime= lambda_.Runtime.PYTHON_3_9,
       tracing= lambda_.Tracing.ACTIVE,
-      vpc= riv_stack.vpc,
+      # vpc= riv_stack.vpc,
+      # vpc = ec2.Vpc.from_lookup(self,"VPC",is_default=True),
       memory_size=512,
-      allow_all_outbound=True,
-      vpc_subnets=ec2.SubnetSelection(subnet_group_name=subnet_group_name),
-      security_groups=[riv_stack.security_group],
+      # allow_all_outbound=True,
+      # allow_public_subnet=True,
+      # vpc_subnets=ec2.SubnetSelection(subnet_group_name=subnet_group_name),
+      # security_groups=[riv_stack.security_group],
       environment=environment
     )
 
