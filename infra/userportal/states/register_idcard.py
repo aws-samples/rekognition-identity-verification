@@ -1,7 +1,7 @@
 import builtins
 from infra.userportal.functions.topology import RivUserPortalFunctionSet
 from infra.userportal.states.interfaces import RivStateMachineConstruct
-from infra.interfaces import IVpcRivStack
+from infra.interfaces import IRivStack
 import aws_cdk as core
 from constructs import Construct
 from aws_cdk import (
@@ -11,7 +11,7 @@ from aws_cdk import (
 
 class RegisterIdCardStateMachine(RivStateMachineConstruct):
 
-  def __init__(self, scope: Construct, id: builtins.str, riv_stack: IVpcRivStack, functions: RivUserPortalFunctionSet, state_machine_type:sf.StateMachineType) -> None:
+  def __init__(self, scope: Construct, id: builtins.str, riv_stack: IRivStack, functions: RivUserPortalFunctionSet, state_machine_type:sf.StateMachineType) -> None:
     super().__init__(scope, id, riv_stack, functions, state_machine_type=state_machine_type)
 
     '''
@@ -55,7 +55,7 @@ class RegisterIdCardStateMachine(RivStateMachineConstruct):
     detect.next(search)
 
     '''
-    Compate Faces with ID CARD
+    Compare Faces with ID CARD
     '''
     check_face_with_id_card = sft.LambdaInvoke(self,'CompareFacesWithIDCard',
       lambda_function=functions.compare_face_with_idcard.function,
@@ -68,24 +68,24 @@ class RegisterIdCardStateMachine(RivStateMachineConstruct):
     '''
     Extract properties from id card
     '''
-    extract_id_card = sft.LambdaInvoke(self,'Extract-IDCard',
-      lambda_function=functions.extract_id_card.function,
-      input_path='$.inputRequest',
-      result_path='$.idcard',
-      output_path='$',
-      invocation_type= sft.LambdaInvocationType.REQUEST_RESPONSE)    
+    # extract_id_card = sft.LambdaInvoke(self,'Extract-IDCard',
+    #   lambda_function=functions.extract_id_card.function,
+    #   input_path='$.inputRequest',
+    #   result_path='$.idcard',
+    #   output_path='$',
+    #   invocation_type= sft.LambdaInvocationType.REQUEST_RESPONSE)    
 
-    '''
-    Index the user and complete the operation...
-    '''
-    combine_arguments = sf.Pass(self,'Merge-Properties',
-      result_path='$.inputRequest',
-      output_path='$',
-      parameters={
-        'UserId.$': '$.inputRequest.UserId',
-        'Image.$': '$.inputRequest.Image',
-        'Properties.$': '$.idcard.Payload.Properties'
-      })
+    # '''
+    # Index the user and complete the operation...
+    # '''
+    # combine_arguments = sf.Pass(self,'Merge-Properties',
+    #   result_path='$.inputRequest',
+    #   output_path='$',
+    #   parameters={
+    #     'UserId.$': '$.inputRequest.UserId',
+    #     'Image.$': '$.inputRequest.Image',
+    #     'Properties.$': '$.idcard.Payload.Properties'
+    #   })
 
     index = sft.LambdaInvoke(self,'Index-FaceInfo',
       lambda_function=functions.index_faces.function,
@@ -94,7 +94,7 @@ class RegisterIdCardStateMachine(RivStateMachineConstruct):
       result_path='$.index',
       invocation_type= sft.LambdaInvocationType.REQUEST_RESPONSE)
 
-    extract_id_card.next(combine_arguments).next(index)
+    # extract_id_card.next(combine_arguments).next(index)
 
     '''
     Stitch everything together...
@@ -122,7 +122,7 @@ class RegisterIdCardStateMachine(RivStateMachineConstruct):
     '''
     compare_face = sf.Choice(self,'Check-FaceCompareWithIDCard')
     compare_face.when(
-      next=extract_id_card,
+      next=index,
       condition=sf.Condition.or_(
         sf.Condition.boolean_equals(
         '$.search.Payload.IsMatch',
@@ -140,8 +140,7 @@ class RegisterIdCardStateMachine(RivStateMachineConstruct):
       parameters={
         'UserId.$': '$.inputRequest.UserId',
         'ImageId.$': '$.index.Payload.FaceRecord.Face.ImageId',
-        'Status': 'Registered',
-        "Properties.$": "$.idcard.Payload.Properties"
+        'Status': 'Registered'
       }))
 
     self.set_state_machine(

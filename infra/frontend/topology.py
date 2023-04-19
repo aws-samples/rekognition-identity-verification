@@ -1,6 +1,7 @@
 import builtins
-from infra.interfaces import IVpcRivStack
+from infra.interfaces import IRivStack
 from infra.userportal.gateway.topology import RivUserPortalGateway
+from infra.frontend.cognito.topology import RivCognitoForLivenes
 from constructs import Construct
 import aws_cdk as core
 from constructs import Construct
@@ -11,11 +12,15 @@ from aws_cdk import (
     aws_lambda as lambda_,
     custom_resources as cr,
     aws_codecommit as codecommit,
-    aws_amplify_alpha as amplify2
+    aws_amplifyuibuilder as builder
+    
 )
+
+import aws_cdk.aws_amplify_alpha as amplify2
 
 import aws_cdk.aws_s3_assets as s3_assets
 
+# import aws_amplify.cdk.exported_backend
 
 root_directory = path.dirname(__file__)
 bin_directory = path.join(root_directory, "bin")
@@ -27,7 +32,7 @@ class RivFrontEnd(Construct):
     '''
 
     # def __init__(self, scope: Construct, id: builtins.str, riv_stack: IVpcRivStack) -> None:
-    def __init__(self, scope: Construct, id: builtins.str, riv_stack: IVpcRivStack, apigateway: RivUserPortalGateway) -> None:
+    def __init__(self, scope: Construct, id: builtins.str, riv_stack: IRivStack, apigateway: RivUserPortalGateway,cognito:RivCognitoForLivenes) -> None:
         super().__init__(scope, id)
 
         s3_asset = s3_assets.Asset(self, "RIV-Web-App-Code",
@@ -39,12 +44,22 @@ class RivFrontEnd(Construct):
                                                     code=codecommit.Code.from_asset(
                                                         s3_asset)
                                               )
+
+        role = iam.Role(self, 'Role',
+                        assumed_by=iam.ServicePrincipal(service='amplify'),
+                        description='role for amplify riv-prod app',
+                        managed_policies=[
+                            iam.ManagedPolicy.from_aws_managed_policy_name(
+                                managed_policy_name='AWSCodeArtifactReadOnlyAccess')
+                        ])
+                   
         self.amplify = amplify2.App(self, "RIV-Web-App",
                                     app_name=riv_stack.stack_name,
                                     auto_branch_creation=amplify2.AutoBranchCreation(
                                         auto_build=True,
                                         patterns=["main/*", "prod/*"],
                                     ),
+                                    role=role,
                                     custom_rules=[amplify2.CustomRule(
                                         source="</^((?!\.(css|gif|ico|jpg|js|png|txt|svg|woff|ttf)$).)*$/>",
                                         target="/index.html",
@@ -55,8 +70,23 @@ class RivFrontEnd(Construct):
                                     )
         self.amplify.add_environment(
             name="REACT_APP_ENV_API_URL", value=apigateway.rest_api_url())
+        self.amplify.add_environment(
+            name="REACT_APP_IDENTITYPOOL_ID", value=cognito.idp.ref)
+        self.amplify.add_environment(
+            name="REACT_APP_USERPOOL_ID", value=cognito.cognito.user_pool_id)
+        self.amplify.add_environment(
+            name="REACT_APP_WEBCLIENT_ID", value=cognito.client.user_pool_client_id)
+        self.amplify.add_environment(
+            name="REACT_APP_REGION", value=core.Stack.of(self).region)
 
         self.amplify.add_branch("main", auto_build=True, branch_name="main")
+
+       
+
+        # aws_amplify.cdk.exported_backend(self.amplify,'AmplifyExportedBackend',{
+        #     path:'./backend'
+
+        # })
 
 
 class TriggerRivFrontEndBuild(Construct):
@@ -65,7 +95,7 @@ class TriggerRivFrontEndBuild(Construct):
     '''
 
     # def __init__(self, scope: Construct, id: builtins.str, riv_stack: IVpcRivStack) -> None:
-    def __init__(self, scope: Construct, id: builtins.str, riv_stack: IVpcRivStack, amplifyApp: RivFrontEnd) -> None:
+    def __init__(self, scope: Construct, id: builtins.str, riv_stack: IRivStack, amplifyApp: RivFrontEnd) -> None:
         super().__init__(scope, id)
         self.triggerBuild = cr.AwsCustomResource(self, "RIV-Web-App-Trigger-Build", policy=cr.AwsCustomResourcePolicy.from_sdk_calls(resources=cr.AwsCustomResourcePolicy.ANY_RESOURCE),
                                                  on_create=cr.AwsSdkCall(service="Amplify", action="startJob",
@@ -85,7 +115,7 @@ class RivFrontEndBuildStatus(Construct):
     '''
 
     # def __init__(self, scope: Construct, id: builtins.str, riv_stack: IVpcRivStack) -> None:
-    def __init__(self, scope: Construct, id: builtins.str, riv_stack: IVpcRivStack, amplifyApp: RivFrontEnd, buildTrigger: TriggerRivFrontEndBuild) -> None:
+    def __init__(self, scope: Construct, id: builtins.str, riv_stack: IRivStack, amplifyApp: RivFrontEnd, buildTrigger: TriggerRivFrontEndBuild) -> None:
         super().__init__(scope, id)
         with open(f"./infra/frontend/amplifydeployment/index.py") as lambda_path:
             code = lambda_path.read()

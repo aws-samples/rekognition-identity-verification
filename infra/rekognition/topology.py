@@ -1,8 +1,8 @@
 import builtins
 from os import environ
 from infra.configsettings import ConfigManager
-from infra.interfaces import IVpcRivStack
-from infra.services.rekognition.collections import RekognitionCollectionConstruct
+from infra.interfaces import IRivStack
+from infra.rekognition.collections import RekognitionCollectionConstruct
 
 from constructs import Construct
 from aws_cdk import (
@@ -12,7 +12,7 @@ from aws_cdk import (
 config_mgr = ConfigManager()
 
 class RivRekognitionSetupConstruct(Construct):
-  def __init__(self, scope: Construct, id: builtins.str, riv_stack:IVpcRivStack) -> None:
+  def __init__(self, scope: Construct, id: builtins.str, riv_stack:IRivStack) -> None:
     super().__init__(scope, id)
 
     '''
