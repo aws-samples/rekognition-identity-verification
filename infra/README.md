@@ -6,7 +6,6 @@ Within each subfolder is a `topology.py` file that defines any exportable symbol
 
 ## What are the root-level subsystems
 
-- [bulkloader](bulkloader).  The RIV bulk importing service. 
-- [services](services). Standard AWS supporting components (e.g., backup)
+- [services](services). Standard AWS supporting components (e.g., Rekognition)
 - [storage](storage). Defines all shared data stores.
 - [userportal](userportal).  The public interface that endusers interact with

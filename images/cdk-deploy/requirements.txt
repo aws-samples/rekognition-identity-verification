@@ -1,6 +1,7 @@
 virtualenv
 boto3
 setuptools
-aws-cdk-lib 
+aws-cdk-lib
 constructs
-aws_cdk.aws_amplify_alpha
+aws-cdk.aws-amplify-alpha
+# aws-cdk.aws-cognito-identitypool

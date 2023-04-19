@@ -5,7 +5,9 @@ class FaceMetadata:
   def __init__(self, event:dict) -> None:
     self.user_id = event['UserId']
     #self.face_id = event['FaceId']
-    self.image_bytes = event['Image']
+    self.image_bytes = event['Image'] if event.get('Image') != None else None
+    self.bucket = event['Bucket']
+    self.name = event['Name']
     self.property_bag = event['Properties']
 
   @property
@@ -14,7 +16,23 @@ class FaceMetadata:
 
   @user_id.setter
   def user_id(self, value:str)->None:
-    self.__user_id = value.lower()
+    self.__user_id = value.lower().strip()
+  
+  @property
+  def bucket(self)->str:
+    return self.__bucket
+
+  @bucket.setter
+  def bucket(self, value:str)->None:
+    self.__bucket = value.lower()
+  
+  @property
+  def name(self)->str:
+    return self.__name
+
+  @name.setter
+  def name(self, value:str)->None:
+    self.__name = value.lower()
 
   @property
   def image_bytes(self)->bytes:
@@ -27,7 +45,7 @@ class FaceMetadata:
     elif isinstance(value, str):
       self.__image = b64decode(value)
     else:
-      raise NotImplementedError()
+      self.__image = None
 
   @property
   def property_bag(self)->dict:
