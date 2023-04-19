@@ -1,5 +1,5 @@
 import builtins
-from infra.interfaces import IVpcRivStack
+from infra.interfaces import IRivStack
 from constructs import Construct
 import aws_cdk as core
 from aws_cdk import (
@@ -21,7 +21,7 @@ class RivStorageFaceMetadata(Construct):
   def face_table(self,value:ddb.ITable)->None:
     self.__face_table = value
 
-  def __init__(self, scope: Construct, id: builtins.str, riv_stack:IVpcRivStack) -> None:
+  def __init__(self, scope: Construct, id: builtins.str, riv_stack:IRivStack) -> None:
     super().__init__(scope, id)
 
     self.face_table = ddb.Table(self,'FaceTable',

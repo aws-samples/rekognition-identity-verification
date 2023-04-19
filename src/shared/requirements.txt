@@ -1,2 +1,5 @@
 boto3
 aws_xray_sdk
+# awscli-1.27.70-py3-none-any.whl
+# boto3-1.26.70-py3-none-any.whl
+# botocore-1.29.70-py3-none-any.whl

@@ -9,13 +9,19 @@ client = boto3.client('amplify')
 def lambda_handler(event, context):
     # apps = client.list_apps()
     appName, appId = getApp(event['app'])
-    if(appName is not None):
+    if (appName is not None):
         branch = getBranch(appId, event['branch'])
-        if(branch is not None):
+        if (branch is not None):
+            # client.create_backend_environment(
+            #     appId=appId,
+            #     environmentName='main',
+            #     stackName='Riv-Prod-Backend',
+            #     deploymentArtifacts='Riv-Prod'
+            # )
             i = False
-            jobId = getJob(appId,branch)
-            if(jobId is not None):
-                while(i == False):
+            jobId = getJob(appId, branch)
+            if (jobId is not None):
+                while (i == False):
                     job_status = client.get_job(
                         appId=appId,
                         branchName=branch,
@@ -26,9 +32,8 @@ def lambda_handler(event, context):
                         i = True
                         break
     return {
-        "status":"Amplify App deployed Successfully."
+        "status": "Amplify App deployed Successfully."
     }
-    
 
 
 def getApp(name):
@@ -68,6 +73,3 @@ def getJob(appId, branch):
             jobId = sub['jobId']
             break
     return jobId
-
-
-
