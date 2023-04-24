@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 from infra.configsettings import ConfigManager
-from infra.services.networking.vpc import VpcNetworkingConstruct
-from infra.services.core.backup import BackupStrategyConstruct
 from typing import List
+from infra.services.networking.vpc import VpcNetworkingConstruct
 
 from infra.services.rekognition.topology import RivRekognitionSetupConstruct
 from infra.storage.topology import RivSharedDataStores
 from infra.userportal.topology import RivUserPortal
+from infra.frontend.topology import RivFrontEnd
+from infra.frontend.cognito.topology import RivCognitoForLivenes
+from infra.frontend.topology import TriggerRivFrontEndBuild
+from infra.frontend.topology import RivFrontEndBuildStatus
 from infra.interfaces import IVpcRivStack, IVpcNetworkingConstruct
+from infra.interfaces import IRivStack
 import aws_cdk as core
 from constructs import Construct
 from aws_cdk import (
@@ -40,12 +44,6 @@ class VpcRivStack(IVpcRivStack):
       self.networking.endpoints.add_rekognition_support()
       self.networking.endpoints.add_textract_support()
 
-    if config.use_automated_backup:
-      '''
-      Create default backup policy for all resources 
-      '''
-      self.backup_policy = BackupStrategyConstruct(self,'Backup',
-        riv_stack=self)
 
     # Create default security group...
     self.security_group = ec2.SecurityGroup(self,'SecurityGroup',
@@ -102,6 +100,7 @@ class VpcRivStack(IVpcRivStack):
   def vpc(self)->ec2.IVpc:
     return self.networking.vpc    
 
+
 class DefaultRivStack(VpcRivStack):
   '''
   Represents the simple deployment environment for RIV.
@@ -121,28 +120,18 @@ class DefaultRivStack(VpcRivStack):
     # Setup Rekognition
     RivRekognitionSetupConstruct(self,'RekognitionSetup', riv_stack=self)
 
-    #Setup FE
-    if config.include_front_end:
-      from infra.frontend.topology import RivFrontEnd
-      from infra.frontend.topology import TriggerRivFrontEndBuild
-      from infra.frontend.topology import RivFrontEndBuildStatus
+    # setup Cognito for Liveness
 
-      feapp = RivFrontEnd(self,"RIVWebAPP",riv_stack=self, apigateway=userportal.api_gateway )
+    cognito = RivCognitoForLivenes(self,"RIVCognito",riv_stack=self )
 
-      triggerfeapp = TriggerRivFrontEndBuild(self,"RIVWebAPPTrigger",riv_stack=self,amplifyApp=feapp)
-      # feapp = RivFrontEnd(self,"RIVWebAPP",riv_stack=self)
-      triggerfeapp.node.add_dependency(feapp)
-      feappstatus = RivFrontEndBuildStatus(self,"RIVWebAPPStatus",riv_stack=self, amplifyApp=feapp , buildTrigger=triggerfeapp)
-      feappstatus.node.add_dependency(triggerfeapp)
+    # Setup FE
+    feapp = RivFrontEnd(self,"RIVWebAPP",riv_stack=self, apigateway=userportal.api_gateway , cognito= cognito)
 
-    
-    if config.include_bulk_loader:
-      # Create the bulk loader
-      from infra.bulkloader.topology import RivBulkLoader
-      bulk_loader = RivBulkLoader(self,'BulkLoader', riv_stack=self, sharedStorage=sharedStorage)
-
-      # Declare any explicit dependencies
-      bulk_loader.node.add_dependency(userportal)
+    triggerfeapp = TriggerRivFrontEndBuild(self,"RIVWebAPPTrigger",riv_stack=self,amplifyApp=feapp)
+    # feapp = RivFrontEnd(self,"RIVWebAPP",riv_stack=self)
+    triggerfeapp.node.add_dependency(feapp)
+    feappstatus = RivFrontEndBuildStatus(self,"RIVWebAPPStatus",riv_stack=self, amplifyApp=feapp , buildTrigger=triggerfeapp)
+    feappstatus.node.add_dependency(triggerfeapp)
 
   @property
   def cidr_block(self)->str:

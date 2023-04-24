@@ -10,7 +10,7 @@ from base64 import b64decode
 '''
 Initialize the runtime.
 '''
-region_name= environ.get('REGION')
+region_name = environ.get('REGION')
 logger = Logger(name='LambdaFunction')
 SIMILARITY_THRESHOLD = 95.0
 
@@ -18,10 +18,10 @@ SIMILARITY_THRESHOLD = 95.0
 Prepare XRAY, if available.
 '''
 try:
-  from aws_xray_sdk.core import xray_recorder, patch_all
-  patch_all() # Instrument all AWS methods.
+    from aws_xray_sdk.core import xray_recorder, patch_all
+    patch_all()  # Instrument all AWS methods.
 except:
-  print('AWS XRAY support not available.')
+    print('AWS XRAY support not available.')
 
 '''
 Initialize any clients (... after xray!)
@@ -29,66 +29,72 @@ Initialize any clients (... after xray!)
 rek_client = boto3.client('rekognition', region_name=environ.get('REGION'))
 
 
-def function_main(event:Mapping[str,Any],_=None):
-  inputRequest = InputRequest(event)
- 
-  '''
+def function_main(event: Mapping[str, Any], _=None):
+    inputRequest = InputRequest(event)
+
+    '''
   Otherwise compare a historical record against the input
   '''
-  try:
-    response = rek_client.compare_faces(
-      SimilarityThreshold=0.9,
-      SourceImage={
-        'Bytes': inputRequest.idcard_image_bytes
-      },
-      TargetImage={
-        'Bytes': inputRequest.image_bytes
-      })
+    try:
+        response = rek_client.compare_faces(
+            SimilarityThreshold=0.9,
+            SourceImage={
+                 'S3Object': {
+                    'Bucket': inputRequest.bucket,
+                    'Name': inputRequest.idcard_name
+                }
+            },
+            TargetImage={
+                'S3Object': {
+                    'Bucket': inputRequest.bucket,
+                    'Name': inputRequest.name
+                }
+            })
 
-    '''
+        '''
     Confirm these are approximately the same image.
     '''
-    if len(response['FaceMatches']) == 0:
-      return { 
-        'IsMatch':False,
-        'Reason': 'Property $.FaceMatches is empty.'
-      }
-    facenotMatch = False
-    for match in response['FaceMatches']:
-      similarity:float = match['Similarity']
-      if similarity > SIMILARITY_THRESHOLD:
-        return { 
-          'IsMatch':True,
-          'Reason': 'All checks passed.'
+        if len(response['FaceMatches']) == 0:
+            return {
+                'IsMatch': False,
+                'Reason': 'Property $.FaceMatches is empty.'
+            }
+        facenotMatch = False
+        for match in response['FaceMatches']:
+            similarity: float = match['Similarity']
+            if similarity > SIMILARITY_THRESHOLD:
+                return {
+                    'IsMatch': True,
+                    'Reason': 'All checks passed.'
+                }
+            else:
+                facenotMatch = True
+        if facenotMatch:
+            return {
+                'IsMatch': False,
+                'Reason': 'Similarity comparison was below threshold (%f < %f).' % (similarity, SIMILARITY_THRESHOLD)
+            }
+
+        return {
+            'IsMatch': True,
+            'Reason': 'All checks passed.'
         }
-      else:
-        facenotMatch = True
-    if facenotMatch:
-      return { 
-          'IsMatch':False,
-          'Reason': 'Similarity comparison was below threshold (%f < %f).' % (similarity, SIMILARITY_THRESHOLD)
-      }
-      
-    return { 
-      'IsMatch':True,
-      'Reason': 'All checks passed.'
-    }
-  except Exception as error:
-    print('Comparing({}) to ID Card failed - {}'.format(
-      inputRequest.user_id, str(error)))
-    raise error
+    except Exception as error:
+        print('Comparing({}) to ID Card failed - {}'.format(
+            inputRequest.user_id, str(error)))
+        raise error
 
-def read_example_file(filename:str)->Mapping[str,Any]:
-  example_dir = path.join(path.dirname(__file__),'examples')
-  file = path.join(example_dir, filename)
 
-  with open(file, 'r') as f:
-    return loads(f.read())
+def read_example_file(filename: str) -> Mapping[str, Any]:
+    example_dir = path.join(path.dirname(__file__), 'examples')
+    file = path.join(example_dir, filename)
+
+    with open(file, 'r') as f:
+        return loads(f.read())
+
 
 if __name__ == '__main__':
- xray_recorder.begin_segment('LocalDebug')
- payload = read_example_file('payload.json')
- function_main(payload)
- xray_recorder.end_segment()
-
- 
+    xray_recorder.begin_segment('LocalDebug')
+    payload = read_example_file('payload.json')
+    function_main(payload)
+    xray_recorder.end_segment()

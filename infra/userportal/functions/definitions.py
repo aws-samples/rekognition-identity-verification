@@ -25,7 +25,7 @@ class RivUserPortalFunction(RivDefaultFunction):
   def function_timeout(self)->core.Duration:
     return core.Duration.seconds(30)
   
-  def __init__(self, scope: Construct, id: str, riv_stack:IVpcRivStack,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
+  def __init__(self, scope: Construct, id: str, riv_stack:IVpcRivStack, subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
     super().__init__(scope, id, riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=env, **kwargs)
 
     '''
@@ -129,3 +129,39 @@ class RivUserPortalResetUser(RivUserPortalFunction):
   @property
   def component_name(self)->str:
     return 'ResetUser'
+
+class RivUserPortalStartLivenessSesstion(RivUserPortalFunction):
+  def __init__(self, scope: Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
+    super().__init__(scope, id, riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=env)
+
+  @property
+  def source_directory(self)->str:
+    return 'src/rekognition/start-liveness-session'
+
+  @property
+  def component_name(self)->str:
+    return 'StartLivenessSesstion'
+
+class RivUserPortalLivenessSesstionResult(RivUserPortalFunction):
+  def __init__(self, scope: Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
+    super().__init__(scope, id, riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=env)
+
+  @property
+  def source_directory(self)->str:
+    return 'src/rekognition/liveness-session-result'
+
+  @property
+  def component_name(self)->str:
+    return 'LivenessSesstionResult'
+
+class RivUserPortalCheckUserID(RivUserPortalFunction):
+  def __init__(self, scope: Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
+    super().__init__(scope, id, riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=env)
+
+  @property
+  def source_directory(self)->str:
+    return 'src/rekognition/check-userid'
+
+  @property
+  def component_name(self)->str:
+    return 'CheckUserID'
