@@ -46,8 +46,6 @@ function Home() {
     //     },
     // };
     return (
-
-
         <>
             <View direction={{ base: 'column', large: 'row' }}>
                 <Heading level={1} color="black">
@@ -75,7 +73,7 @@ function Home() {
             <View marginTop={tokens.space.large} direction={{ base: 'column', large: 'row' }}>
 
                 <Card>
-                    <Flex  alignItems="flex-start"
+                    <Flex alignItems="flex-start"
                         backgroundColor={tokens.colors.background.secondary}
                         marginTop={tokens.space.large}
                         direction={{ base: 'column', large: 'row' }}>

@@ -3,13 +3,21 @@ import boto3
 from base64 import b64decode
 from os import environ, path
 from typing import Any, Mapping
+from logging import Logger
 from json import loads
 from logging import Logger
 import base64
 import json
 import sys
 
-client = boto3.client('rekognition')
+'''
+Initialize the runtime.
+'''
+region_name = environ.get('REGION')
+logger = Logger(name='LambdaFunction')
+
+
+client = boto3.client('rekognition', region_name=environ.get('REGION'))
 s3 = boto3.resource('s3')
 
 def session_result(sessionid):

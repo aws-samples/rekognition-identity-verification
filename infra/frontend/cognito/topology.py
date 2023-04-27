@@ -22,7 +22,7 @@ class RivCognitoForLivenes(Construct):
         super().__init__(scope, id)
 
         self.cognito = cognito.UserPool(
-            self, "RIV-Cognito", user_pool_name=riv_stack.stack_name)
+            self, "RIV-Cognito-User-Pool", user_pool_name=riv_stack.stack_name)
         # self.cognito.add_client("RIV-Cogito-app", supported_identity_providers=[
         #                         cognito.UserPoolClientIdentityProvider.COGNITO])
 

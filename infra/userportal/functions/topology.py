@@ -5,7 +5,7 @@ import aws_cdk as core
 from constructs import Construct
 
 class RivUserPortalFunctionSet(Construct):
-  def __init__(self, scope: Construct, id:str, riv_stack:IVpcRivStack,sharedStorage:RivSharedDataStores, subnet_group_name:str='Default', **kwargs) -> None:
+  def __init__(self, scope: Construct, id:str, riv_stack:IVpcRivStack,sharedStorage:RivSharedDataStores,subnet_group_name:str='Default', **kwargs) -> None:
     super().__init__(scope, id)
 
     '''
@@ -19,13 +19,13 @@ class RivUserPortalFunctionSet(Construct):
     }
 
     self.compare_faces = RivUserPortalCompareFaces(self,'CompareFaces',
-      riv_stack=riv_stack, env=default_environment_var)
+      riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=default_environment_var)
 
     self.detect_faces = RivUserPortalDetectFaces(self,'DetectFaces',
-      riv_stack=riv_stack,subnet_group_name=subnet_group_name, env=default_environment_var)
+      riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=default_environment_var)
 
     self.search_faces_by_image = RivUserPortalSearchFacesByImage(self,'SearchFaces',
-      riv_stack=riv_stack,subnet_group_name=subnet_group_name, env=default_environment_var)
+      riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=default_environment_var)
 
     self.extract_id_card = RivUserPortalExtractIdCard(self,'ExtractIdCard',
       riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=default_environment_var)
@@ -33,11 +33,11 @@ class RivUserPortalFunctionSet(Construct):
     self.compare_face_with_idcard = RivUserPortalCompareFacesWithIDCard(self,'CompareFacesWithIDCard',
       riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=default_environment_var)
     
-    self.start_liveness_session = RivUserPortalStartLivenessSesstion(self,'StartLivenessSesstion',
-      riv_stack=riv_stack, subnet_group_name=subnet_group_name,  env=default_environment_var)
-    
     self.reset_user = RivUserPortalResetUser(self,'ResetUser',
       riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=default_environment_var)
+
+    self.start_liveness_session = RivUserPortalStartLivenessSesstion(self,'StartLivenessSesstion',
+      riv_stack=riv_stack, subnet_group_name=subnet_group_name,  env=default_environment_var)
 
     self.liveness_session_result = RivUserPortalLivenessSesstionResult(self,'LivenessSesstionResult',
       riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=default_environment_var)
@@ -73,7 +73,3 @@ class RivUserPortalFunctionSet(Construct):
     sharedStorage.images.image_bucket.grant_read(self.search_faces_by_image.function.role)
     sharedStorage.images.image_bucket.grant_read(self.index_faces.function.role)
     sharedStorage.images.image_bucket.grant_read_write(self.extract_id_card.function.role)
-   
-
-  
-

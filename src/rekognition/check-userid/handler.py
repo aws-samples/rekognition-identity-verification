@@ -31,7 +31,6 @@ rek_client = boto3.client('rekognition', region_name=environ.get('REGION'))
 face_table_client = FaceTableClient(environ.get(
     'FACE_TABLE_NAME'), region_name=region_name)
 
-
 def choose_random_face(faces: Mapping[str, str]) -> Tuple[str, str]:
     '''
     Chooses a random face from the set.
@@ -59,17 +58,12 @@ def function_main(event: Mapping[str, Any], _=None):
             'Reason': 'User not Exist'
         }
 
-
-
-
-
 def read_example_file(filename: str) -> Mapping[str, Any]:
     example_dir = path.join(path.dirname(__file__), 'examples')
     file = path.join(example_dir, filename)
 
     with open(file, 'r') as f:
         return loads(f.read())
-
 
 if __name__ == '__main__':
     xray_recorder.begin_segment('LocalDebug')

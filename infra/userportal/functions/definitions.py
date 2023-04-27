@@ -130,7 +130,7 @@ class RivUserPortalResetUser(RivUserPortalFunction):
   def component_name(self)->str:
     return 'ResetUser'
 
-class RivUserPortalStartLivenessSesstion(RivUserPortalFunction):
+class RivUserPortalStartLivenessSession(RivUserPortalFunction):
   def __init__(self, scope: Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
     super().__init__(scope, id, riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=env)
 
@@ -140,9 +140,9 @@ class RivUserPortalStartLivenessSesstion(RivUserPortalFunction):
 
   @property
   def component_name(self)->str:
-    return 'StartLivenessSesstion'
+    return 'StartLivenessSession'
 
-class RivUserPortalLivenessSesstionResult(RivUserPortalFunction):
+class RivUserPortalLivenessSessionResult(RivUserPortalFunction):
   def __init__(self, scope: Construct, id:str, riv_stack:IVpcRivStack,subnet_group_name:str='Default',env:Mapping[str,str]={}, **kwargs) -> None:
     super().__init__(scope, id, riv_stack=riv_stack, subnet_group_name=subnet_group_name, env=env)
 

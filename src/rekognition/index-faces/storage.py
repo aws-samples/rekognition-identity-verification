@@ -78,7 +78,6 @@ class StorageWriter(IStorageWriter):
     '''
     assert face_metadata is not None, "faceMetadata not specified"
     assert face_id is not None, "face_id not specified"
-    print(face_metadata)
     item = {
       'PartitionKey': {'S': 'User::{}'.format(face_metadata.user_id.lower())},
       'SortKey': {'S': 'Face::{}'.format(face_id.lower()) },

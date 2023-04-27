@@ -12,7 +12,7 @@ from constructs import Construct
 
 config = ConfigManager()
 class RivUserPortal(Construct):
-  def __init__(self, scope: Construct, id: builtins.str, riv_stack:IVpcRivStack, sharedStorage,  subnet_group_name:str='Default') -> None:
+  def __init__(self, scope: Construct, id: builtins.str, riv_stack:IVpcRivStack, sharedStorage, subnet_group_name:str='Default') -> None:
     super().__init__(scope, id)
     
     if config.use_isolated_subnets:
@@ -55,7 +55,7 @@ class RivUserPortal(Construct):
     '''
     Create Standard Stepfunctions to simplify developer troubleshooting.
     '''
-    # self.debug_state_machines = RivUserPortalStateMachines(self,'DebugStates',
-    #   riv_stack=riv_stack,
-    #   functions=self.functions,
-    #   state_machine_type= StateMachineType.STANDARD)
+    self.debug_state_machines = RivUserPortalStateMachines(self,'DebugStates',
+      riv_stack=riv_stack,
+      functions=self.functions,
+      state_machine_type= StateMachineType.STANDARD)

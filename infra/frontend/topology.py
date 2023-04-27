@@ -1,5 +1,5 @@
 import builtins
-from infra.interfaces import IRivStack
+from infra.interfaces import IVpcRivStack
 from infra.userportal.gateway.topology import RivUserPortalGateway
 from infra.frontend.cognito.topology import RivCognitoForLivenes
 from constructs import Construct
@@ -32,7 +32,7 @@ class RivFrontEnd(Construct):
     '''
 
     # def __init__(self, scope: Construct, id: builtins.str, riv_stack: IVpcRivStack) -> None:
-    def __init__(self, scope: Construct, id: builtins.str, riv_stack: IRivStack, apigateway: RivUserPortalGateway,cognito:RivCognitoForLivenes) -> None:
+    def __init__(self, scope: Construct, id: builtins.str, riv_stack: IVpcRivStack, apigateway: RivUserPortalGateway,cognito:RivCognitoForLivenes) -> None:
         super().__init__(scope, id)
 
         s3_asset = s3_assets.Asset(self, "RIV-Web-App-Code",
@@ -95,7 +95,7 @@ class TriggerRivFrontEndBuild(Construct):
     '''
 
     # def __init__(self, scope: Construct, id: builtins.str, riv_stack: IVpcRivStack) -> None:
-    def __init__(self, scope: Construct, id: builtins.str, riv_stack: IRivStack, amplifyApp: RivFrontEnd) -> None:
+    def __init__(self, scope: Construct, id: builtins.str, riv_stack: IVpcRivStack, amplifyApp: RivFrontEnd) -> None:
         super().__init__(scope, id)
         self.triggerBuild = cr.AwsCustomResource(self, "RIV-Web-App-Trigger-Build", policy=cr.AwsCustomResourcePolicy.from_sdk_calls(resources=cr.AwsCustomResourcePolicy.ANY_RESOURCE),
                                                  on_create=cr.AwsSdkCall(service="Amplify", action="startJob",
@@ -115,7 +115,7 @@ class RivFrontEndBuildStatus(Construct):
     '''
 
     # def __init__(self, scope: Construct, id: builtins.str, riv_stack: IVpcRivStack) -> None:
-    def __init__(self, scope: Construct, id: builtins.str, riv_stack: IRivStack, amplifyApp: RivFrontEnd, buildTrigger: TriggerRivFrontEndBuild) -> None:
+    def __init__(self, scope: Construct, id: builtins.str, riv_stack: IVpcRivStack, amplifyApp: RivFrontEnd, buildTrigger: TriggerRivFrontEndBuild) -> None:
         super().__init__(scope, id)
         with open(f"./infra/frontend/amplifydeployment/index.py") as lambda_path:
             code = lambda_path.read()

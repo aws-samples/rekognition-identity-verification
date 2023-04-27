@@ -57,19 +57,6 @@ class InputRequest:
     else:
       self.__image = None
 
-  # @property
-  # def idcard_image_bytes(self)->bytes:
-  #   return self.__idcard
-
-  # @idcard_image_bytes.setter
-  # def idcard_image_bytes(self, value:Any)->None:
-  #   if isinstance(value, bytes):
-  #     self.__idcard = value
-  #   elif isinstance(value, str):
-  #     self.__idcard = b64decode(value)
-  #   else:
-  #     raise NotImplementedError() 
-
 
 
 
