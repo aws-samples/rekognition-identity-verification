@@ -82,13 +82,25 @@ def function_main(event:Mapping[str,Any],_=None):
   Index the face into the Amazon Rekognition Collection.
   '''
   try:
-    response = rek_client.index_faces(
-      CollectionId = get_collection_id(face_metadata.user_id),
-      ExternalImageId= face_metadata.user_id,
-      MaxFaces=1,
-      Image={
-        'Bytes':face_metadata.image_bytes
-      })    
+    if event.get('Image', None) != None:
+        response = rek_client.index_faces(
+            CollectionId=get_collection_id(face_metadata.user_id),
+            ExternalImageId=face_metadata.user_id,
+            MaxFaces=1,
+            Image={
+                'Bytes': face_metadata.image_bytes
+            })
+    else:
+        response = rek_client.index_faces(
+            CollectionId=get_collection_id(face_metadata.user_id),
+            ExternalImageId=face_metadata.user_id,
+            MaxFaces=1,
+            Image={
+                'S3Object': {
+                    'Bucket': face_metadata.bucket,
+                    'Name': face_metadata.name
+                }
+            })   
   except Exception as error:
     print('Unable to update collection')
     raise error

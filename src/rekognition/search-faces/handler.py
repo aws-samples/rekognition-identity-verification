@@ -81,13 +81,37 @@ def search_faces_by_image(user_id:str, image:str)->dict:
     })
   return response
 
+#@xray_recorder.capture('search_faces')
+def search_faces(user_id:str, bucket:str , name:str)->dict:
+  '''
+  Invoke the Rekognition Search Faces By Image method.
+  :param user_id: The user alias to query for.
+  :param image: utf8(base64(photo bytes))
+  :rtype: The response from Rekognition client.
+  '''
+  assert user_id is not None, "no user_id provided."
+  assert bucket is not None or name is not None , "no image provided."
+
+  response = rek_client.search_faces_by_image(
+    CollectionId= get_collection_id(user_id),
+    FaceMatchThreshold= 0.80,
+    MaxFaces=1,
+    Image={
+        "S3Object": {
+      'Bucket':bucket,
+      'Name': name
+        }
+    })
+  return response
+
 def function_main(event:Mapping[str,Any],_=None):
   '''
   Main function handler.
   '''
-  response = search_faces_by_image(
-    user_id= event['UserId'], 
-    image= event['Image']) 
+  if event.get('Image', None) != None:
+          response = search_faces_by_image(user_id= event['UserId'], image= event['Image'],)
+  else:
+      response = search_faces(user_id= event['UserId'],bucket=event['Bucket'], name=event['Name'])
   
   '''
   Annotate matches for step function integration.

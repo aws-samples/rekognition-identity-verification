@@ -4,7 +4,7 @@ from base64 import b64decode
 class InputRequest:
   def __init__(self, event:dict) -> None:
     self.user_id = event['UserId']
-    self.image_bytes = event['Image']
+    self.image_bytes = event['Image'] if event.get('Image') != None else None
     
     if 'FaceId' in event:
       self.face_id = event['FaceId']
@@ -43,7 +43,7 @@ class InputRequest:
     elif isinstance(value, str):
       self.__image = b64decode(value)
     else:
-      raise NotImplementedError()
+      raise None
 
   @property
   def property_bag(self)->dict:
@@ -52,6 +52,22 @@ class InputRequest:
   @property_bag.setter
   def property_bag(self, value:dict)->None:
     self.__property_bag = value
+
+  @property
+  def bucket(self)->str:
+    return self.__bucket
+
+  @bucket.setter
+  def bucket(self, value:str)->None:
+    self.__bucket = value
+
+  @property
+  def name(self)->str:
+    return self.__name
+
+  @name.setter
+  def name(self, value:str)->None:
+    self.__name = value
 
   def to_dyanmodb_item(self)->dict:
     '''
