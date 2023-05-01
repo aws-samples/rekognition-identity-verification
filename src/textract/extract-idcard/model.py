@@ -23,9 +23,11 @@ class InputRequest:
     assert event is not None, "No event specified."
     assert 'UserId' in event, "Missing required event.UserId attribute"
     assert 'IdCard' in event, "Missing required event.IdCard attribute"
+    assert 'ImageName' in event, "Missing required event.ImageName attribute"
 
     self.__user_id = event['UserId']
     self.__idcard_image = b64decode(event['IdCard'])
+    self.__image_name = event['ImageName']
     
     if 'Properties' in event:
       self.__properties = event['Properties']
@@ -43,3 +45,7 @@ class InputRequest:
   @property
   def property_bag(self)->dict:
     return self.__properties
+  
+  @property
+  def image_name(self) -> str:
+        return self.__image_name

@@ -39,10 +39,16 @@ def function_main(event:Mapping[str,Any],_=None):
     response = rek_client.compare_faces(
       SimilarityThreshold=0.9,
       SourceImage={
-        'Bytes': inputRequest.idcard_image_bytes
+            'S3Object': {
+              'Bucket': inputRequest.bucket,
+              'Name': inputRequest.idcard_name
+          }
       },
       TargetImage={
-        'Bytes': inputRequest.image_bytes
+          'S3Object': {
+              'Bucket': inputRequest.bucket,
+              'Name': inputRequest.name
+          }
       })
 
     '''

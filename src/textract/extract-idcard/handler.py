@@ -27,6 +27,10 @@ Initialize any clients (... after xray!)
 '''
 textract_client = boto3.client('textract', region_name=region_name)
 
+s3 = boto3.resource('s3', region_name=region_name)
+
+client = boto3.client('rekognition', region_name=region_name)
+
 #@xray_recorder.capture('DocumentParser::extract_form')
 def analyze_id(inputRequest:InputRequest)->dict:
   '''
@@ -69,6 +73,25 @@ def function_main(event:Mapping[str,Any],_=None):
   '''
   if not len(response['IdentityDocuments']) == 1:
     raise NotImplementedError('Sample does not support multiple documents.')
+  else:
+    try:
+      s3.Object(environ.get('IMAGE_BUCKET_NAME'), inputRequest.user_id +
+                  '/'+inputRequest.image_name).put(Body=inputRequest.idcard_image_bytes)
+    except Exception as err:
+      logger.error('S3 Internal Server Error.')
+      raise InvalidImageError('S3 Internal Server Error.'+err)
+
+  
+    '''
+    Get Detected Face in ID
+    '''
+    detectFace = client.detect_faces(
+    Attributes=['ALL'],
+    Image={
+        "Bytes": inputRequest.idcard_image_bytes
+    }
+    )
+  
 
   '''
   Generate a response based on the input.
@@ -82,7 +105,8 @@ def function_main(event:Mapping[str,Any],_=None):
 
   return {
     'UserId': inputRequest.user_id,
-    'Properties': properties
+    'Properties': properties,
+    'DetectFace': detectFace
   }
 
 def read_example_file(filename:str)->Mapping[str,Any]:

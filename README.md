@@ -24,7 +24,21 @@ Locally installing on a workstation requires the following steps.  The specific 
 1. Locally install AWS CDK as the [official documentation](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) describes.
 2. [Bootstrap CDK for AWS Account](https://github.com/aws/aws-cdk/blob/master/design/cdk-bootstrap.md) 
 3. Install Python >=3.6 from [python.org](http://python.org/)
-4. Install the additional dependencies using: pip3 install -r [requirements.txt](images/cdk-deploy/requirements.txt)
+4. Create a Python virtual environment
+  ```sh
+  python3 -m venv .venv                                      
+  ```
+
+5. Activate virtual environment
+  On MacOS or Linux
+  ```sh
+  source .venv/bin/activate                                       
+  ```
+  On Windows
+  ```sh
+    .venv\Scripts\activate.bat                                        
+  ```
+6. Install the additional dependencies using: pip3 install -r [requirements.txt](images/cdk-deploy/requirements.txt)
 
 **Option: Local Install**:  Debian (Bullseye), Ubuntu (Focal), OSX (Catalina), and Amazon Linux 2 users can run the [one-click.sh](one-click.sh) script to synthesize the OneClickTemplate.template.json for Amazon CloudFormation and deploy the supporting Lambda functions.  The script will also install any missing dependencies on the local box.
 

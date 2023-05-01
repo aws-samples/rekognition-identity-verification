@@ -91,7 +91,7 @@ class StorageWriter(IStorageWriter):
     Default behavior is to store all data in DynamoDB.
       This strategy provides more consistent response times to end-users. 
     '''
-    if not self.image_bucket_enabled:
+    if not self.image_bucket_enabled and face_metadata.image_bytes is not None:
       item['image'] = {'B': str(b64encode(face_metadata.image_bytes),encoding='utf-8') }
       return item
 
@@ -99,15 +99,16 @@ class StorageWriter(IStorageWriter):
     Alternatively customers can place the images into an S3 bucket
       This strategy is potentially more cost-efficient with longer latest byte retrieval times
     '''
-    key = '{}{}/{}.bin'.format(self.prefix, face_metadata.user_id, face_id)
-    self.s3_client.put_object(
-      Bucket=self.bucket_name,
-      Key=key,
-      Body = face_metadata.image_bytes,
-      Tagging="Indexed=True")
+    # key = '{}{}/{}.bin'.format(self.prefix, face_metadata.user_id, face_id)
+    # self.s3_client.put_object(
+    #   Bucket=self.bucket_name,
+    #   Key=key,
+    #   Body = face_metadata.image_bytes,
+    #   Tagging="Indexed=True")
 
     '''
     Update the item to point at the key
     '''
-    item['s3_uri'] = {'S': 's3://{}/{}'.format(self.bucket_name, key)}
+    item['bucket'] = { 'S' :face_metadata.bucket }
+    item['name'] =  { 'S' :face_metadata.name }
     return item

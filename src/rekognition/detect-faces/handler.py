@@ -48,11 +48,33 @@ def detect_faces(image:str)->dict:
     })
   return response
 
+#@xray_recorder.capture('detect_faces_image')
+def detect_faces_image(bucket: str, name: str) -> dict:
+  '''
+  Invoke the rekognition:detect_faces method.
+  :param bucket: The bucket name
+  :param key: The bucket key
+  :rtype: The response from detect_faces method.
+  '''
+  assert bucket is not None and name is not None, "detect_faces missing image s3 bucket argument."
+  response = client.detect_faces(
+      Attributes=['ALL'],
+      Image={
+          "S3Object": {
+              'Bucket': bucket,
+              'Name': name
+          }
+      })
+  return response
+
 def function_main(event:Mapping[str,Any], _=None):
   '''
   Convert the input into a Amazon Rekognition call...
   '''
-  response = detect_faces(event['Image'])
+  if event.get('Image', None) != None:
+          response = detect_faces(event['Image'])
+  else:
+      response = detect_faces_image(event['Bucket'], event['Name'])
 
   '''
   Confirm the face is usable...

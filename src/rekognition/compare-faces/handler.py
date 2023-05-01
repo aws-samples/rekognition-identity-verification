@@ -61,10 +61,16 @@ def function_main(event:Mapping[str,Any],_=None):
     response = rek_client.compare_faces(
       SimilarityThreshold=0.9,
       SourceImage={
-        'Bytes': b64decode(historical_image.value)
+          'S3Object': {
+              'Bucket': historical_image['bucket'],
+              'Name': historical_image['name']
+          }
       },
       TargetImage={
-        'Bytes': inputRequest.image_bytes
+          'S3Object': {
+              'Bucket': inputRequest.bucket,
+              'Name': inputRequest.name
+          }
       })
 
     '''
