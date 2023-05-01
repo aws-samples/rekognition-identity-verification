@@ -76,8 +76,8 @@ const SignIn = () => {
         if (!errorCheck()) {
             setHasFormError('')
             const requestData = {
-                body: { "UserId": id }, // replace this with attributes you need
-                headers: { "Content-Type": "application/json" }, // OPTIONAL
+                body: { "UserId": id }, 
+                headers: { "Content-Type": "application/json" }, 
             };
             API.post("identityverification", "check-userid", requestData).then(response => {
                 let responseData = response;

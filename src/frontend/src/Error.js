@@ -1,9 +1,9 @@
 const ErrorMessage = {
- 'UserAlreadyExists' : 'User already exist. Delete user first to try out this feature',
- 'FaceNotMatchWithIDCard':'Selfie does not match the ID card face image. Please use your own valid ID documents.',
-'GenericError': 'Error occur in submitting the form. Please try again later!',
-'ValueError': 'User not exist. Please register user first.',
-'LiveNessResultThreshold':'Liveness confidence score is less compare to user selected confidence score. Please do the liveness check again'
+ 'UserAlreadyExists' : 'The user already exists. Delete the user first to try out this feature.',
+ 'FaceNotMatchWithIDCard':'The image from the camera and ID card don’t match. Please use your valid ID documents.',
+'GenericError': 'An error occurred while submitting the form. Please try again later.',
+'ValueError': 'The user does not exist. Please register the user first.',
+'LiveNessResultThreshold':'The Face Liveness confidence score is less than the user-selected confidence threshold. Please reattempt the face liveness check again.'
 }
 
 export default ErrorMessage;

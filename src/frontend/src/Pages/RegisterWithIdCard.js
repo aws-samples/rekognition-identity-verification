@@ -129,35 +129,8 @@ const RegisterWithIdCard = () => {
         }
         const objectUrl = URL.createObjectURL(event.target.files[0])
         setPreview(objectUrl)
-        // free memory when ever this component is unmounted
-        // return () => URL.revokeObjectURL(objectUrl)
 
     }
-
-    // useEffect(() => {
-    //     console.log(canvasRef)
-    //     console.log("useeffect called")
-    //     if(canvasRef.current != null){
-    //     const context = canvasRef.current.getContext("2d");
-        
-    //     console.log("ctx: ", context);
-    //     }
-        
-    //   }, [properties]);
-
-
-    //   React.useLayoutEffect(() => {
-     
-    //     if(canvasRef.current != null){
-    //     const context = canvasRef.current.getContext("2d");
-        
-    //     console.log("ctx: ", context);
-    //     }
-
-
-    // }, []);
-
-
 
     const handleNextSubmit = () => {
         setError({ 'idError': false })

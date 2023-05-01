@@ -130,8 +130,8 @@ function Liveness({ referenceImage, livenessImageData }) {
         console.log('handleGetLivenessDetection')
         if (sessionId) {
             const requestData = {
-                body: { "sessionid": sessionId }, // replace this with attributes you need
-                headers: { "Content-Type": "application/json" }, // OPTIONAL
+                body: { "sessionid": sessionId }, 
+                headers: { "Content-Type": "application/json" }, 
             };
             const data = await API.post('identityverification', 'liveness-session-result', requestData);
             try {
@@ -181,15 +181,13 @@ function Liveness({ referenceImage, livenessImageData }) {
                                 marginBottom={tokens.space.small}
                                 fontWeight={tokens.fontWeights.light}
                             >
-                                This feature uses Amazon Web Services. Biometric identifiers and biometric information (“biometric data”) may be collected, stored, and used by Amazon Web Services for the purpose of comparing the image of an individual with a stored image for analysis, verification, fraud, and security purposes.
-                            </Heading>      <Heading
+                                This feature uses Amazon Web Services. Amazon Web Services may collect, store, and use biometric identifiers and biometric information ("biometric data") to compare an individual's image with a stored image for analysis, verification, fraud, and security purposes.</Heading>      <Heading
 
                                 level={6}
                                 marginBottom={tokens.space.large}
                                 fontWeight={tokens.fontWeights.light}
                             >
-                                Biometric information that is generated as part of this process will be retained in line with Amazon Web Services privacy policy. You hereby provide your express, informed, written release and consent for Amazon Web Services to collect, use, and store your biometric data as described herein.
-
+                               Amazon Web Services’ privacy policy will retain generated biometric information from this process. You provide your express, informed, written release and consent for Amazon Web Services to collect, use, and store your biometric data as described herein.
                             </Heading><Flex
                                 direction="row"
                                 justifyContent="center"

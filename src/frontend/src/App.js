@@ -51,30 +51,17 @@ function App() {
                 },
 
                 card: {
-                    // You can reference other tokens
                     backgroundColor: { value: '#fff' },
-                    // borderRadius: { value: '{radii.large}' },
-                    // padding: { value: '{space.xl}' },
-
                     // Variations
                     outlined: {
-                        // Or use explicit values
-                        // borderWidth: { value: '10px' },
-                        // backgroundColor: { value: '{colors.background.warning}' },
                     },
                     elevated: {
-                        // backgroundColor: { value: '{colors.background.info}' },
                         boxShadow: { value: '{shadows.large}' },
                     },
 
                 }
             },
             colors: {
-                // font: {
-                //     primary: { value: '#fff' },
-                //     secondary: { value: '#fff' },
-                //     tertiary: { value: '#fff' },
-                // },
                 background: {
                     primary: { value: '#0F1111' },
                     secondary: { value: '#fff' },

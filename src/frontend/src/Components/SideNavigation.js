@@ -35,19 +35,7 @@ const SideNavigation = () => {
      });
   }
   const { activeHref, handleFollow } = useSideNavigation()
-  // const location = useLocation()
   let items = [...MAIN_ITEMS]
-
-  // items = items.concat([
-  //   { type: "divider" },
-  //   {
-  //     type: "link",
-  //     text: "Profile",
-  //     href: `/profile`
-  //   },
-  // ])
-
-
 
   items.push(...FOOTER_ITEMS)
 

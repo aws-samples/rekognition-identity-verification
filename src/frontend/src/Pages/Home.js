@@ -19,32 +19,6 @@ function Home() {
     const { tokens } = useTheme();
     const navigate = useNavigate()
 
-    const items = [
-        {
-            title: 'Grow users faster',
-            description:
-                'Convert more visitors into customers by decreasing onboarding time and increasing user convenience. With Amazon Rekognition, you can verify users in seconds online anywhere in the world, and scale from hundreds to millions of identity verifications per hour. Users can now access your services online without having to visit in-person.',
-        },
-        {
-            title: 'Reduce fraud',
-            description:
-                'Strengthen your fraud prevention capabilities by complementing passwords-based authentication with online visual identity verification. Guard against fraudulent account openings or transactions by comparing user’s selfie picture with identity document picture or your collection of existing users’ pictures.',
-        },
-        {
-            title: 'Lower costs and overheads',
-            description:
-                "Reduce the time and cost of in-person identity verification by using Amazon Rekognition pre-trained and customizable APIs. With Amazon Rekognition, you can onboard and authenticate users online without building and managing your own ML infrastructure.",
-        },
-    ];
-
-    // const opts = {
-    //     height: '330',
-    //     width: '480',
-    //     playerVars: {
-    //         // https://developers.google.com/youtube/player_parameters
-    //         //   autoplay: 1,
-    //     },
-    // };
     return (
         <>
             <View direction={{ base: 'column', large: 'row' }}>
@@ -65,7 +39,7 @@ function Home() {
                     </Button>
                     <Button variation="primary" onClick={() => navigate(`/login`)} color="black">
 
-                        Try Out
+                        Try it Out
 
                     </Button>
                 </ButtonGroup>
@@ -81,60 +55,15 @@ function Home() {
                             as="span"
                             color="black"
                         >
-                            In-person user identity verification is slow to scale, costly, and high friction for users. Machine learning powered facial biometrics can enable online user identity verification. Amazon Rekognition offers pre-trained facial recognition and analysis capabilities that you can quickly add to your user onboarding and authentication workflows to verify opted-in users' identity online. No machine learning expertise is required. With Amazon Rekognition, you can onboard and authenticate users in seconds while detecting fraudulent or duplicate accounts. As a result, you can grow users faster, reduce fraud, and lower user verification costs.
-                        </Text>
+                        In-person user identity verification is slow to scale, costly, and has high friction. Machine learning-powered facial biometrics can enable online user identity verification. Amazon Rekognition offers pre-trained facial recognition and analysis capabilities to quickly add to user onboarding and authentication workflows to verify opted-in users' identities online. No machine learning expertise is required. With Amazon Rekognition, you can onboard and authenticate users in seconds while detecting fraudulent or duplicate accounts. As a result, you can grow users faster, reduce fraud, and lower user verification costs.
+                         </Text>
 
                         <YouTube videoId="VOrSs5Mw_dQ" />
                     </Flex>
                 </Card>
             </View>
 
-            <Heading
-                level={4}
-                isTruncated={true}
-                color="black"
-                marginTop={tokens.space.large}
-            >
-                Benefits
-            </Heading>
-
-
-
-            <Collection
-                type="list"
-                items={items}
-                backgroundColor={'none'}
-                justifyContent="space-around"
-                alignItems="baseline"
-                alignContent="space-around"
-                wrap="nowrap"
-                gap="1rem"
-                direction={{ base: 'column', large: 'row' }}
-                marginTop={tokens.space.large}
-            >
-                {(item, index) => (
-                    <Card
-                        key={index}
-                        backgroundColor={'none'}
-                    >
-                        <Heading
-                            level={5}
-                            isTruncated={true}
-                            color="black"
-                            marginBottom={tokens.space.medium}
-                        >{item.title}</Heading>
-                        <Text variation="primary"
-                            as="p"
-                            color="black"
-                            lineHeight="1.5em"
-                            fontWeight={400}
-                            fontSize="1em"
-                            fontStyle="normal"
-                            textDecoration="none">{item.description}</Text>
-                    </Card>
-                )}
-            </Collection>
-
+        
             <Heading
                 level={4}
                 isTruncated={true}
@@ -145,19 +74,15 @@ function Home() {
             </Heading>
 
             <Image
-                alt="Amplify logo"
-                src="https://d1.awsstatic.com/Amazon-Rekognition_Diagram_Identity-Verification_Use-Case.db65dbca5b05473b42e17b218496ed3a820fd13d.png"
+                alt="How Identity Verification using Amazon Rekognition works"
+                src="https://d1.awsstatic.com/partner-network/partner_marketing_web_team/product-page-diagram_Amazon-Rekognition-Face-Liveness-2.e3ab161d23fab1fb31025871fb7621c34443cdc6.png"
                 objectFit="initial"
                 objectPosition="50% 50%"
                 backgroundColor="initial"
                 opacity="100%"
                 marginTop={tokens.space.large}
             />
-
-
         </>
-
-
     );
 }
 
