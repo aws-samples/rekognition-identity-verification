@@ -30,7 +30,7 @@ Initialize any clients (... after xray!)
 rek_client = boto3.client('rekognition', region_name=environ.get('REGION'))
 face_table_client = FaceTableClient(environ.get('FACE_TABLE_NAME'), region_name=region_name)
 
-def choose_random_face(faces:Mapping[str,bytes])->Tuple[str,bytes]:
+def choose_random_face(faces: Mapping[str, str]) -> Tuple[str, str]:
   '''
   Chooses a random face from the set.
   :returns: face_id (str) and image (bytes)

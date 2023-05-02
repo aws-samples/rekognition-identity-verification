@@ -213,3 +213,101 @@ class RivUserPortalGateway(Construct):
             "method.response.header.Access-Control-Allow-Origin": True
     })
       ])
+    
+  def bind_reset_user(self, functions: RivUserPortalFunctionSet) -> api.ProxyResource:
+      """
+      Configure the service integration
+      :param resource_name:  The extract_id_card's URL fragment.
+      :param integration_http_method: The http method 
+      """
+      self.__bind_lambda_function("reset-user", functions.reset_user.function, "GET")
+
+  def bind_start_liveness_session(self, functions: RivUserPortalFunctionSet) -> api.ProxyResource:
+      """
+      Configure the service integration
+       :param resource_name:  The extract_id_card's URL fragment.
+      :param integration_http_method: The http method 
+      """
+      self.__bind_lambda_function(
+          "start-liveness-session", functions.start_liveness_session.function, "GET"
+      )
+
+  def bind_liveness_session_result(self, functions: RivUserPortalFunctionSet) -> api.ProxyResource:
+      """
+      Configure the service integration
+      :param resource_name:  The extract_id_card's URL fragment.
+      :param integration_http_method: The http method 
+      """
+      self.__bind_lambda_function(
+          "liveness-session-result", functions.liveness_session_result.function, "POST"
+      )
+
+  def bind_check_userid(self, functions: RivUserPortalFunctionSet) -> api.ProxyResource:
+      """
+      Configure the service integration
+      :param resource_name:  The extract_id_card's URL fragment.
+      :param integration_http_method: The http method 
+      """
+      self.__bind_lambda_function("check-userid", functions.check_userid.function, "POST"
+      )
+
+  def bind_extract_id_card(self, functions: RivUserPortalFunctionSet) -> api.ProxyResource:
+      """
+      Configure the service integration
+      :param resource_name:  The extract_id_card's URL fragment.
+      :param integration_http_method: The http method 
+      """
+      self.__bind_lambda_function(
+          "extract-idcard", functions.extract_id_card.function, "POST"
+      )
+
+  def __bind_lambda_function(self,resource_name: str,functions: RivUserPortalFunctionSet,integration_http_method: str,) -> None:
+      integration = api.LambdaIntegration(
+          functions,
+          proxy=False,
+          integration_responses=[
+              api.IntegrationResponse(
+                  status_code="200",
+                  response_parameters={
+                      "method.response.header.Access-Control-Allow-Origin": "'*'"
+                  },
+              ),
+              api.IntegrationResponse(
+                  status_code="500",
+                  response_parameters={
+                      "method.response.header.Access-Control-Allow-Origin": "'*'"
+                  },
+              ),
+          ],
+      )
+
+      """
+      Configure the /resource-name...
+      """
+      resource = self.rest_api.root.add_resource(
+          path_part=resource_name,
+          default_cors_preflight_options=api.CorsOptions(
+              allow_origins=api.Cors.ALL_ORIGINS,
+              allow_methods=["OPTIONS", integration_http_method],
+          ),
+      )
+
+      resource.add_method(
+          http_method=integration_http_method,
+          integration=integration,
+          method_responses=[
+              api.MethodResponse(
+                  status_code="200",
+                  response_parameters={
+                      "method.response.header.Access-Control-Allow-Origin": True
+                  },
+              ),
+              api.MethodResponse(
+                  status_code="500",
+                  response_models={"application/json": api.Model.ERROR_MODEL},
+                  response_parameters={
+                      "method.response.header.Access-Control-Allow-Origin": True
+                  },
+              ),
+          ],
+      )

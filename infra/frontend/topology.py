@@ -1,6 +1,7 @@
 import builtins
 from infra.interfaces import IVpcRivStack
 from infra.userportal.gateway.topology import RivUserPortalGateway
+from infra.frontend.cognito.topology import RivCognitoForLivenes
 from constructs import Construct
 import aws_cdk as core
 from constructs import Construct
@@ -27,7 +28,7 @@ class RivFrontEnd(Construct):
     '''
 
     # def __init__(self, scope: Construct, id: builtins.str, riv_stack: IVpcRivStack) -> None:
-    def __init__(self, scope: Construct, id: builtins.str, riv_stack: IVpcRivStack, apigateway: RivUserPortalGateway) -> None:
+    def __init__(self, scope: Construct, id: builtins.str, riv_stack: IVpcRivStack, apigateway: RivUserPortalGateway, cognito:RivCognitoForLivenes) -> None:
         super().__init__(scope, id)
 
         s3_asset = s3_assets.Asset(self, "RIV-Web-App-Code",
@@ -55,6 +56,14 @@ class RivFrontEnd(Construct):
                                     )
         self.amplify.add_environment(
             name="REACT_APP_ENV_API_URL", value=apigateway.rest_api_url())
+        self.amplify.add_environment(
+            name="REACT_APP_IDENTITYPOOL_ID", value=cognito.idp.ref)
+        self.amplify.add_environment(
+            name="REACT_APP_USERPOOL_ID", value=cognito.cognito.user_pool_id)
+        self.amplify.add_environment(
+            name="REACT_APP_WEBCLIENT_ID", value=cognito.client.user_pool_client_id)
+        self.amplify.add_environment(
+            name="REACT_APP_REGION", value=core.Stack.of(self).region)
 
         self.amplify.add_branch("main", auto_build=True, branch_name="main")
 

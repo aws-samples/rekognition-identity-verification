@@ -115,7 +115,7 @@ class IRivUserPortalStateMachines(Construct):
     assert self.__register_idcard is not None, "Missing call to setter register_with_idcard"
     return self.__register_idcard
 
-  @register_new_user.setter
+  @register_with_idcard.setter
   def register_with_idcard(self,value:RivStateMachineConstruct)->None:
     '''
     Sets the RivStateMachineConstruct that implements the Register with Id Card flow.

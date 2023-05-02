@@ -29,7 +29,7 @@ class InputRequest:
     elif isinstance(value, str):
       self.__image = b64decode(value)
     else:
-      raise None
+      self.__image = None
 
   @property
   def bucket(self)->str:

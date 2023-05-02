@@ -44,6 +44,14 @@ class RivUserPortal(Construct):
 
     self.api_gateway.bind_reset_user(self.functions)
 
+    self.api_gateway.bind_start_liveness_session(self.functions)
+
+    self.api_gateway.bind_liveness_session_result(self.functions)
+
+    self.api_gateway.bind_check_userid(self.functions)
+
+    self.api_gateway.bind_extract_id_card(self.functions)
+
     '''
     Create Standard Stepfunctions to simplify developer troubleshooting.
     '''

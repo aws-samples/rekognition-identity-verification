@@ -65,28 +65,6 @@ class RegisterIdCardStateMachine(RivStateMachineConstruct):
       invocation_type= sft.LambdaInvocationType.REQUEST_RESPONSE)   
 
     
-    '''
-    Extract properties from id card
-    '''
-    extract_id_card = sft.LambdaInvoke(self,'Extract-IDCard',
-      lambda_function=functions.extract_id_card.function,
-      input_path='$.inputRequest',
-      result_path='$.idcard',
-      output_path='$',
-      invocation_type= sft.LambdaInvocationType.REQUEST_RESPONSE)    
-
-    '''
-    Index the user and complete the operation...
-    '''
-    combine_arguments = sf.Pass(self,'Merge-Properties',
-      result_path='$.inputRequest',
-      output_path='$',
-      parameters={
-        'UserId.$': '$.inputRequest.UserId',
-        'Image.$': '$.inputRequest.Image',
-        'Properties.$': '$.idcard.Payload.Properties'
-      })
-
     index = sft.LambdaInvoke(self,'Index-FaceInfo',
       lambda_function=functions.index_faces.function,
       input_path='$.inputRequest',
@@ -94,7 +72,6 @@ class RegisterIdCardStateMachine(RivStateMachineConstruct):
       result_path='$.index',
       invocation_type= sft.LambdaInvocationType.REQUEST_RESPONSE)
 
-    extract_id_card.next(combine_arguments).next(index)
 
     '''
     Stitch everything together...
@@ -122,7 +99,7 @@ class RegisterIdCardStateMachine(RivStateMachineConstruct):
     '''
     compare_face = sf.Choice(self,'Check-FaceCompareWithIDCard')
     compare_face.when(
-      next=extract_id_card,
+      next=index,
       condition=sf.Condition.or_(
         sf.Condition.boolean_equals(
         '$.search.Payload.IsMatch',
@@ -141,7 +118,6 @@ class RegisterIdCardStateMachine(RivStateMachineConstruct):
         'UserId.$': '$.inputRequest.UserId',
         'ImageId.$': '$.index.Payload.FaceRecord.Face.ImageId',
         'Status': 'Registered',
-        "Properties.$": "$.idcard.Payload.Properties"
       }))
 
     self.set_state_machine(
