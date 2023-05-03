@@ -52,10 +52,11 @@ class RivUserPortal(Construct):
 
     self.api_gateway.bind_extract_id_card(self.functions)
 
-    '''
-    Create Standard Stepfunctions to simplify developer troubleshooting.
-    '''
-    self.debug_state_machines = RivUserPortalStateMachines(self,'DebugStates',
-      riv_stack=riv_stack,
-      functions=self.functions,
-      state_machine_type= StateMachineType.STANDARD)
+    if config.use_debug_statet:
+      '''
+      Create Standard Stepfunctions to simplify developer troubleshooting.
+      '''
+      self.debug_state_machines = RivUserPortalStateMachines(self,'DebugStates',
+        riv_stack=riv_stack,
+        functions=self.functions,
+        state_machine_type= StateMachineType.STANDARD)

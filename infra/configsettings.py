@@ -89,6 +89,18 @@ class ConfigManager:
     if not 'use_custom_asset_bucket' in self.json:
       return False
     return self.json['use_custom_asset_bucket']
+  
+  @property
+  def use_inventory_bucket(self)->bool:
+    if 'use_inventory_bucket' in self.json:
+      return self.json['use_inventory_bucket']
+    return False
+  
+  @property
+  def use_debug_statet(self)->bool:
+    if 'use_debug_statet' in self.json:
+      return self.json['use_debug_statet']
+    return False
 
   @property
   def custom_asset_bucket_name(self)->str:
