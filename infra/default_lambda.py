@@ -102,7 +102,7 @@ class RivDefaultFunction(Construct):
       if not os.path.isdir(output_dir): 
         subprocess.check_call(
         # Note: Pip will create the output dir if it does not exist
-        f"pip install -r {base_path}/requirements.txt -t {output_dir}/python".split()
+        f"pip3 install -r {base_path}/requirements.txt -t {output_dir}/python".split()
         )
     self.requirements_txt = lambda_.LayerVersion(self,'SharedDeps',
       code= lambda_.Code.from_asset(path=output_dir),
