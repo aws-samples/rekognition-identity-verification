@@ -97,9 +97,9 @@ class ConfigManager:
     return False
   
   @property
-  def use_debug_statet(self)->bool:
-    if 'use_debug_statet' in self.json:
-      return self.json['use_debug_statet']
+  def use_debug_state(self)->bool:
+    if 'use_debug_state' in self.json:
+      return self.json['use_debug_state']
     return False
 
   @property

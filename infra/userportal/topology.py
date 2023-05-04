@@ -52,7 +52,7 @@ class RivUserPortal(Construct):
 
     self.api_gateway.bind_extract_id_card(self.functions)
 
-    if config.use_debug_statet:
+    if config.use_debug_state:
       '''
       Create Standard Stepfunctions to simplify developer troubleshooting.
       '''
