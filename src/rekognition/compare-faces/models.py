@@ -5,6 +5,9 @@ class InputRequest:
   def __init__(self, event:dict) -> None:
     self.user_id = event['UserId']
     self.image_bytes = event['Image'] if event.get('Image') != None else None
+    self.bucket = event['Bucket']
+    self.name = event['Name']
+
     
     if 'FaceId' in event:
       self.face_id = event['FaceId']
@@ -43,7 +46,7 @@ class InputRequest:
     elif isinstance(value, str):
       self.__image = b64decode(value)
     else:
-      raise None
+      self.__image = None
 
   @property
   def property_bag(self)->dict:

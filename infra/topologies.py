@@ -126,8 +126,13 @@ class DefaultRivStack(VpcRivStack):
       from infra.frontend.topology import RivFrontEnd
       from infra.frontend.topology import TriggerRivFrontEndBuild
       from infra.frontend.topology import RivFrontEndBuildStatus
+      from infra.frontend.cognito.topology import RivCognitoForLivenes
 
-      feapp = RivFrontEnd(self,"RIVWebAPP",riv_stack=self, apigateway=userportal.api_gateway )
+      # setup Amazon Cognito for Face Liveness
+
+      cognito = RivCognitoForLivenes(self,"RIVCognito",riv_stack=self )
+
+      feapp = RivFrontEnd(self,"RIVWebAPP",riv_stack=self, apigateway=userportal.api_gateway, cognito= cognito)
 
       triggerfeapp = TriggerRivFrontEndBuild(self,"RIVWebAPPTrigger",riv_stack=self,amplifyApp=feapp)
       # feapp = RivFrontEnd(self,"RIVWebAPP",riv_stack=self)

@@ -44,10 +44,19 @@ class RivUserPortal(Construct):
 
     self.api_gateway.bind_reset_user(self.functions)
 
-    '''
-    Create Standard Stepfunctions to simplify developer troubleshooting.
-    '''
-    self.debug_state_machines = RivUserPortalStateMachines(self,'DebugStates',
-      riv_stack=riv_stack,
-      functions=self.functions,
-      state_machine_type= StateMachineType.STANDARD)
+    self.api_gateway.bind_start_liveness_session(self.functions)
+
+    self.api_gateway.bind_liveness_session_result(self.functions)
+
+    self.api_gateway.bind_check_userid(self.functions)
+
+    self.api_gateway.bind_extract_id_card(self.functions)
+
+    if config.use_debug_state:
+      '''
+      Create Standard Stepfunctions to simplify developer troubleshooting.
+      '''
+      self.debug_state_machines = RivUserPortalStateMachines(self,'DebugStates',
+        riv_stack=riv_stack,
+        functions=self.functions,
+        state_machine_type= StateMachineType.STANDARD)

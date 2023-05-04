@@ -1,4 +1,6 @@
 from os import path
+import subprocess
+import os
 from infra.configsettings import ConfigManager
 from typing import Mapping
 from infra.interfaces import IVpcRivStack
@@ -12,6 +14,11 @@ from aws_cdk import (
 
 config_mgr = ConfigManager()
 shared_deps_path = path.join(path.dirname(__file__),'../src/shared')
+
+base_path = f"./src/shared"
+
+output_dir = f"./cdk.out/shared"
+
 class RivDefaultFunction(Construct):
   '''
   Represents the base template for a UserPortal Lambda function.
@@ -91,8 +98,14 @@ class RivDefaultFunction(Construct):
     '''
     Include the shared requirements.txt 
     '''
+    if not os.environ.get("SKIP_PIP"):
+      if not os.path.isdir(output_dir): 
+        subprocess.check_call(
+        # Note: Pip will create the output dir if it does not exist
+        f"pip3 install -r {base_path}/requirements.txt -t {output_dir}/python".split()
+        )
     self.requirements_txt = lambda_.LayerVersion(self,'SharedDeps',
-      code= lambda_.Code.from_asset(path=shared_deps_path),
+      code= lambda_.Code.from_asset(path=output_dir),
       compatible_runtimes=[self.function.runtime],
       description='Shared dependencies')
 

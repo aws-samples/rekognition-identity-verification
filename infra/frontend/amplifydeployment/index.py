@@ -12,10 +12,10 @@ def lambda_handler(event, context):
     if(appName is not None):
         branch = getBranch(appId, event['branch'])
         if(branch is not None):
-            i = False
+            jobId = False
             jobId = getJob(appId,branch)
             if(jobId is not None):
-                while(i == False):
+                while(jobId == False):
                     job_status = client.get_job(
                         appId=appId,
                         branchName=branch,
@@ -23,7 +23,7 @@ def lambda_handler(event, context):
                     )
                     status = job_status['job']['summary']['status']
                     if (status == 'FAILED' or status == 'SUCCEED' or status == 'CANCELLED'):
-                        i = True
+                        jobId = True
                         break
     return {
         "status":"Amplify App deployed Successfully."
