@@ -6531,7 +6531,7 @@
                                     "Arn"
                                 ]
                             },
-                            "\",\"Payload.$\":\"$\",\"InvocationType\":\"RequestResponse\"}},\"Check-SearchResults\":{\"Type\":\"Choice\",\"Choices\":[{\"Variable\":\"$.compare.Payload.TopMatch.IsCallerUser\",\"BooleanEquals\":false,\"Next\":\"InvalidCredentials\"}],\"Default\":\"Auth-Complete\"},\"Auth-Complete\":{\"Type\":\"Pass\",\"Parameters\":{\"UserId.$\":\"$.inputRequest.UserId\",\"Status\":\"Verified\"},\"End\":true},\"InvalidCredentials\":{\"Type\":\"Fail\",\"Error\":\"UserAccessDenied\",\"Cause\":\"The wrong person is in the photo.\"}},\"TimeoutSeconds\":30}"
+                            "\",\"Payload.$\":\"$\",\"InvocationType\":\"RequestResponse\"}},\"Check-SearchResults\":{\"Type\":\"Choice\",\"Choices\":[{\"Variable\":\"$.compare.Payload.IsMatch\",\"BooleanEquals\":false,\"Next\":\"InvalidCredentials\"}],\"Default\":\"Auth-Complete\"},\"Auth-Complete\":{\"Type\":\"Pass\",\"Parameters\":{\"UserId.$\":\"$.inputRequest.UserId\",\"Status\":\"Verified\"},\"End\":true},\"InvalidCredentials\":{\"Type\":\"Fail\",\"Error\":\"UserAccessDenied\",\"Cause\":\"The wrong person is in the photo.\"}},\"TimeoutSeconds\":30}"
                         ]
                     ]
                 },
