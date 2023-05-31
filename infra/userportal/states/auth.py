@@ -71,7 +71,7 @@ class AuthStateMachine(RivStateMachineConstruct):
     '''
     is_calleruser = sf.Choice(self,'Check-SearchResults')
     is_calleruser.when(
-      condition= sf.Condition.boolean_equals('$.compare.Payload.TopMatch.IsCallerUser',False),
+      condition= sf.Condition.boolean_equals('$.compare.Payload.IsMatch',False),
       next= sf.Fail(self,'InvalidCredentials',
         error='UserAccessDenied',
         cause='The wrong person is in the photo.'))
