@@ -47,7 +47,7 @@ const SignIn = () => {
 
     const getReferenceImage = (image) => {
         setHasFormError('')
-        if (!errorCheck() && image !== null  && image.ReferenceImage) {
+        if (!errorCheck() && image !== null && image.ReferenceImage) {
             setreferenceImage(image.ReferenceImage)
             setLivenessImageData(image)
             setJsonResponse(image)
@@ -55,7 +55,7 @@ const SignIn = () => {
                 setFormSubmit(false)
             }
 
-        }else if(image.error){
+        } else if (image.error) {
             setHasFormError(ErrorMessage['GenericError'])
         }
     }
@@ -76,8 +76,8 @@ const SignIn = () => {
         if (!errorCheck()) {
             setHasFormError('')
             const requestData = {
-                body: { "UserId": id }, 
-                headers: { "Content-Type": "application/json" }, 
+                body: { "UserId": id },
+                headers: { "Content-Type": "application/json" },
             };
             API.post("identityverification", "check-userid", requestData).then(response => {
                 let responseData = response;
@@ -118,14 +118,18 @@ const SignIn = () => {
         API.post("identityverification", "auth", requestData).then(response => {
             let responseData = response;
             setJsonResponse(responseData)
+            console.log(responseData)
             if (responseData.status === "SUCCEEDED") {
                 let responseSuccessData = JSON.parse(responseData.output)
                 console.log(responseSuccessData)
                 localStorage.removeItem("userSelectedConfidence")
-                setregisterSuccess({ "label": responseSuccessData.UserId ,"responseData":responseData })
-                
+                setregisterSuccess({ "label": responseSuccessData.UserId, "responseData": responseData })
+
             } else if (responseData.error === 'ValueError') {
                 setHasFormError(ErrorMessage['ValueError'])
+            }
+            else if (responseData.error === 'UserAccessDenied') {
+                setHasFormError(ErrorMessage['UserAccessDenied'])
             } else {
                 setHasFormError(ErrorMessage['GenericError'])
             }
@@ -250,20 +254,20 @@ const SignIn = () => {
                 </Navigate >}
 
             </Form>
-        {jsonResponse &&
-        <>
-        <Heading
-                    level={5}
-                    color="black"
-                    marginTop={tokens.space.large}
-                    marginBottom={tokens.space.large}
-                >
-                    Response:
-                </Heading>
-            <JSONTree data={jsonResponse} 
-            valueRenderer={(raw) => raw.length > 200  ? (<span style={{whiteSpace: 'nowrap',display:'inline-block',maxWidth: '100%',overflow:'hidden',textOverflow: 'ellipsis',verticalAlign:'middle'}} >{raw}</span>) : raw } />
-            </>
-        }
+            {jsonResponse &&
+                <>
+                    <Heading
+                        level={5}
+                        color="black"
+                        marginTop={tokens.space.large}
+                        marginBottom={tokens.space.large}
+                    >
+                        Response:
+                    </Heading>
+                    <JSONTree data={jsonResponse}
+                        valueRenderer={(raw) => raw.length > 200 ? (<span style={{ whiteSpace: 'nowrap', display: 'inline-block', maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', verticalAlign: 'middle' }} >{raw}</span>) : raw} />
+                </>
+            }
         </>
     );
 }
