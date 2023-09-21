@@ -39,7 +39,6 @@ class JumpBoxConstruct(Construct):
       instance_type=ec2.InstanceType.of(
         instance_class= ec2.InstanceClass.BURSTABLE3,
         instance_size=ec2.InstanceSize.SMALL),
-      allow_all_outbound=True,
       user_data_causes_replacement=True,
       security_group= riv_stack.security_group,
       vpc_subnets= ec2.SubnetSelection(subnet_group_name='Default'),
